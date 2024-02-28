@@ -7,6 +7,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF283618"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF283618"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid Width="1500" Height="1000">
         <Image Source="Assets/Backgrounds/hay.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>
@@ -14,12 +28,19 @@
         <TextBlock  TextWrapping="Wrap" Text="Couch mode" Margin="594,102,613,845" FontSize="48" TextAlignment="Center"/>
 
 
-        <Button Content="Player" Margin="111,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White"/>
+        <Button Content="Player" Margin="111,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" Click="Slot_1_user">
+            
+        </Button>
+        <ComboBox Margin="111,70,0,0" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" SelectedIndex="0" SelectionChanged="ComboBox_slot1User_SelectionChanged">
+            <ComboBoxItem Content="Player"/>
+            <ComboBoxItem Content="AI"/>
+            <ComboBoxItem Content="None"/>
+        </ComboBox>
         <Grid Background="#FFE9EDC9" Width="223" Height="485" Margin="89,258,1188,257">
             <Button Width="182" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0">
                 <Image Source="/Assets/TeamIcons/cow.jpg" Height="130" Width="130"/>
             </Button>
-            <TextBlock TextWrapping="Wrap" Text="Player1" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
+            <TextBlock x:Name="txtblock" TextWrapping="Wrap" Text="Player1" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
         </Grid>
 
         <Button Content="Player" Margin="471,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White"/>
@@ -36,6 +57,7 @@
                 <Image Source="/Assets/TeamIcons/chicken.jpg" Height="130" Width="130"/>
             </Button>
             <TextBlock TextWrapping="Wrap" Text="Player3" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
+            
         </Grid>
 
         <Button Content="Player" Margin="1191,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White"/>
@@ -46,9 +68,9 @@
             <TextBlock TextWrapping="Wrap" Text="Player4" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
         </Grid>
 
-        <Button Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White"/>
+        <Button Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" IsEnabled="False"/>
         <Button Width="325" Height="114" Content="Options" Margin="573,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" IsEnabled="False"/>
-        <Button Width="325" Height="114" Content="Choose level" Margin="1067,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Click_Choose_level"/>
+        <Button Width="325" Height="114" Content="Choose level" Margin="1067,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Click_Choose_level" IsEnabled="False"/>
         
 
 
