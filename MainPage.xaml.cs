@@ -26,5 +26,10 @@ namespace FIA_Grupp2
         {
             this.InitializeComponent();
         }
+
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(DicePage));
+        }
     }
 }
