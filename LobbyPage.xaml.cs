@@ -257,7 +257,7 @@ namespace FIA_Grupp2
 
 		private void choose_level_button_click_event(object sender, RoutedEventArgs e)
 		{
-			//TODO not yet implemented
+			this.Frame.Navigate(typeof(GameSessionPage));
 		}
 	}
 }
