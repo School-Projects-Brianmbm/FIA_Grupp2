@@ -1,0 +1,76 @@
+﻿<Page
+    x:Class="FIA_Grupp2.LobbyPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FIA_Grupp2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <!-- Hover and click -->
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF283618"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF283618"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Width="1500" Height="1000">
+        <Image Source="Assets/Backgrounds/hay.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>
+
+        <TextBlock  TextWrapping="Wrap" Text="Couch mode" Margin="594,102,613,845" FontSize="48" TextAlignment="Center"/>
+
+
+        <Button Content="Player" Margin="111,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" Click="slot1_user_selection_button_click_event">
+            
+        </Button>
+        
+        <Grid  x:Name="slot1_rectangle" Background="#FFE9EDC9" Width="223" Height="485" Margin="89,258,1188,257">
+            <Button x:Name="slot1_button_teamicon" Width="146" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="slot1_button_teamicon_click_event">
+                <Image  x:Name="slot1_teamicon" Source="/Assets/TeamIcons/cow.jpg" Height="130" Width="130"/>
+            </Button>
+            <TextBlock x:Name="slot1_username" TextWrapping="Wrap" Text="Player1" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
+        </Grid>
+
+        <Button Content="Player" Margin="471,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" Click="slot2_user_selection_button_click_event"/>
+        <Grid x:Name="slot2_rectangle" Background="#FFE9EDC9" Width="223" Height="485" Margin="449,258,828,257">
+            <Button x:Name="slot2_button_teamicon"  Width="146" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="slot2_button_teamicon_click_event">
+                <Image x:Name="slot2_teamicon" Source="/Assets/TeamIcons/pig.jpg" Height="130" Width="130"/>
+            </Button>
+            <TextBlock x:Name="slot2_username" TextWrapping="Wrap" Text="Player2" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
+        </Grid>
+
+        <Button Content="None" Margin="831,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" Click="slot3_user_selection_button_click_event"/>
+        <Grid x:Name="slot3_rectangle" Background="#FFE9EDC9" Width="223" Height="485" Margin="809,258,468,257" Opacity="0.5">
+            <Button x:Name="slot3_button_teamicon" Width="146" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="slot3_button_teamicon_click_event" IsEnabled="False">
+                <Image x:Name="slot3_teamicon" Source="/Assets/TeamIcons/chicken.jpg" Height="130" Width="130"/>
+            </Button>
+            <TextBlock x:Name="slot3_username" TextWrapping="Wrap" Text="---" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
+            
+        </Grid>
+
+        <Button Content="None" Margin="1191,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" Click="slot4_user_selection_button_click_event"/>
+        <Grid x:Name="slot4_rectangle" Background="#FFE9EDC9" Width="223" Height="485" Margin="1169,258,108,257" Opacity="0.5">
+            <Button x:Name="slot4_button_teamicon" Width="146" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="slot4_button_teamicon_click_event" IsEnabled="False">
+                <Image x:Name="slot4_teamicon" Source="/Assets/TeamIcons/sheep.jpg" Height="130" Width="130"/>
+            </Button>
+            <TextBlock x:Name="slot4_username" TextWrapping="Wrap" Text="---" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
+        </Grid>
+
+        <Button Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="back_button_click_event" IsEnabled="False"/>
+        <Button Width="325" Height="114" Content="Options" Margin="573,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="options_button_click_event" IsEnabled="False" />
+        <Button Width="325" Height="114" Content="Choose level" Margin="1067,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="choose_level_button_click_event"/>
+        
+
+
+    </Grid>
+</Page>
