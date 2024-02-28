@@ -26,6 +26,7 @@ namespace FIA_Grupp2
         public StartPage()
         {
             this.InitializeComponent();
+            startStoryBoard.Begin();
         }
 
         private void splashButton_Click(object sender, RoutedEventArgs e)
