@@ -29,7 +29,7 @@ namespace FIA_Grupp2
             startStoryBoard.Begin();
         }
 
-        private void splashButton_Click(object sender, RoutedEventArgs e)
+        private void SplashButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(MainPage));
         }

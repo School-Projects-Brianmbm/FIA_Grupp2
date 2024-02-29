@@ -20,6 +20,6 @@
     <Grid Width="1500" Height="1000">
         <Image x:Name="splashImage" Height="auto"  Width="auto" Source="Assets/main_title3.jpg" Stretch="Fill"/>
         <TextBlock x:Name="startText" TextWrapping="Wrap" Text="CLICK TO START" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,100" Foreground="Black" FontFamily="Arial Black" FontSize="25"/>
-        <Button x:Name="splashButton" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="splashButton_Click"/>
+        <Button x:Name="splashButton" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="SplashButton_Click"/>
     </Grid>
 </Page>
