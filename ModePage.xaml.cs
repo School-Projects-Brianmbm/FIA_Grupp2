@@ -13,25 +13,18 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-//TEST
-//Buttons enabled even if not functioning otherwise not visible
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+
 namespace FIA_Grupp2
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class ModePage : Page
     {
-        public MainPage()
+        public ModePage()
         {
             this.InitializeComponent();
-        }
-
-        private void StartButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(ModePage));
-
         }
     }
 }
