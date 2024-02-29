@@ -11,7 +11,7 @@
     <Grid>
         <TextBlock Text="Welcome to DicePage!" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" />
         <Button Margin="0,0,32,32" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="256" Width="256" Click="Dice_Click" Background="Transparent">
-            <Image Source="ms-appx:///Assets/BBUK_Golden_Dice.png" Width="228" Height="228"/>
+            <Image Source="ms-appx:///Assets/Dice_images/BBUK_Golden_Dice.png" Width="228" Height="228"/>
         </Button>
     </Grid>
 </Page>

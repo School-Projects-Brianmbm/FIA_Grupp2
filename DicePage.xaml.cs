@@ -50,7 +50,7 @@ namespace FIA_Grupp2
             {
                 _diceTimer.Stop();
 
-                ChangeDiceIcon($"ms-appx:///Assets/{GetImageFromDiceNumber(_realDiceNumber)}.png");
+                ChangeDiceIcon($"ms-appx:///Assets/Dice_images/{GetImageFromDiceNumber(_realDiceNumber)}.png");
             }
             else
             {
@@ -58,7 +58,7 @@ namespace FIA_Grupp2
 
                 int diceNumber = GetRandomDiceNumber();
 
-                ChangeDiceIcon($"ms-appx:///Assets/{GetImageFromDiceNumber(diceNumber)}.png");
+                ChangeDiceIcon($"ms-appx:///Assets/Dice_images/{GetImageFromDiceNumber(diceNumber)}.png");
             }
         }
 
