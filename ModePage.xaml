@@ -20,7 +20,7 @@
                         </LinearGradientBrush>
                     </Rectangle.Fill>
                 </Rectangle>
-                <Button x:Name="OfflineButton" Content="Offline" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="50" CornerRadius="10" Margin="75,50,0,0"/>
+                <Button x:Name="OfflineButton" Content="Offline" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="50" CornerRadius="10" Margin="75,50,0,0" Click="OfflineButton_Click"/>
             </Canvas>
             <Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Width="350" Margin="200,-150,0,0">
                 <Rectangle Height="150" Stroke="Black" Width="350" RadiusX="25" RadiusY="25" StrokeThickness="0">

@@ -26,5 +26,10 @@ namespace FIA_Grupp2
         {
             this.InitializeComponent();
         }
+
+        private void OfflineButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(LobbyPage));
+        }
     }
 }
