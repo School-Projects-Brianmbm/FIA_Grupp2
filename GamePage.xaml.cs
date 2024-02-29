@@ -51,14 +51,14 @@ namespace FIA_Grupp2
             var y = args.CurrentPoint.Position.Y;
             int roundedX = (int)Math.Round(x);
             int roundedY = (int)Math.Round(y);
-            debugtext.Text = $"Mouse Position: X={roundedX}, Y={roundedY}, {gameGrid.Sqiush}";
+            debugtext.Text = $"Mouse Position: X={roundedX}, Y={roundedY}, {gameGrid.Squish}";
             MouseX = roundedX;
             MouseY = roundedY;
         }
 
         private void DebugTextUpdateModifier()
         {
-            debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Sqiush}";
+            debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish}";
         }
 
 
@@ -69,11 +69,11 @@ namespace FIA_Grupp2
 
             if (delta > 0)
             {
-                gameGrid.Sqiush--;
+                gameGrid.Squish--;
             }
             else if (delta < 0)
             {
-                gameGrid.Sqiush++;
+                gameGrid.Squish++;
             }
 
             gameGrid.CalculateColumnDist();

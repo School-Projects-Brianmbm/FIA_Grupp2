@@ -24,7 +24,7 @@ namespace FIA_Grupp2
         readonly double _origoX;
         private double _origoY;
 
-        private double sqiush = _rowDist - _colDist;
+        private double squish = _rowDist - _colDist;
 
         readonly Canvas _canvas;
         readonly Point[][] _pointsArray = new Point[_numberOfRows][];
@@ -52,7 +52,7 @@ namespace FIA_Grupp2
 
         readonly TextBlock[][] textArray = new TextBlock[_numberOfRows][];
 
-        public double Sqiush { get => sqiush; set => sqiush = value; }
+        public double Squish { get => squish; set => squish = value; }
 
         /// <summary>
         /// Constructor for the generic parques map
@@ -104,11 +104,11 @@ namespace FIA_Grupp2
                 _dotsArray[row] = new Ellipse[_numberOfColumns];
                 textArray[row] = new TextBlock[_numberOfColumns];
 
-                if (row > 0) { rowmodi += Sqiush; }
+                if (row > 0) { rowmodi += Squish; }
 
                 for (int col = 0; col < _numberOfColumns; col++)
                 {
-                    _pointsArray[row][col] = new Point(col * (_colDist + Sqiush), row * (_rowDist - Sqiush));
+                    _pointsArray[row][col] = new Point(col * (_colDist + Squish), row * (_rowDist - Squish));
                 }
             }
         }
@@ -284,7 +284,7 @@ namespace FIA_Grupp2
         /// </summary>
         internal void CalculateColumnDist()
         {
-            _colDist = _rowDist - sqiush;
+            _colDist = _rowDist - squish;
         }
 
         /// <summary>
