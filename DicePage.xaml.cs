@@ -19,16 +19,11 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace FIA_Grupp2
 {
-    //TODO: Document the code
-    //TODO: Testa med en liten random animation tills den slutar med talet man fick.
 
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class DicePage : Page
     {
-        private DispatcherTimer _timer = new DispatcherTimer();
-        private int _amountOfCycles = 0;
+        private DispatcherTimer _diceTimer = new DispatcherTimer();
+        private int _amountOfSpins = 0;
         private int _realDiceNumber;
 
         object _sender;
@@ -37,14 +32,13 @@ namespace FIA_Grupp2
         {
             this.InitializeComponent();
 
-            _timer.Tick += Timer_Tick;
-            _timer.Interval = TimeSpan.FromMilliseconds(300);
+            _diceTimer.Tick += Timer_Tick;
+            _diceTimer.Interval = TimeSpan.FromMilliseconds(300);
         }
 
         private void Dice_Click(object sender, RoutedEventArgs e)
         {
             _realDiceNumber = GetRandomDiceNumber();
-            Debug.WriteLine($"Got number : {_realDiceNumber}");
             _sender = sender;
 
             PlayRandomSequence(4.0f);
@@ -52,32 +46,19 @@ namespace FIA_Grupp2
 
         private void Timer_Tick(object sender, object e)
         {
-            Debug.WriteLine($"Tick {_amountOfCycles}");
-            if(_amountOfCycles <= 1)
+            if(_amountOfSpins <= 1)
             {
-                _timer.Stop();
+                _diceTimer.Stop();
 
-                BitmapImage newDiceImage = new BitmapImage(new Uri($"ms-appx:///Assets/Dice_images/{GetImageFromDiceNumber(_realDiceNumber)}.png"));
-
-                // Find the Image control inside the Button
-                Image imageControl = (Image)((Button)_sender).Content;
-
-                // Update the Source property of the Image control
-                imageControl.Source = newDiceImage;
+                ChangeDiceIcon($"ms-appx:///Assets/{GetImageFromDiceNumber(_realDiceNumber)}.png");
             }
             else
             {
-                _amountOfCycles--;
+                _amountOfSpins--;
 
                 int diceNumber = GetRandomDiceNumber();
 
-                BitmapImage newDiceImage = new BitmapImage(new Uri($"ms-appx:///Assets/Dice_images/{GetImageFromDiceNumber(diceNumber)}.png"));
-
-                // Find the Image control inside the Button
-                Image imageControl = (Image)((Button)_sender).Content;
-
-                // Update the Source property of the Image control
-                imageControl.Source = newDiceImage;
+                ChangeDiceIcon($"ms-appx:///Assets/{GetImageFromDiceNumber(diceNumber)}.png");
             }
         }
 
@@ -110,8 +91,19 @@ namespace FIA_Grupp2
 
         private void PlayRandomSequence(float seconds)
         {
-            _amountOfCycles = (int)(seconds / ((float)(_timer.Interval.Milliseconds) / 1000f));
-            _timer.Start();
+            _amountOfSpins = (int)(seconds / ((float)(_diceTimer.Interval.Milliseconds) / 1000f));
+            _diceTimer.Start();
+        }
+
+        private void ChangeDiceIcon(string path)
+        {
+            BitmapImage newDiceImage = new BitmapImage(new Uri(path));
+
+            // Find the Image control inside the Button that has been pressed.
+            Image imageControl = (Image)((Button)_sender).Content;
+
+            // Update the Source property of the Button image control 
+            imageControl.Source = newDiceImage;
         }
     }
 }
