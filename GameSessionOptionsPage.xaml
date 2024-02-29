@@ -1,0 +1,66 @@
+﻿<Page
+    x:Class="FIA_Grupp2.GameSessionOptionsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FIA_Grupp2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <!-- Hover and click -->
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF283618"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF283618"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Width="1500" Height="1000">
+        <Image Source="Assets/Backgrounds/hay.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>
+
+        <Grid Background="#FFFFFF" Width="1064" Height="710" Margin="218,74,218,216">
+            <Grid Background="#FF606C38" Width="915" Height="117" Margin="75,66,74,527">
+                <TextBlock HorizontalAlignment="Left" Margin="78,0,0,0" TextWrapping="Wrap" Text="Game time" VerticalAlignment="Center" Foreground="White" FontSize="48"/>
+                <Grid Background="#FFFFFF" Height="72" Margin="540,21,95,24" Width="280">
+                    <TextBox Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="0,0,197,0" BorderBrush="#FFFFFF"/>
+                    <TextBox Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="98,0,99,0" BorderBrush="#FFFFFF"/>
+                    <TextBox Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="196,0,0,0" BorderBrush="#FFFFFF"/>
+                    <TextBlock  Height="72" TextWrapping="Wrap" Text=":" FontSize="48" Width="20" Margin="80,0,180,0" TextAlignment="Center"/>
+                    <TextBlock  Height="72" TextWrapping="Wrap" Text=":" FontSize="48" Width="20" Margin="178,0,82,0" TextAlignment="Center"/>
+                </Grid>
+              
+            </Grid>
+
+            <Grid Background="#FF606C38" Width="915" Height="117" Margin="75,216,74,377">
+                <TextBlock HorizontalAlignment="Left" Margin="78,0,0,0" TextWrapping="Wrap" Text="Turn time" VerticalAlignment="Center" Foreground="White" FontSize="48"/>
+                <Grid Background="#FFFFFF" Height="72" Margin="540,21,95,24" Width="280">
+                    <TextBox Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="0,0,197,0" BorderBrush="#FFFFFF"/>
+                    <TextBox Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="98,0,99,0" BorderBrush="#FFFFFF"/>
+                    <TextBox Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="196,0,0,0" BorderBrush="#FFFFFF"/>
+                    <TextBlock  Height="72" TextWrapping="Wrap" Text=":" FontSize="48" Width="20" Margin="80,0,180,0" TextAlignment="Center"/>
+                    <TextBlock  Height="72" TextWrapping="Wrap" Text=":" FontSize="48" Width="20" Margin="178,0,82,0" TextAlignment="Center"/>
+                </Grid>
+
+            </Grid>
+
+
+
+        </Grid>
+
+        <Button Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Back_button_click_event"/>
+
+        <Button Width="325" Height="114" Content="Save" Margin="1067,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Save_button_click_event"/>
+
+
+
+    </Grid>
+</Page>
