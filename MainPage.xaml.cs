@@ -28,9 +28,10 @@ namespace FIA_Grupp2
             this.InitializeComponent();
         }
 
-        private void StartButtonClicked(object sender, RoutedEventArgs e)
+        private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(GamePage));
+            this.Frame.Navigate(typeof(ModePage));
+
         }
     }
 }

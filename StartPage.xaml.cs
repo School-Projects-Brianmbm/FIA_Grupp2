@@ -14,7 +14,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-//FIXME: Start text blink not working(?)
 
 namespace FIA_Grupp2
 {
@@ -26,6 +25,7 @@ namespace FIA_Grupp2
         public StartPage()
         {
             this.InitializeComponent();
+            startStoryBoard.Begin();
         }
 
         private void SplashButton_Click(object sender, RoutedEventArgs e)
