@@ -257,7 +257,7 @@ namespace FIA_Grupp2
 
 		private void choose_level_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(GameSessionPage));
+			this.Frame.Navigate(typeof(GamePage));
 		}
 	}
 }

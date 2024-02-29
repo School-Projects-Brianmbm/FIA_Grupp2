@@ -9,7 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     >
 
-    <Grid>
+    <Grid Width="1500" Height="1000">
         <Image VerticalAlignment="Top" Source="Assets/main_menu.jpg" HorizontalAlignment="Center" Stretch="Fill"/>
         <Image Height="auto"  Width="600" Source="Assets/main_title2.png" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,100,0,0"/>
         <Canvas HorizontalAlignment="Center" Width="350" Margin="0,250,0,0">
@@ -22,7 +22,7 @@
                 </Rectangle.Fill>
             </Rectangle>
             <StackPanel Margin="0,0,0,0" Width="350" Height="425">
-                <Button Content="Start" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="0,30,0,5"/>
+                <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="0,30,0,5" Click="StartButton_Click"/>
                 <Button Content="Continue" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
                 <Button Content="High-Scores" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
                 <Button Content="Settings" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>

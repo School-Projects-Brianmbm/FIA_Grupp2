@@ -17,14 +17,19 @@ using Windows.UI.Xaml.Navigation;
 
 namespace FIA_Grupp2
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class GameSessionPage : Page
-	{
-		public GameSessionPage()
-		{
-			this.InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class ModePage : Page
+    {
+        public ModePage()
+        {
+            this.InitializeComponent();
+        }
+
+        private void OfflineButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(LobbyPage));
+        }
+    }
 }
