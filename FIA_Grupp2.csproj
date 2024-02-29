@@ -123,8 +123,14 @@
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LobbyPage.xaml.cs">
+      <DependentUpon>LobbyPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModePage.xaml.cs">
+      <DependentUpon>ModePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -138,12 +144,19 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Backgrounds\hay.jpg" />
     <Content Include="Assets\initial_splash.jpg" />
     <Content Include="Assets\main_menu.jpg" />
     <Content Include="Assets\main_title.png" />
     <Content Include="Assets\main_title2.png" />
     <Content Include="Assets\main_title3.jpg" />
+    <Content Include="Assets\mode_image.jpg" />
     <Content Include="Assets\name_credit.png" />
+    <Content Include="Assets\TeamIcons\all_icons.jpg" />
+    <Content Include="Assets\TeamIcons\chicken.jpg" />
+    <Content Include="Assets\TeamIcons\cow.jpg" />
+    <Content Include="Assets\TeamIcons\pig.jpg" />
+    <Content Include="Assets\TeamIcons\sheep.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -162,7 +175,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LobbyPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ModePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
