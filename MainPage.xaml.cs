@@ -27,5 +27,10 @@ namespace FIA_Grupp2
         {
             this.InitializeComponent();
         }
+
+        private void StartButtonClicked(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(GamePage));
+        }
     }
 }

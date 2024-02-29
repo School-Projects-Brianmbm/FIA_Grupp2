@@ -22,7 +22,7 @@
                 </Rectangle.Fill>
             </Rectangle>
             <StackPanel Margin="0,0,0,0" Width="350" Height="425">
-                <Button Content="Start" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="0,30,0,5"/>
+                <Button Content="Start" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="0,30,0,5" Click="StartButtonClicked"/>
                 <Button Content="Continue" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
                 <Button Content="High-Scores" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
                 <Button Content="Settings" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>

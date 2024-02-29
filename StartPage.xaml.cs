@@ -28,7 +28,7 @@ namespace FIA_Grupp2
             this.InitializeComponent();
         }
 
-        private void splashButton_Click(object sender, RoutedEventArgs e)
+        private void SplashButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(MainPage));
         }
