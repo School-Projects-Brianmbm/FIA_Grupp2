@@ -20,28 +20,18 @@ namespace FIA_Grupp2
     public class Dice
     {
         private DispatcherTimer _diceTimer = new DispatcherTimer();
-        private int _amountOfSpins = 0;
+        private int _amountOfSpinsLeft = 0;
         private int _realDiceNumber;
 
         private object _sender;
+
+        private double _diceSpinTickRate = 100.0;   //How fast will each tick be, in milliseconds, i.e. after 100 milliseconds a tick event is called.
 
         public void SpinDice(object sender, RoutedEventArgs e)
         {
             _diceTimer = new DispatcherTimer();
             _diceTimer.Tick += Timer_Tick;
-            _diceTimer.Interval = TimeSpan.FromMilliseconds(300);
-
-            _realDiceNumber = GetRandomDiceNumber();
-            _sender = sender;
-
-            PlayRandomSequence(4.0f);
-        }
-
-        public void Dice_Click(object sender, RoutedEventArgs e)
-        {
-            _diceTimer = new DispatcherTimer();
-            _diceTimer.Tick += Timer_Tick;
-            _diceTimer.Interval = TimeSpan.FromMilliseconds(300);
+            _diceTimer.Interval = TimeSpan.FromMilliseconds(_diceSpinTickRate);
 
             _realDiceNumber = GetRandomDiceNumber();
             _sender = sender;
@@ -51,7 +41,7 @@ namespace FIA_Grupp2
 
         private void Timer_Tick(object sender, object e)
         {
-            if (_amountOfSpins <= 1)
+            if (_amountOfSpinsLeft <= 1)
             {
                 _diceTimer.Stop();
 
@@ -59,11 +49,7 @@ namespace FIA_Grupp2
             }
             else
             {
-                _amountOfSpins--;
-
-                int diceNumber = GetRandomDiceNumber();
-
-                ChangeDiceIcon($"ms-appx:///Assets/Dice_images/{GetImageFromDiceNumber(diceNumber)}.png");
+                _amountOfSpinsLeft--;
             }
         }
 
@@ -96,8 +82,9 @@ namespace FIA_Grupp2
 
         private void PlayRandomSequence(float seconds)
         {
-            _amountOfSpins = (int)(seconds / ((float)(_diceTimer.Interval.Milliseconds) / 1000f));
+            _amountOfSpinsLeft = (int)(seconds / ((float)(_diceTimer.Interval.Milliseconds) / 1000f));
             _diceTimer.Start();
+            ChangeDiceIcon($"ms-appx:///Assets/Dice_images/random_spin_1.gif");
         }
 
         private void ChangeDiceIcon(string path)
