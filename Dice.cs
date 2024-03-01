@@ -27,12 +27,23 @@ namespace FIA_Grupp2
 
         private double _diceSpinTickRate = 100.0;   //How fast will each tick be, in milliseconds, i.e. after 100 milliseconds a tick event is called.
 
-        public void SpinDice(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Returns the number that the dice fell on.
+        /// </summary>
+        public int DiceNumber
+        {
+            get { return _realDiceNumber}
+        }
+
+        public Dice()
         {
             _diceTimer = new DispatcherTimer();
             _diceTimer.Tick += Timer_Tick;
             _diceTimer.Interval = TimeSpan.FromMilliseconds(_diceSpinTickRate);
+        }
 
+        public void SpinDice(object sender, RoutedEventArgs e)
+        {
             _realDiceNumber = GetRandomDiceNumber();
             _sender = sender;
 
@@ -96,6 +107,14 @@ namespace FIA_Grupp2
 
             // Update the Source property of the Button image control 
             imageControl.Source = newDiceImage;
+        }
+
+        /// <summary>
+        /// Upon a new turn, this will reset the icon to signal that the dice can be thrown again
+        /// </summary>
+        public void NewTurn()
+        {
+            ChangeDiceIcon($"ms-appx:///Assets/Dice_images/BBUK_Golden_Dice.png");
         }
     }
 }
