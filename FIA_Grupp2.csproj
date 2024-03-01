@@ -132,11 +132,13 @@
     <Compile Include="ModePage.xaml.cs">
       <DependentUpon>ModePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pawn.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Team.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -152,6 +154,11 @@
     <Content Include="Assets\main_title3.jpg" />
     <Content Include="Assets\mode_image.jpg" />
     <Content Include="Assets\name_credit.png" />
+    <Content Include="Assets\Pawns\cow_0.png" />
+    <Content Include="Assets\Pawns\cow_1.png" />
+    <Content Include="Assets\Pawns\cow_2.png" />
+    <Content Include="Assets\Pawns\cow_3.png" />
+    <Content Include="Assets\Pawns\nearCowExperience.png" />
     <Content Include="Assets\TeamIcons\all_icons.jpg" />
     <Content Include="Assets\TeamIcons\chicken.jpg" />
     <Content Include="Assets\TeamIcons\cow.jpg" />
@@ -197,6 +204,7 @@
       <Version>6.2.14</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
