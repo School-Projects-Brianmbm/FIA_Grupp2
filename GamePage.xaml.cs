@@ -35,6 +35,8 @@ namespace FIA_Grupp2
 
 
 
+        private Dice _dice;
+
         public GamePage()
         {
             InitializeComponent();
@@ -44,6 +46,10 @@ namespace FIA_Grupp2
             Loaded += MainPage_Loaded;
         }
 
+        private void DiceClicked(object sender, RoutedEventArgs e)
+        {
+            _dice.SpinDice(sender, e);
+        }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
@@ -61,6 +67,10 @@ namespace FIA_Grupp2
 
             layoutRoot.Children.Add(cows.Pawn.PawnCanvas);
             layoutRoot.Children.Add(team2.Pawn.PawnCanvas);
+            //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
+
+            _dice = new Dice();
+        }
 
 
             Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
