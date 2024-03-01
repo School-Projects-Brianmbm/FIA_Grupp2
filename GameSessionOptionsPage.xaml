@@ -27,7 +27,7 @@
     <Grid Width="1500" Height="1000">
         <Image Source="Assets/Backgrounds/hay.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>
 
-        <Grid Background="#FFFFFF" Width="1064" Height="710" Margin="218,74,218,216">
+        <Grid Background="#FFE9EDC9" Width="1064" Height="710" Margin="218,74,218,216">
             <Grid Background="#FF606C38" Width="915" Height="117" Margin="75,66,74,527">
                 <TextBlock HorizontalAlignment="Left" Margin="78,0,0,0" TextWrapping="Wrap" Text="Game time" VerticalAlignment="Center" Foreground="White" FontSize="48"/>
                 <Grid Background="#FFFFFF" Height="72" Margin="540,21,95,24" Width="280">
