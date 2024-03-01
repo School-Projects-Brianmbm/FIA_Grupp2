@@ -66,8 +66,8 @@
             <TextBlock x:Name="slot4_username" TextWrapping="Wrap" Text="---" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
         </Grid>
 
-        <Button Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="back_button_click_event" IsEnabled="False"/>
-        <Button Width="325" Height="114" Content="Options" Margin="573,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="options_button_click_event" IsEnabled="False" />
+        <Button Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="back_button_click_event"/>
+        <Button Width="325" Height="114" Content="Options" Margin="573,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="options_button_click_event"/>
         <Button Width="325" Height="114" Content="Choose level" Margin="1067,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="choose_level_button_click_event"/>
         
 
