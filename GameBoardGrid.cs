@@ -48,7 +48,9 @@ namespace FIA_Grupp2
             { 0, 0, 0, 0, 1, 3, 1, 0, 0, 0, 0 },
             { 0, 6, 0, 0, 1, 3, 1, 0, 0, 7, 0 },
             { 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0 }
-        };
+        };//                    x
+
+        
 
         readonly TextBlock[][] textArray = new TextBlock[_numberOfRows][];
 
@@ -68,7 +70,7 @@ namespace FIA_Grupp2
         }
 
         /// <summary>
-        /// 
+        /// Constructor for a custom parques map
         /// </summary>
         /// <param name="canvas"></param>
         /// <param name="mapArray"></param>
@@ -79,6 +81,20 @@ namespace FIA_Grupp2
             _origoX = canvas.ActualWidth / 2;
             CreateArrayOfPoints();
             CreateArrayOfDots();
+        }
+
+        /// <summary>
+        /// Count the number of steps one pawn has to travel to reach the goal
+        /// </summary>
+        /// <returns></returns>
+        internal int CountCourseLength()
+        {
+            int N = 1;
+            foreach (int n in _pathArray)
+            {
+                if ((n == 1) || (n == 2)) {  N++; }
+            }
+            return N;
         }
 
         /// <summary>
@@ -218,7 +234,8 @@ namespace FIA_Grupp2
                     double top = _origoY - currentPoint.Y;
 
                     double actualX = left - (row * _rowDist);
-                    double actualY = top - (col * _colDist);
+                    double actualY = top - (col * _colDist) + 300;
+                    // double actualY = top - (col * _colDist);
 
                     _actualPositions[col, row] = new Point(actualX, actualY);
                 }
@@ -229,7 +246,7 @@ namespace FIA_Grupp2
         /// Sets the positions of all Ellipses and finaly add the to the canvas
         /// </summary>
         /// <param name="showgrid">When true the debug points for the underlying grid will also be added for debuging purposes.</param>
-        internal void SetEllipsesPositions(bool showgrid = false)
+        internal void SetEllipsesPositions(bool showgrid = false, bool showPos = false, bool showInd = false)
         {
             for (int col = 0; col < _numberOfColumns; col++)
             {
@@ -251,13 +268,19 @@ namespace FIA_Grupp2
                     Canvas.SetLeft(currentEllipse, actualX - (currentEllipse.Width / 2));
                     Canvas.SetTop(currentEllipse, actualY - (currentEllipse.Height / 2));
 
-                    // Comment to hide the text at each point
-                    // Debug text coordinates
-                    currentText.Text = $"X={actualX},\n Y={actualY}";
+                    //// Comment to hide the text at each point
+                    //// Debug text coordinates
+                    if (showPos)
+                    {
+                        currentText.Text = $"X={actualX},\n Y={actualY}";
+                    }
 
                     // Uncomment to show the index of each point
-                    //// Debug text index
-                    //currentText.Text = $"X={row}, Y={col}, [{i++}]";
+                    // Debug text index
+                    if (showInd)
+                    {
+                        currentText.Text = $"X={row}, Y={col}";
+                    }
 
 
                     // Set the position for the current text
@@ -295,7 +318,7 @@ namespace FIA_Grupp2
         {
             double gbheight = _actualPositions[0, 0].Y - _actualPositions[10, 10].Y;
             _origoY = _canvas.ActualHeight - ((_canvas.ActualHeight - gbheight) / 2);
-            Debug.Write("origoY: " + _origoY + " ");
+            // Debug.Write("origoY: " + _origoY + " ");
         }
     }
 
