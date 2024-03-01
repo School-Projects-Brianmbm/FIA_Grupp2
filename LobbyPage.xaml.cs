@@ -247,12 +247,12 @@ namespace FIA_Grupp2
 		
 		private void back_button_click_event(object sender, RoutedEventArgs e)
 		{
-			//TODO not yet implemented
+			this.Frame.Navigate(typeof(MainPage));
 		}
 
 		private void options_button_click_event(object sender, RoutedEventArgs e)
 		{
-			//TODO not yet implemented
+			this.Frame.Navigate(typeof(GameSessionOptionsPage));
 		}
 
 		private void choose_level_button_click_event(object sender, RoutedEventArgs e)
