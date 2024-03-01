@@ -14,6 +14,8 @@ namespace FIA_Grupp2
         int MouseX, MouseY;
         GameBoardGrid gameGrid;
 
+        private Dice _dice;
+
         public GamePage()
         {
             InitializeComponent();
@@ -22,6 +24,10 @@ namespace FIA_Grupp2
             Loaded += MainPage_Loaded;
         }
 
+        private void DiceClicked(object sender, RoutedEventArgs e)
+        {
+            _dice.SpinDice(sender, e);
+        }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
@@ -35,6 +41,8 @@ namespace FIA_Grupp2
             gameGrid.SetEllipsesPositions();
 
             Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
+
+            _dice = new Dice();
         }
 
 
