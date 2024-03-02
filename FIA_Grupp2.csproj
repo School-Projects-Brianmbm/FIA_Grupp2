@@ -123,6 +123,9 @@
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DicePage.xaml.cs">
+      <DependentUpon>DicePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LobbyPage.xaml.cs">
       <DependentUpon>LobbyPage.xaml</DependentUpon>
     </Compile>
@@ -134,9 +137,13 @@
     </Compile>
     <Compile Include="Pawn.cs" />
     <Compile Include="Point.cs" />
+    <Compile Include="Dice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GameSessionOptionsPage.xaml.cs">
+      <DependentUpon>GameSessionOptionsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Team.cs" />
   </ItemGroup>
@@ -147,6 +154,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Backgrounds\hay.jpg" />
+    <Content Include="Assets\Dice_images\BBUK_Golden_Dice.png" />
+    <Content Include="Assets\Dice_images\dice_five.png" />
+    <Content Include="Assets\Dice_images\dice_four.png" />
+    <Content Include="Assets\Dice_images\dice_one.png" />
+    <Content Include="Assets\Dice_images\dice_six.png" />
+    <Content Include="Assets\Dice_images\dice_three.png" />
+    <Content Include="Assets\Dice_images\dice_two.png" />
     <Content Include="Assets\initial_splash.jpg" />
     <Content Include="Assets\main_menu.jpg" />
     <Content Include="Assets\main_title.png" />
@@ -182,6 +196,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DicePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LobbyPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -195,6 +213,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="StartPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GameSessionOptionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

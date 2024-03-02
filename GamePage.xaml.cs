@@ -70,12 +70,12 @@ namespace FIA_Grupp2
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
 
             _dice = new Dice();
-        }
-
-
             Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
-            //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
+
+
+        //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
+    
 
         private void CoreWindow_PointerMoved(CoreWindow sender, PointerEventArgs args)
         {
