@@ -7,6 +7,7 @@ namespace FIA_Grupp2
 {
     internal class Pawn
     {
+        int direction = 3;
         // GameBoardGrid board;
         Position indexPosition;
         GameBoardGrid boardgrid;
@@ -15,24 +16,34 @@ namespace FIA_Grupp2
 
         Canvas pawnCanvas = new Canvas
         {
-            Name = "pawn_1_canvas",
+            // Name = "pawn_1_canvas",
             Height = 80,
             Width = 80
         };
 
         Image pawnImage = new Image
         {
-            Name = "team_1_pawn_1",
+            // Name = "team_1_pawn_1",
             Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_0.png")),
             Height = 80,
-            Width = 80,
+            Width = 80
+        };
+
+        Image[] pawnImages = new Image[4]
+        {
+            new Image{ Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_0.png")), Height = 80, Width = 80 },
+            new Image{ Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_1.png")), Height = 80, Width = 80 },
+            new Image{ Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_2.png")), Height = 80, Width = 80 },
+            new Image{ Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_3.png")), Height = 80, Width = 80 }
         };
 
         public Canvas PawnCanvas { get => pawnCanvas; set => pawnCanvas = value; }
         public Image PawnImage { get => pawnImage; set => pawnImage = value; }
 
-        public Pawn(GameBoardGrid gbg, Position startpos,ref Position[] teamcoarse)
+        public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
         {
+
+            pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             indexPosition = startpos;
             boardgrid = gbg;
@@ -62,8 +73,65 @@ namespace FIA_Grupp2
 
         internal void Step()
         {
+            Debug.Write($"\n");
+            Debug.Write($"OneStep: {coarse[steps]} ");
+            if (!IsSameDirection())
+            {
+                TurnImageRight();
+            }
             PositionAt(coarse[steps++]);
-            Debug.Write($"OneStep: {steps} \n");
+        }
+
+        private bool IsSameDirection()
+        {
+            if (direction == 3 || direction == 1)
+            {
+                Debug.Write($" Y ");
+                if (coarse[steps].Y == coarse[steps + 1].Y)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (direction == 2 || direction == 0)
+            {
+                Debug.Write($" X ");
+                if (coarse[steps].X == coarse[steps + 1].X)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        private void TurnImageRight()
+        {
+            direction--;
+            if (direction < 0) { direction = 3; }
+            ReplaceImage();
+            Debug.Write($" Turned Right");
+        }
+
+        private void TurnImageLeft()
+        {
+            direction++;
+            if (direction > 3) { direction = 0; }
+            ReplaceImage();
+            Debug.Write($" Turned Left");
+        }
+
+        private void ReplaceImage()
+        {
+            pawnCanvas.Children.Remove(pawnImage);
+            pawnImage = pawnImages[direction];
+            pawnCanvas.Children.Add(pawnImage);
         }
     }
 }
