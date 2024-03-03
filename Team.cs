@@ -12,14 +12,17 @@ namespace FIA_Grupp2
         static Position nestIndex;
         public Position[] coarse;
         GameBoardGrid boardgrid;
-        // Pawn[] pawns = new Pawn[4];
-
         Pawn pawn;
+
         internal Pawn Pawn { get => pawn; set => pawn = value; }
 
-        public Team(GameBoardGrid gbg, Position[] coarse, Position start)
+        public Team(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
         {
-            this.coarse = coarse;
+            // Combine the original coarse array with the goal position
+            this.coarse = new Position[coarse.Length + 1];
+            Array.Copy(coarse, this.coarse, coarse.Length);
+            this.coarse[coarse.Length] = goal;
+
             nestIndex = start;
             boardgrid = gbg;
 

@@ -7,27 +7,16 @@ namespace FIA_Grupp2
 {
     internal class Pawn
     {
+        bool isInGoal = false;
         int direction = 3;
-        // GameBoardGrid board;
         Position indexPosition;
         GameBoardGrid boardgrid;
         int steps = 0;
         public Position[] coarse;
 
-        Canvas pawnCanvas = new Canvas
-        {
-            // Name = "pawn_1_canvas",
-            Height = 80,
-            Width = 80
-        };
+        Canvas pawnCanvas = new Canvas { Height = 80, Width = 80 };
 
-        Image pawnImage = new Image
-        {
-            // Name = "team_1_pawn_1",
-            Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_0.png")),
-            Height = 80,
-            Width = 80
-        };
+        Image pawnImage = new Image();
 
         Image[] pawnImages = new Image[4]
         {
@@ -42,7 +31,6 @@ namespace FIA_Grupp2
 
         public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
         {
-
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             indexPosition = startpos;
@@ -73,22 +61,34 @@ namespace FIA_Grupp2
 
         internal void Step()
         {
-            Debug.Write($"\n");
-            Debug.Write($"Direction: {direction} ");
-            Debug.Write($" From: {coarse[steps]} ");
-            Debug.Write($" To: {coarse[steps + 1]} ");
-            if (!IsSameDirection())
+            if (isInGoal)
             {
-                if (direction == 2 && coarse[steps + 1].X < coarse[steps].X) { TurnImageLeft(); }
-                else if (direction == 2 && coarse[steps + 1].X > coarse[steps].X) { TurnImageRight(); }
-                else if (direction == 3 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageLeft(); }
-                else if (direction == 3 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageRight(); }
-                else if (direction == 0 && coarse[steps + 1].X < coarse[steps].X) { TurnImageRight(); }
-                else if (direction == 0 && coarse[steps + 1].X > coarse[steps].X) { TurnImageLeft(); }
-                else if (direction == 1 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageRight(); }
-                else if (direction == 1 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageLeft(); }
+                Debug.Write($"Im home already :)");
             }
-            PositionAt(coarse[steps++]);
+            else if (steps == coarse.Length -1)
+            {
+                PositionAt(coarse[steps++]);
+                isInGoal = true;
+            }
+            else
+            {
+                Debug.Write($"\n");
+                Debug.Write($"Direction: {direction} ");
+                Debug.Write($" From: {coarse[steps]} ");
+                Debug.Write($" To: {coarse[steps + 1]} ");
+                if (!IsSameDirection())
+                {
+                    if (direction == 2 && coarse[steps + 1].X < coarse[steps].X) { TurnImageLeft(); }
+                    else if (direction == 2 && coarse[steps + 1].X > coarse[steps].X) { TurnImageRight(); }
+                    else if (direction == 3 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageLeft(); }
+                    else if (direction == 3 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageRight(); }
+                    else if (direction == 0 && coarse[steps + 1].X < coarse[steps].X) { TurnImageRight(); }
+                    else if (direction == 0 && coarse[steps + 1].X > coarse[steps].X) { TurnImageLeft(); }
+                    else if (direction == 1 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageRight(); }
+                    else if (direction == 1 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageLeft(); }
+                }
+                PositionAt(coarse[steps++]);
+            }
         }
 
         private bool IsSameDirection()
