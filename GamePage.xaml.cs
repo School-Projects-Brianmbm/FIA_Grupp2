@@ -31,9 +31,6 @@ namespace FIA_Grupp2
         };
 
         Team cows, team2;
-        // Pawn pawn = new Pawn();
-
-
 
         private Dice _dice;
 
@@ -42,7 +39,6 @@ namespace FIA_Grupp2
             InitializeComponent();
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
-            // layoutRoot.PointerReleased += new PointerEventHandler(PointerReleased);
             Loaded += MainPage_Loaded;
         }
 
@@ -60,7 +56,8 @@ namespace FIA_Grupp2
 
             gameGrid.CalculateActualPositions();
             gameGrid.CalculateOrigoY();
-            gameGrid.SetEllipsesPositions(true,showInd: true);
+            gameGrid.SetEllipsesPositions(true, false, true);
+            //gameGrid.SetEllipsesPositions(true,showInd: true);
 
             cows = new Team(gameGrid, globalCoarse, new Position(9, 9));
             team2 = new Team(gameGrid, globalCoarse, new Position(1, 1));

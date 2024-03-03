@@ -272,12 +272,16 @@ namespace FIA_Grupp2
                     //// Debug text coordinates
                     if (showPos)
                     {
-                        currentText.Text = $"X={actualX},\n Y={actualY}";
+                        currentText.Text = $"X={actualX}, Y={actualY}";
                     }
 
                     // Uncomment to show the index of each point
                     // Debug text index
-                    if (showInd)
+                    if (showPos && showInd)
+                    {
+                        currentText.Text += $"\nX={row}, Y={col}";
+                    }
+                    else if (showInd)
                     {
                         currentText.Text = $"X={row}, Y={col}";
                     }

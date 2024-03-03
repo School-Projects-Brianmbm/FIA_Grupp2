@@ -74,10 +74,19 @@ namespace FIA_Grupp2
         internal void Step()
         {
             Debug.Write($"\n");
-            Debug.Write($"OneStep: {coarse[steps]} ");
+            Debug.Write($"Direction: {direction} ");
+            Debug.Write($" From: {coarse[steps]} ");
+            Debug.Write($" To: {coarse[steps + 1]} ");
             if (!IsSameDirection())
             {
-                TurnImageRight();
+                if (direction == 2 && coarse[steps + 1].X < coarse[steps].X) { TurnImageLeft(); }
+                else if (direction == 2 && coarse[steps + 1].X > coarse[steps].X) { TurnImageRight(); }
+                else if (direction == 3 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageLeft(); }
+                else if (direction == 3 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageRight(); }
+                else if (direction == 0 && coarse[steps + 1].X < coarse[steps].X) { TurnImageRight(); }
+                else if (direction == 0 && coarse[steps + 1].X > coarse[steps].X) { TurnImageLeft(); }
+                else if (direction == 1 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageRight(); }
+                else if (direction == 1 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageLeft(); }
             }
             PositionAt(coarse[steps++]);
         }
@@ -87,26 +96,14 @@ namespace FIA_Grupp2
             if (direction == 3 || direction == 1)
             {
                 Debug.Write($" Y ");
-                if (coarse[steps].Y == coarse[steps + 1].Y)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                if (coarse[steps].Y == coarse[steps + 1].Y) { return true; }
+                else { return false; }
             }
             else if (direction == 2 || direction == 0)
             {
                 Debug.Write($" X ");
-                if (coarse[steps].X == coarse[steps + 1].X)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                if (coarse[steps].X == coarse[steps + 1].X) { return true; }
+                else { return false; }
             }
             return false;
         }

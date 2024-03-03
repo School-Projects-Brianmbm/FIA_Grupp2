@@ -29,7 +29,7 @@
         }
         public override string ToString()
         {
-            return "Position: " + X + " " + Y;
+            return "Position: " + Y + " " + X;
         }
     }
 }
