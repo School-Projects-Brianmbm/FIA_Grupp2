@@ -7,31 +7,22 @@ namespace FIA_Grupp2
 {
     internal class Pawn
     {
-        bool isInGoal = false;
-        int direction = 3;
-        Position indexPosition;
-        GameBoardGrid boardgrid;
-        int steps = 0;
+        protected bool isInGoal = false;
+        protected int direction;
+        protected Position indexPosition;
+        protected GameBoardGrid boardgrid;
+        protected int steps = 0;
         public Position[] coarse;
 
-        Canvas pawnCanvas = new Canvas { Height = 80, Width = 80 };
+        protected Canvas pawnCanvas = new Canvas { Height = 80, Width = 80 };
+        protected Image pawnImage = new Image();
 
-        Image pawnImage = new Image();
-
-        Image[] pawnImages = new Image[4]
-        {
-            new Image{ Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_0.png")), Height = 80, Width = 80 },
-            new Image{ Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_1.png")), Height = 80, Width = 80 },
-            new Image{ Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_2.png")), Height = 80, Width = 80 },
-            new Image{ Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_3.png")), Height = 80, Width = 80 }
-        };
-
+        internal Image[] pawnImages = new Image[4];
         public Canvas PawnCanvas { get => pawnCanvas; set => pawnCanvas = value; }
         public Image PawnImage { get => pawnImage; set => pawnImage = value; }
 
         public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
         {
-            pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             indexPosition = startpos;
             boardgrid = gbg;
@@ -39,7 +30,7 @@ namespace FIA_Grupp2
             coarse = teamcoarse;
         }
 
-        void PositionAtNest()
+        public virtual void PositionAtNest()
         {
             Point pos = boardgrid.GetActualPositionOf(indexPosition.X, indexPosition.Y);
             // Debug.WriteLine(pos.ToString());
@@ -48,8 +39,7 @@ namespace FIA_Grupp2
             Canvas.SetLeft(PawnImage, newX + 8);
             Canvas.SetTop(PawnImage, newY - 10);
         }
-
-        void PositionAt(Position ind)
+        public virtual void PositionAt(Position ind)
         {
             Point pos = boardgrid.GetActualPositionOf(ind.X, ind.Y);
             // Debug.WriteLine(pos.ToString());
@@ -58,14 +48,13 @@ namespace FIA_Grupp2
             Canvas.SetLeft(PawnImage, newX + 8);
             Canvas.SetTop(PawnImage, newY - 10);
         }
-
-        internal void Step()
+        internal virtual void Step()
         {
             if (isInGoal)
             {
                 Debug.Write($"Im home already :)");
             }
-            else if (steps == coarse.Length -1)
+            else if (steps == coarse.Length - 1)
             {
                 PositionAt(coarse[steps++]);
                 isInGoal = true;
@@ -90,8 +79,7 @@ namespace FIA_Grupp2
                 PositionAt(coarse[steps++]);
             }
         }
-
-        private bool IsSameDirection()
+        internal virtual bool IsSameDirection()
         {
             if (direction == 3 || direction == 1)
             {
@@ -107,28 +95,61 @@ namespace FIA_Grupp2
             }
             return false;
         }
-
-        private void TurnImageRight()
+        internal virtual void TurnImageRight()
         {
             direction--;
             if (direction < 0) { direction = 3; }
             ReplaceImage();
             Debug.Write($" Turned Right");
         }
-
-        private void TurnImageLeft()
+        internal virtual void TurnImageLeft()
         {
             direction++;
             if (direction > 3) { direction = 0; }
             ReplaceImage();
             Debug.Write($" Turned Left");
         }
-
-        private void ReplaceImage()
+        internal virtual void ReplaceImage()
         {
             pawnCanvas.Children.Remove(pawnImage);
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
+        }
+    }
+    internal class Cow : Pawn
+    {
+        public Cow(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
+            : base(gbg, startpos, ref teamcoarse)
+        {
+            direction = 3;
+            pawnImages = new Image[4]
+            {
+                new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_0.png")), Height = 80, Width = 80 },
+                new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_1.png")), Height = 80, Width = 80 },
+                new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_2.png")), Height = 80, Width = 80 },
+                new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_3.png")), Height = 80, Width = 80 }
+            };
+            pawnImage = pawnImages[direction];
+            pawnCanvas.Children.Add(pawnImage);
+            PositionAtNest();
+        }
+    }
+    internal class Sheep : Pawn
+    {
+        public Sheep(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
+            : base(gbg, startpos, ref teamcoarse)
+        {
+            direction = 1;
+            pawnImages = new Image[4]
+            {
+                new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_0.png")), Height = 80, Width = 80 },
+                new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_1.png")), Height = 80, Width = 80 },
+                new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_2.png")), Height = 80, Width = 80 },
+                new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/cow_3.png")), Height = 80, Width = 80 }
+            };
+            pawnImage = pawnImages[direction];
+            pawnCanvas.Children.Add(pawnImage);
+            PositionAtNest();
         }
     }
 }
