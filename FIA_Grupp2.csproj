@@ -130,6 +130,10 @@
     <Compile Include="GameSessionOptions.cs" />
     <Compile Include="GameSessionOptionsPage.xaml.cs">
       <DependentUpon>GameSessionOptionsPage.xaml</DependentUpon>
+
+    <Compile Include="DicePage.xaml.cs">
+      <DependentUpon>DicePage.xaml</DependentUpon>
+
     </Compile>
     <Compile Include="LobbyPage.xaml.cs">
       <DependentUpon>LobbyPage.xaml</DependentUpon>
@@ -140,11 +144,17 @@
     <Compile Include="ModePage.xaml.cs">
       <DependentUpon>ModePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pawn.cs" />
     <Compile Include="Point.cs" />
+    <Compile Include="Dice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameSessionOptionsPage.xaml.cs">
+      <DependentUpon>GameSessionOptionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Team.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -168,6 +178,11 @@
     <Content Include="Assets\main_title3.jpg" />
     <Content Include="Assets\mode_image.jpg" />
     <Content Include="Assets\name_credit.png" />
+    <Content Include="Assets\Pawns\cow_0.png" />
+    <Content Include="Assets\Pawns\cow_1.png" />
+    <Content Include="Assets\Pawns\cow_2.png" />
+    <Content Include="Assets\Pawns\cow_3.png" />
+    <Content Include="Assets\Pawns\nearCowExperience.png" />
     <Content Include="Assets\TeamIcons\all_icons.jpg" />
     <Content Include="Assets\TeamIcons\chicken.jpg" />
     <Content Include="Assets\TeamIcons\cow.jpg" />
@@ -199,6 +214,9 @@
     <Page Include="GameSessionOptionsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    <Page Include="DicePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LobbyPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -216,6 +234,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GameSessionOptionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
@@ -225,6 +247,7 @@
       <Version>13.0.3</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
