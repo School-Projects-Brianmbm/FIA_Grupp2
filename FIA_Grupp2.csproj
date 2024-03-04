@@ -130,10 +130,6 @@
     <Compile Include="GameSessionOptions.cs" />
     <Compile Include="GameSessionOptionsPage.xaml.cs">
       <DependentUpon>GameSessionOptionsPage.xaml</DependentUpon>
-
-    <Compile Include="DicePage.xaml.cs">
-      <DependentUpon>DicePage.xaml</DependentUpon>
-
     </Compile>
     <Compile Include="LobbyPage.xaml.cs">
       <DependentUpon>LobbyPage.xaml</DependentUpon>
@@ -146,13 +142,9 @@
     </Compile>
     <Compile Include="Pawn.cs" />
     <Compile Include="Point.cs" />
-    <Compile Include="Dice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GameSessionOptionsPage.xaml.cs">
-      <DependentUpon>GameSessionOptionsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Team.cs" />
   </ItemGroup>
@@ -188,7 +180,6 @@
     <Content Include="Assets\TeamIcons\cow.jpg" />
     <Content Include="Assets\TeamIcons\pig.jpg" />
     <Content Include="Assets\TeamIcons\sheep.jpg" />
-    <Content Include="BBUK_Golden_Dice.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -214,9 +205,6 @@
     <Page Include="GameSessionOptionsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    <Page Include="DicePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LobbyPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -231,10 +219,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="StartPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GameSessionOptionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
