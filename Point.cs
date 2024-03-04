@@ -3,7 +3,7 @@
     /// <summary>
     /// Just a point used by GameBoardGrid
     /// </summary>
-    internal class Point
+    internal struct Point
     {
         public double X;
         public double Y;
@@ -15,6 +15,21 @@
         public override string ToString()
         {
             return "Point: " + X + " " + Y;
+        }
+    }
+
+    internal struct Position
+    {
+        public int X;
+        public int Y;
+        public Position(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
+        public override string ToString()
+        {
+            return "Position: " + Y + " " + X;
         }
     }
 }
