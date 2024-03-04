@@ -117,7 +117,10 @@ namespace FIA_Grupp2
             var y = args.CurrentPoint.Position.Y;
             int roundedX = (int)Math.Round(x);
             int roundedY = (int)Math.Round(y);
-            debugtext.Text = $"Mouse Position: X={roundedX}, Y={roundedY}, {gameGrid.Squish}";
+            if (gameGrid != null)
+            {
+                debugtext.Text = $"Mouse Position: X={roundedX}, Y={roundedY}, {gameGrid.Squish}";
+            }
             MouseX = roundedX;
             MouseY = roundedY;
         }
