@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="FIA_Grupp2.StartPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FIA_Grupp2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Storyboard x:Name="startStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="startText" Storyboard.TargetProperty="(UIElement.Opacity)" RepeatBehavior="Forever">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0.1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
+
+    <Grid Width="1500" Height="1000">
+        <Image x:Name="splashImage" Height="auto"  Width="auto" Source="Assets/main_title3.jpg" Stretch="Fill"/>
+        <TextBlock x:Name="startText" TextWrapping="Wrap" Text="CLICK TO START" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,100" Foreground="Black" FontFamily="Arial Black" FontSize="25"/>
+        <Button x:Name="splashButton" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="SplashButton_Click"/>
+    </Grid>
+</Page>
