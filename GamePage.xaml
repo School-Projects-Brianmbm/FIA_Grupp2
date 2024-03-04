@@ -18,6 +18,8 @@
         </Canvas>
 
         <TextBlock x:Name="debugtext" Canvas.Left="40" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="40"/>
+        <TextBlock x:Name="gameTimerText" TextWrapping="Wrap" Text="00:00:00" Width="100" Height="40" Margin="1340,83,60,877" FontSize="24"/>
+        <TextBlock x:Name="turnTimerText" TextWrapping="Wrap" Text="00:00:00" Width="100" Height="40" Margin="1340,133,60,827" FontSize="24"/>
         <Button Margin="0,0,32,32" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="256" Width="256" Background="Transparent" Click="DiceClicked">
             <Image Source="ms-appx:///Assets/Dice_images/BBUK_Golden_Dice.png" Width="228" Height="228"/>
         </Button>

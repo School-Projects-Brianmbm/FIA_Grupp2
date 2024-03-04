@@ -32,7 +32,7 @@ namespace FIA_Grupp2
         /// </summary>
         public int DiceNumber
         {
-            get { return _realDiceNumber}
+            get { return _realDiceNumber; }
         }
 
         public Dice()

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -33,9 +35,25 @@ namespace FIA_Grupp2
 		}
 
 		private void Save_button_click_event(object sender, RoutedEventArgs e)
-		{	
-			//TODO: save user options
+		{
+			GameSessionOptions sessionOptionsData = new GameSessionOptions();
+			sessionOptionsData.GameTimeHours = int.Parse(GameTimeHours.Text);
+			sessionOptionsData.GameTimeMinutes = int.Parse(GameTimeMinutes.Text);
+			sessionOptionsData.GameTimeSeconds = int.Parse(GameTimeSeconds.Text);
+
+			sessionOptionsData.TurnTimeHours = int.Parse(TurnTimeHours.Text);
+			sessionOptionsData.TurnTimeMinutes = int.Parse(TurnTimeMinutes.Text);
+			sessionOptionsData.TurnTimeSeconds = int.Parse(TurnTimeSeconds.Text);
+
+			ApplicationData.Current.LocalSettings.Values["SessionOptionsData"] = JsonConvert.SerializeObject(sessionOptionsData);
+
 			this.Frame.Navigate(typeof(LobbyPage));
+		}
+
+		private void TextBox_OnBeforeTextChanging(TextBox sender,
+										  TextBoxBeforeTextChangingEventArgs args)
+		{
+			args.Cancel = args.NewText.Any(c => !char.IsDigit(c));
 		}
 	}
 }

@@ -11,7 +11,7 @@
     <AssemblyName>FIA_Grupp2</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -119,12 +119,21 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dice.cs" />
+    <Compile Include="DicePage.xaml.cs">
+      <DependentUpon>DicePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GameBoardGrid.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameSessionOptions.cs" />
+    <Compile Include="GameSessionOptionsPage.xaml.cs">
+      <DependentUpon>GameSessionOptionsPage.xaml</DependentUpon>
+
     <Compile Include="DicePage.xaml.cs">
       <DependentUpon>DicePage.xaml</DependentUpon>
+
     </Compile>
     <Compile Include="LobbyPage.xaml.cs">
       <DependentUpon>LobbyPage.xaml</DependentUpon>
@@ -161,6 +170,7 @@
     <Content Include="Assets\Dice_images\dice_six.png" />
     <Content Include="Assets\Dice_images\dice_three.png" />
     <Content Include="Assets\Dice_images\dice_two.png" />
+    <Content Include="Assets\Dice_images\random_spin_1.gif" />
     <Content Include="Assets\initial_splash.jpg" />
     <Content Include="Assets\main_menu.jpg" />
     <Content Include="Assets\main_title.png" />
@@ -178,6 +188,7 @@
     <Content Include="Assets\TeamIcons\cow.jpg" />
     <Content Include="Assets\TeamIcons\pig.jpg" />
     <Content Include="Assets\TeamIcons\sheep.jpg" />
+    <Content Include="BBUK_Golden_Dice.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -192,10 +203,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="DicePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="GamePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GameSessionOptionsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     <Page Include="DicePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -224,6 +242,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
