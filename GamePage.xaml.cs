@@ -80,6 +80,17 @@ namespace FIA_Grupp2
             _dice.SpinDice(sender, e);
         }
 
+        public void DiceFinishedSpinning(object sender, EventArgs e)
+        {
+            int amountOfStepsToMove = _dice.DiceNumber;
+
+            for (int i = 0; i < amountOfStepsToMove; i++)
+            {
+                //TODO: Change so the current active team is moved, and not just the cows.
+                cows.Pawn.Step();
+            }
+        }
+
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             Debug.Write("BAM MainPage Loaded");
@@ -98,12 +109,10 @@ namespace FIA_Grupp2
             layoutRoot.Children.Add(cows.Pawn.PawnCanvas);
             layoutRoot.Children.Add(sheeps.Pawn.PawnCanvas);
 
-            _dice = new Dice();
+            _dice = new Dice(this);
             Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
-
-
 
         private void CoreWindow_PointerMoved(CoreWindow sender, PointerEventArgs args)
         {
@@ -125,7 +134,6 @@ namespace FIA_Grupp2
             MouseY = roundedY;
         }
 
-
         private void DebugTextUpdateModifier()
         {
             debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish}";
@@ -133,8 +141,8 @@ namespace FIA_Grupp2
 
         private new void PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            cows.Pawn.Step();
-            sheeps.Pawn.Step();
+            //cows.Pawn.Step();
+            //sheeps.Pawn.Step();
         }
 
         private new void PointerWheelChanged(object sender, PointerRoutedEventArgs e)
