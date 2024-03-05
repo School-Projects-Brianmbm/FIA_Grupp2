@@ -17,7 +17,8 @@ namespace FIA_Grupp2
     public sealed partial class GamePage : Page
     {
         int MouseX, MouseY;
-
+        static int nrOfPlayers = 4;
+        static int currentTeam = 0;
         static GameBoardGrid gameGrid;
 
         Position goalPosition = new Position(5, 5);
@@ -32,7 +33,10 @@ namespace FIA_Grupp2
             new Position(5, 9),new Position(5, 8),new Position(5, 7),new Position(5, 6)
         };
 
+        Team[] teams = new Team[nrOfPlayers];
+        bool isCows = true, isHens = true, isSheeps = true, isPigs = true;
         Team cows, hens, sheeps, pigs;
+
 
         private Dice _dice;
 
@@ -87,8 +91,16 @@ namespace FIA_Grupp2
             for (int i = 0; i < amountOfStepsToMove; i++)
             {
                 //TODO: Change so the current active team is moved, and not just the cows.
-                cows.Pawn.Step();
+                //cows.Pawn.Step();
+                teams[currentTeam].Pawn.Step();
             }
+            currentTeam++;
+            if (currentTeam > 3)
+            {
+                currentTeam = 0;
+            }
+            DebugTextUpdateModifier();
+
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -103,16 +115,34 @@ namespace FIA_Grupp2
             gameGrid.SetEllipsesPositions(true, false, true);
             //gameGrid.SetEllipsesPositions(true,showInd: true);
 
-            cows = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
-            hens = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition);
-            sheeps = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
-            pigs = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
+            for (int i = 0; i < teams.Length; i++)
+            {
+                switch (i)
+                {
+                    case 0 when isCows:
+                        teams[i] = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
+                        break;
+                    case 1 when isHens:
+                        teams[i] = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition);
+                        break;
+                    case 2 when isSheeps:
+                        teams[i] = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
+                        break;
+                    case 3 when isPigs:
+                        teams[i] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
+                        break;
+                    default:
+                        teams[i] = null;
+                        break;
+                }
+            }
+
 
             // Add the elements to the canvas
-            layoutRoot.Children.Add(cows.Pawn.PawnCanvas);
-            layoutRoot.Children.Add(hens.Pawn.PawnCanvas);
-            layoutRoot.Children.Add(sheeps.Pawn.PawnCanvas);
-            layoutRoot.Children.Add(pigs.Pawn.PawnCanvas);
+            foreach (Team team in teams)
+            {
+                layoutRoot.Children.Add(team.Pawn.PawnCanvas);
+            }
 
             _dice = new Dice(this);
             Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
@@ -133,7 +163,7 @@ namespace FIA_Grupp2
             int roundedY = (int)Math.Round(y);
             if (gameGrid != null)
             {
-                debugtext.Text = $"Mouse Position: X={roundedX}, Y={roundedY}, {gameGrid.Squish}";
+                debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish} Curent team is: {teams[currentTeam].Name}";
             }
             MouseX = roundedX;
             MouseY = roundedY;
@@ -141,15 +171,17 @@ namespace FIA_Grupp2
 
         private void DebugTextUpdateModifier()
         {
-            debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish}";
+            debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish} Curent team is: {teams[currentTeam].Name}";
         }
 
         private new void PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            cows.Pawn.Step();
-            hens.Pawn.Step();
-            sheeps.Pawn.Step();
-            pigs.Pawn.Step();
+            teams[currentTeam++].Pawn.Step();
+            if (currentTeam>3)
+            {
+                currentTeam = 0;
+            }
+            DebugTextUpdateModifier();
         }
 
         private new void PointerWheelChanged(object sender, PointerRoutedEventArgs e)

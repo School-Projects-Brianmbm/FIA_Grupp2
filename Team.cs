@@ -4,11 +4,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace FIA_Grupp2
 {
     internal class Team
     {
+        string name = "Team";
+        public string Name { get => name; set => name = value; }
+
         protected static Position nestIndex;
         public Position[] coarse;
         protected GameBoardGrid boardgrid;
@@ -25,9 +29,13 @@ namespace FIA_Grupp2
     }
     internal class Cows : Team
     {
+        // string name = "Cows";
+        //new public string Name { get => name; set => name = value; }
+
         public Cows(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
         : base(gbg, coarse, start, goal)
         {
+            Name = "Cows";
             // Combine the original coarse array with the goal position
             this.coarse = new Position[coarse.Length + 1];
             Array.Copy(coarse, this.coarse, coarse.Length);
@@ -35,12 +43,14 @@ namespace FIA_Grupp2
 
             pawn = new Cow(boardgrid, nestIndex, ref this.coarse);
         }
+
     }
     internal class Hens : Team
     {
         public Hens(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
         : base(gbg, coarse, start, goal)
         {
+            Name = "Hens";
             Position[] firstpart = new Position[10];
             Position[] secondpart = new Position[30];
             Position[] lpart = new Position[4];
@@ -69,12 +79,14 @@ namespace FIA_Grupp2
 
             pawn = new Hen(boardgrid, nestIndex, ref this.coarse);
         }
+
     }
     internal class Sheeps : Team
     {
         public Sheeps(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
         : base(gbg, coarse, start, goal)
         {
+            Name = "Sheeps";
             Position[] firstpart = new Position[20];
             Position[] secondpart = new Position[20];
             Position[] lpart = new Position[4];
@@ -103,12 +115,14 @@ namespace FIA_Grupp2
 
             pawn = new Sheep(boardgrid, nestIndex, ref this.coarse);
         }
+
     }
     internal class Pigs : Team
     {
         public Pigs(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
         : base(gbg, coarse, start, goal)
         {
+            Name = "Pigs";
             Position[] firstpart = new Position[30];
             Position[] secondpart = new Position[10];
             Position[] lpart = new Position[4];
@@ -137,5 +151,6 @@ namespace FIA_Grupp2
 
             pawn = new Pig(boardgrid, nestIndex, ref this.coarse);
         }
+
     }
 }
