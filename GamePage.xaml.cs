@@ -17,20 +17,11 @@ namespace FIA_Grupp2
     public sealed partial class GamePage : Page
     {
         int MouseX, MouseY;
-
+        static int nrOfPlayers = 4;
+        static int currentTeam = 0;
         static GameBoardGrid gameGrid;
 
         Position goalPosition = new Position(5, 5);
-
-        //static Position[] globalCoarse = new Position[44]
-        //{
-        //    new Position(10, 6),new Position(9, 6),new Position(8, 6),new Position(7, 6),new Position(6, 6),new Position(6, 7),new Position(6, 8),new Position(6, 9),
-        //    new Position(6, 10),new Position(5, 10),new Position(4, 10),new Position(4, 9),new Position(4, 8),new Position(4, 7),new Position(4, 6),new Position(3, 6),
-        //    new Position(2, 6),new Position(1, 6),new Position(0, 6),new Position(0, 5),new Position(0, 4),new Position(1, 4),new Position(2, 4),new Position(3, 4),
-        //    new Position(4, 4),new Position(4, 3),new Position(4, 2),new Position(4, 1),new Position(4, 0),new Position(5, 0),new Position(6, 0),new Position(6, 1),
-        //    new Position(6, 2),new Position(6, 3),new Position(6, 4),new Position(7, 4),new Position(8, 4),new Position(9, 4),new Position(10, 4),new Position(10, 5),
-        //    new Position(9, 5),new Position(8, 5),new Position(7, 5),new Position(6, 5)
-        //};
 
         static Position[] globalCoarse = new Position[44]
         {
@@ -42,7 +33,10 @@ namespace FIA_Grupp2
             new Position(5, 9),new Position(5, 8),new Position(5, 7),new Position(5, 6)
         };
 
-        Team cows, sheeps;
+        Team[] teams = new Team[nrOfPlayers];
+        bool isCows = true, isHens = true, isSheeps = true, isPigs = true;
+        Team cows, hens, sheeps, pigs;
+
 
         private Dice _dice;
 
@@ -97,8 +91,16 @@ namespace FIA_Grupp2
             for (int i = 0; i < amountOfStepsToMove; i++)
             {
                 //TODO: Change so the current active team is moved, and not just the cows.
-                cows.Pawn.Step();
+                //cows.Pawn.Step();
+                teams[currentTeam].Pawn.Step();
             }
+            currentTeam++;
+            if (currentTeam > 3)
+            {
+                currentTeam = 0;
+            }
+            DebugTextUpdateModifier();
+
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -113,11 +115,34 @@ namespace FIA_Grupp2
             gameGrid.SetEllipsesPositions(true, false, true);
             //gameGrid.SetEllipsesPositions(true,showInd: true);
 
-            cows = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
-            sheeps = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
+            for (int i = 0; i < teams.Length; i++)
+            {
+                switch (i)
+                {
+                    case 0 when isCows:
+                        teams[i] = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
+                        break;
+                    case 1 when isHens:
+                        teams[i] = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition);
+                        break;
+                    case 2 when isSheeps:
+                        teams[i] = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
+                        break;
+                    case 3 when isPigs:
+                        teams[i] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
+                        break;
+                    default:
+                        teams[i] = null;
+                        break;
+                }
+            }
 
-            layoutRoot.Children.Add(cows.Pawn.PawnCanvas);
-            layoutRoot.Children.Add(sheeps.Pawn.PawnCanvas);
+
+            // Add the elements to the canvas
+            foreach (Team team in teams)
+            {
+                layoutRoot.Children.Add(team.Pawn.PawnCanvas);
+            }
 
             _dice = new Dice(this);
             Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
@@ -138,7 +163,7 @@ namespace FIA_Grupp2
             int roundedY = (int)Math.Round(y);
             if (gameGrid != null)
             {
-                debugtext.Text = $"Mouse Position: X={roundedX}, Y={roundedY}, {gameGrid.Squish}";
+                debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish} Curent team is: {teams[currentTeam].Name}";
             }
             MouseX = roundedX;
             MouseY = roundedY;
@@ -146,13 +171,17 @@ namespace FIA_Grupp2
 
         private void DebugTextUpdateModifier()
         {
-            debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish}";
+            debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish} Curent team is: {teams[currentTeam].Name}";
         }
 
         private new void PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            //cows.Pawn.Step();
-            //sheeps.Pawn.Step();
+            teams[currentTeam++].Pawn.Step();
+            if (currentTeam>3)
+            {
+                currentTeam = 0;
+            }
+            DebugTextUpdateModifier();
         }
 
         private new void PointerWheelChanged(object sender, PointerRoutedEventArgs e)
