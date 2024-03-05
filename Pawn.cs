@@ -21,6 +21,11 @@ namespace FIA_Grupp2
         public Canvas PawnCanvas { get => pawnCanvas; set => pawnCanvas = value; }
         public Image PawnImage { get => pawnImage; set => pawnImage = value; }
 
+        public bool AtNest
+        {
+            get { return steps == 0; }
+        }
+
         public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
         {
             pawnCanvas.Children.Add(pawnImage);

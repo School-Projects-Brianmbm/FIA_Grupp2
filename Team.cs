@@ -22,6 +22,43 @@ namespace FIA_Grupp2
             boardgrid = gbg;
 
         }
+
+        public virtual Pawn[] GetPawns()
+        {
+            return new Pawn[] { pawn }; //TODO: When there are more pawns, add them here.
+        }
+
+        public virtual Pawn[] GetPawnsOnTheBoard()
+        {
+            Pawn[] allPawns = GetPawns();
+            List<Pawn> pawnsOnTheField = new List<Pawn>();
+
+            for (int i = 0; i < allPawns.Length; i++)
+            {
+                if (allPawns[i].AtNest == false)
+                {
+                    pawnsOnTheField.Add(allPawns[i]);
+                }
+            }
+
+            return pawnsOnTheField.ToArray();
+        }
+        public virtual Pawn[] GetPawnsInTheNest()
+        {
+            Pawn[] allPawns = GetPawns();
+            List<Pawn> pawnsInTheNest = new List<Pawn>();
+
+            for (int i = 0; i < allPawns.Length; i++)
+            {
+                if (allPawns[i].AtNest == true)
+                {
+                    pawnsInTheNest.Add(allPawns[i]);
+                }
+            }
+
+            return pawnsInTheNest.ToArray();
+        }
+
     }
     internal class Cows : Team
     {
