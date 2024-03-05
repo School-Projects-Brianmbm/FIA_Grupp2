@@ -31,9 +31,9 @@
             <Grid Background="#FF606C38" Width="915" Height="117" Margin="75,66,74,527">
                 <TextBlock HorizontalAlignment="Left" Margin="78,0,0,0" TextWrapping="Wrap" Text="Game time" VerticalAlignment="Center" Foreground="White" FontSize="48"/>
                 <Grid Background="#FFFFFF" Height="72" Margin="540,21,95,24" Width="280">
-                    <TextBox x:Name="GameTimeHours" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="0,0,197,0" BorderBrush="#FFFFFF"/>
-                    <TextBox x:Name="GameTimeMinutes" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="98,0,99,0" BorderBrush="#FFFFFF"/>
-                    <TextBox x:Name="GameTimeSeconds" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="196,0,0,0" BorderBrush="#FFFFFF"/>
+                    <TextBox x:Name="GameTimeHours" LostFocus="GameTimeHours_LostFocus" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="0,0,197,0" BorderBrush="#FFFFFF"/>
+                    <TextBox x:Name="GameTimeMinutes" LostFocus="GameTimeMinutesSecondsAndTurnTimeSeconds_LostFocus" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="98,0,99,0" BorderBrush="#FFFFFF"/>
+                    <TextBox x:Name="GameTimeSeconds" LostFocus="GameTimeMinutesSecondsAndTurnTimeSeconds_LostFocus" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="196,0,0,0" BorderBrush="#FFFFFF"/>
                     <TextBlock  Height="72" TextWrapping="Wrap" Text=":" FontSize="48" Width="20" Margin="80,0,180,0" TextAlignment="Center"/>
                     <TextBlock  Height="72" TextWrapping="Wrap" Text=":" FontSize="48" Width="20" Margin="178,0,82,0" TextAlignment="Center"/>
                 </Grid>
@@ -43,9 +43,9 @@
             <Grid Background="#FF606C38" Width="915" Height="117" Margin="75,216,74,377">
                 <TextBlock HorizontalAlignment="Left" Margin="78,0,0,0" TextWrapping="Wrap" Text="Turn time" VerticalAlignment="Center" Foreground="White" FontSize="48"/>
                 <Grid Background="#FFFFFF" Height="72" Margin="540,21,95,24" Width="280">
-                    <TextBox x:Name="TurnTimeHours" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="0,0,197,0" BorderBrush="#FFFFFF"/>
-                    <TextBox x:Name="TurnTimeMinutes" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="98,0,99,0" BorderBrush="#FFFFFF"/>
-                    <TextBox x:Name="TurnTimeSeconds" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="196,0,0,0" BorderBrush="#FFFFFF"/>
+                    <TextBox x:Name="TurnTimeHours" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="0,0,197,0" BorderBrush="#FFFFFF" IsEnabled="False"/>
+                    <TextBox x:Name="TurnTimeMinutes" LostFocus="GameTurnMinutes_LostFocus" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="98,0,99,0" BorderBrush="#FFFFFF"/>
+                    <TextBox x:Name="TurnTimeSeconds" LostFocus="GameTimeMinutesSecondsAndTurnTimeSeconds_LostFocus" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="196,0,0,0" BorderBrush="#FFFFFF"/>
                     <TextBlock  Height="72" TextWrapping="Wrap" Text=":" FontSize="48" Width="20" Margin="80,0,180,0" TextAlignment="Center"/>
                     <TextBlock  Height="72" TextWrapping="Wrap" Text=":" FontSize="48" Width="20" Margin="178,0,82,0" TextAlignment="Center"/>
                 </Grid>

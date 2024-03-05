@@ -1,17 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace FIA_Grupp2
 {	
-	//Could be used for 
-	public enum SlotChoice
-	{
-		Player,
-		AI,
-		None
-	}
 
 	public sealed partial class LobbyPage : Page
 	{
@@ -37,7 +32,7 @@ namespace FIA_Grupp2
 				new BitmapImage(new Uri("ms-appx:///Assets/TeamIcons/sheep.jpg"))
 			};
 
-			//Starting iconindex dor each slot
+			//Starting iconindex for each slot
 			slot1IconIndex = 0;
 			slot2IconIndex = 1;
 			slot3IconIndex = 2;
@@ -45,7 +40,7 @@ namespace FIA_Grupp2
 
 		}
 
-		private void slot1_user_selection_button_click_event(object sender, RoutedEventArgs e)
+		private void Slot1_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
 			Button button = sender as Button;
 			if (button != null && button.Content != null)
@@ -84,7 +79,7 @@ namespace FIA_Grupp2
 			}
 		}
 
-		private void slot2_user_selection_button_click_event(object sender, RoutedEventArgs e)
+		private void Slot2_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
 			Button button = sender as Button;
 			if (button != null && button.Content != null)
@@ -123,7 +118,7 @@ namespace FIA_Grupp2
 			}
 		}
 
-		private void slot3_user_selection_button_click_event(object sender, RoutedEventArgs e)
+		private void Slot3_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
 			Button button = sender as Button;
 			if (button != null && button.Content != null)
@@ -162,7 +157,7 @@ namespace FIA_Grupp2
 			}
 		}
 
-		private void slot4_user_selection_button_click_event(object sender, RoutedEventArgs e)
+		private void Slot4_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
 
 			Button button = sender as Button;
@@ -202,7 +197,7 @@ namespace FIA_Grupp2
 			}
 		}
 
-		private void slot1_button_teamicon_click_event(object sender, RoutedEventArgs e)
+		private void Slot1_button_teamicon_click_event(object sender, RoutedEventArgs e)
 		{
 			Button button = sender as Button;
 			if (button != null)
@@ -213,7 +208,7 @@ namespace FIA_Grupp2
 			}
 		}
 
-		private void slot2_button_teamicon_click_event(object sender, RoutedEventArgs e)
+		private void Slot2_button_teamicon_click_event(object sender, RoutedEventArgs e)
 		{
 			Button button = sender as Button;
 			if (button != null)
@@ -223,7 +218,7 @@ namespace FIA_Grupp2
 			}
 		}
 
-		private void slot3_button_teamicon_click_event(object sender, RoutedEventArgs e)
+		private void Slot3_button_teamicon_click_event(object sender, RoutedEventArgs e)
 		{
 			Button button = sender as Button;
 			if (button != null)
@@ -233,7 +228,7 @@ namespace FIA_Grupp2
 			}
 		}
 
-		private void slot4_button_teamicon_click_event(object sender, RoutedEventArgs e)
+		private void Slot4_button_teamicon_click_event(object sender, RoutedEventArgs e)
 		{
 			Button button = sender as Button;
 			if (button != null)
@@ -245,18 +240,18 @@ namespace FIA_Grupp2
 
 		
 		
-		private void back_button_click_event(object sender, RoutedEventArgs e)
+		private void Back_button_click_event(object sender, RoutedEventArgs e)
 		{
 			this.Frame.Navigate(typeof(MainPage));
 		}
 
-		private void options_button_click_event(object sender, RoutedEventArgs e)
+		private void Options_button_click_event(object sender, RoutedEventArgs e)
 		{
 			this.Frame.Navigate(typeof(GameSessionOptionsPage));
 		}
 
-		private void choose_level_button_click_event(object sender, RoutedEventArgs e)
-		{
+		private void Choose_level_button_click_event(object sender, RoutedEventArgs e)
+		{	
 			this.Frame.Navigate(typeof(GamePage));
 		}
 	}
