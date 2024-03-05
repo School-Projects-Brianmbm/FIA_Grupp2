@@ -22,16 +22,6 @@ namespace FIA_Grupp2
 
         Position goalPosition = new Position(5, 5);
 
-        //static Position[] globalCoarse = new Position[44]
-        //{
-        //    new Position(10, 6),new Position(9, 6),new Position(8, 6),new Position(7, 6),new Position(6, 6),new Position(6, 7),new Position(6, 8),new Position(6, 9),
-        //    new Position(6, 10),new Position(5, 10),new Position(4, 10),new Position(4, 9),new Position(4, 8),new Position(4, 7),new Position(4, 6),new Position(3, 6),
-        //    new Position(2, 6),new Position(1, 6),new Position(0, 6),new Position(0, 5),new Position(0, 4),new Position(1, 4),new Position(2, 4),new Position(3, 4),
-        //    new Position(4, 4),new Position(4, 3),new Position(4, 2),new Position(4, 1),new Position(4, 0),new Position(5, 0),new Position(6, 0),new Position(6, 1),
-        //    new Position(6, 2),new Position(6, 3),new Position(6, 4),new Position(7, 4),new Position(8, 4),new Position(9, 4),new Position(10, 4),new Position(10, 5),
-        //    new Position(9, 5),new Position(8, 5),new Position(7, 5),new Position(6, 5)
-        //};
-
         static Position[] globalCoarse = new Position[44]
         {
             new Position(6, 10), new Position(6, 9), new Position(6, 8), new Position(6, 7), new Position(6, 6), new Position(7, 6), new Position(8, 6), new Position(9, 6),
@@ -42,7 +32,7 @@ namespace FIA_Grupp2
             new Position(5, 9),new Position(5, 8),new Position(5, 7),new Position(5, 6)
         };
 
-        Team cows, sheeps;
+        Team cows, hens, sheeps, pigs;
 
         private Dice _dice;
 
@@ -114,10 +104,15 @@ namespace FIA_Grupp2
             //gameGrid.SetEllipsesPositions(true,showInd: true);
 
             cows = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
+            hens = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition);
             sheeps = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
+            pigs = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
 
+            // Add the elements to the canvas
             layoutRoot.Children.Add(cows.Pawn.PawnCanvas);
+            layoutRoot.Children.Add(hens.Pawn.PawnCanvas);
             layoutRoot.Children.Add(sheeps.Pawn.PawnCanvas);
+            layoutRoot.Children.Add(pigs.Pawn.PawnCanvas);
 
             _dice = new Dice(this);
             Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
@@ -151,8 +146,10 @@ namespace FIA_Grupp2
 
         private new void PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            //cows.Pawn.Step();
-            //sheeps.Pawn.Step();
+            cows.Pawn.Step();
+            hens.Pawn.Step();
+            sheeps.Pawn.Step();
+            pigs.Pawn.Step();
         }
 
         private new void PointerWheelChanged(object sender, PointerRoutedEventArgs e)
