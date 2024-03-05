@@ -45,9 +45,13 @@ namespace FIA_Grupp2
             Position[] secondpart = new Position[20];
             Position[] lpart = new Position[4];
 
+            //Position[] lastpart = new Position[4]
+            //{
+            //    new Position(1, 5),new Position(2, 5),new Position(3, 5),new Position(4, 5)
+            //};
             Position[] lastpart = new Position[4]
             {
-                new Position(1, 5),new Position(2, 5),new Position(3, 5),new Position(4, 5)
+                new Position(5, 1),new Position(5, 2),new Position(5, 3),new Position(5, 4)
             };
 
             // Split the original coarse array into two equal parts
