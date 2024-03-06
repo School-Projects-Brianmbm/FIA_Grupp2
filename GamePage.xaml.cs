@@ -41,7 +41,7 @@ namespace FIA_Grupp2
 		private TimeSpan remainingGameTime;
 		private TimeSpan remainingTurnTime;
 
-		public GamePage()
+        public GamePage()
         {
             InitializeComponent();
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
@@ -49,33 +49,41 @@ namespace FIA_Grupp2
             Loaded += MainPage_Loaded;
 
             //Get saved game session options data
-			string serializedData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
-			if (!string.IsNullOrEmpty(serializedData))
-			{
-				GameSessionOptions sessionOptionsData = JsonConvert.DeserializeObject<GameSessionOptions>(serializedData);
-				int gameHours = int.Parse(sessionOptionsData.GameTimeHours.ToString());
-				int gameMinutes = int.Parse(sessionOptionsData.GameTimeMinutes.ToString());
-				int gameSeconds = int.Parse(sessionOptionsData.GameTimeSeconds.ToString());
-				int turnHours = int.Parse(sessionOptionsData.TurnTimeHours.ToString());
-				int turnMinutes = int.Parse(sessionOptionsData.TurnTimeMinutes.ToString());
-				int turnSeconds = int.Parse(sessionOptionsData.TurnTimeSeconds.ToString());
+            string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
+            if (!string.IsNullOrEmpty(gameSessionOptionsData))
+            {
+                GameSessionOptions sessionOptionsData = JsonConvert.DeserializeObject<GameSessionOptions>(gameSessionOptionsData);
+                int gameHours = int.Parse(sessionOptionsData.GameTimeHours.ToString());
+                int gameMinutes = int.Parse(sessionOptionsData.GameTimeMinutes.ToString());
+                int gameSeconds = int.Parse(sessionOptionsData.GameTimeSeconds.ToString());
+                int turnHours = int.Parse(sessionOptionsData.TurnTimeHours.ToString());
+                int turnMinutes = int.Parse(sessionOptionsData.TurnTimeMinutes.ToString());
+                int turnSeconds = int.Parse(sessionOptionsData.TurnTimeSeconds.ToString());
 
-				remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
-				remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
+                remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
+                remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
 
-				gameTimer = new DispatcherTimer();
-				gameTimer.Interval = TimeSpan.FromSeconds(1);
-				gameTimer.Tick += GameTimerTick;
-				gameTimer.Start();
+                gameTimer = new DispatcherTimer();
+                gameTimer.Interval = TimeSpan.FromSeconds(1);
+                gameTimer.Tick += GameTimerTick;
+                gameTimer.Start();
 
-				turnTimer = new DispatcherTimer();
-				turnTimer.Interval = TimeSpan.FromSeconds(1);
-				turnTimer.Tick += TurnTimerTick;
-				turnTimer.Start();
-			}
-		}
+                turnTimer = new DispatcherTimer();
+                turnTimer.Interval = TimeSpan.FromSeconds(1);
+                turnTimer.Tick += TurnTimerTick;
+                turnTimer.Start();
+            }
 
-        private void DiceClicked(object sender, RoutedEventArgs e)
+            //Get saved lobby options data
+            string lobbyData = (string)ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"];
+            if (!string.IsNullOrEmpty(lobbyData))
+            {
+                LobbyOptions lobbyOptionsData = JsonConvert.DeserializeObject<LobbyOptions>(lobbyData);
+                //TODO: Initiate the settings from lobbydata
+            }
+        }
+
+			private void DiceClicked(object sender, RoutedEventArgs e)
         {
             _dice.SpinDice(sender, e);
         }

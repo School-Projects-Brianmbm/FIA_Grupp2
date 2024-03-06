@@ -93,14 +93,7 @@ namespace FIA_Grupp2
 		private void GameTurnMinutes_LostFocus(object sender, RoutedEventArgs args)
 		{
 
-			if (int.Parse(TurnTimeMinutes.Text) >= 15)
-			{
-				TurnTimeMinutes.Text = "15";
-			}
-			else if (int.Parse(TurnTimeMinutes.Text) < 10)
-			{
-				TurnTimeMinutes.Text = "0" + TurnTimeMinutes.Text;
-			}
+			
 		}
 
 		private void GameTimeMinutesSecondsAndTurnTimeSeconds_LostFocus(object sender, RoutedEventArgs args)
