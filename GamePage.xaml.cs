@@ -88,12 +88,45 @@ namespace FIA_Grupp2
         {
             int amountOfStepsToMove = _dice.DiceNumber;
 
-            for (int i = 0; i < amountOfStepsToMove; i++)
+            //If i get a number between 2-5, and i have a pawn out on the board, move the piece, else if i dont have any pawns out on the board, skip to the next person. 
+            if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
             {
-                //TODO: Change so the current active team is moved, and not just the cows.
-                //cows.Pawn.Step();
-                teams[currentTeam].Pawn.Step();
+                if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
+                {
+                    Debug.WriteLine("There is no one outside");
+                    //TODO: Skip to the next person
+                }
+                else if(teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
+                {
+                    for (int i = 0; i < amountOfStepsToMove; i++)
+                    {
+                        //TODO: Change so the current active team is moved, and not just the cows.
+                        teams[currentTeam].Pawn.Step();
+                    }
+                }
             }
+            //If i get the number 1 or 6, and if i dont have a pawn on the board, move one of my pawns on the board from the nest, or if i have pawn on the board, move it.
+            else if(_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
+            {
+                //TODO: Maybe you want to have the option to either move the pawn, or place one on the board.
+
+                //I dont have a pawn on the board, but i have one or more in the nest, move it out
+                if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
+                    teams[currentTeam].GetPawnsInTheNest().Length >= 0)
+                {
+                    Debug.WriteLine("There is still pawns in the nest, and i can move one out");
+                    teams[currentTeam].Pawn.Step();       //FIXME : Maybe i want to move it 6 positions if i get a 6 from the dice.
+                }
+                else
+                {
+                    for (int i = 0; i < amountOfStepsToMove; i++)
+                    {
+                        //TODO: Change so the current active team is moved, and not just the cows.
+                        teams[currentTeam].Pawn.Step();
+                    }
+                }
+            }
+
             currentTeam++;
             if (currentTeam > 3)
             {
@@ -101,6 +134,8 @@ namespace FIA_Grupp2
             }
             DebugTextUpdateModifier();
 
+            //TODO: When a turn is finished, display the golden dice again
+            //_dice.NewTurn();
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
