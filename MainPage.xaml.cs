@@ -20,7 +20,7 @@ using Windows.UI.Xaml.Navigation;
 namespace FIA_Grupp2
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Page for the starting menu of game. 
     /// </summary>
     public sealed partial class MainPage : Page
     {
@@ -29,8 +29,7 @@ namespace FIA_Grupp2
         public MainPage()
         {
             this.InitializeComponent();
-            ApplicationView.PreferredLaunchViewSize = new Size(1500, 1000);
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+
         }
 
         private Playlist introAudio;
