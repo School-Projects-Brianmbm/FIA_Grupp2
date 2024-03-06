@@ -20,17 +20,31 @@ namespace FIA_Grupp2
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+    /// 
+
+
     public sealed partial class StartPage : Page
     {
+        public AudioPlayer introAudio;
+
         public StartPage()
         {
             this.InitializeComponent();
             startStoryBoard.Begin();
+            introAudio = new AudioPlayer();
+            StartMusic();
+            
+        }
+
+        private async void StartMusic()
+        {
+            await introAudio.InitializePlaylist("Assets\\Sound\\Menu");
+            introAudio.StartPlayback();
         }
 
         private void SplashButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(MainPage));
+            this.Frame.Navigate(typeof(MainPage), introAudio);
         }
     }
 }

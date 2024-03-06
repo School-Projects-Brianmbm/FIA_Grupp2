@@ -2,6 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Navigation;
 
 namespace FIA_Grupp2
 {	
@@ -242,10 +243,16 @@ namespace FIA_Grupp2
 				slot4_teamicon.Source = teamicons[slot4IconIndex];
 			}
 		}
+        private AudioPlayer introAudio;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            introAudio = e.Parameter as AudioPlayer;
+        }
 
-		
-		
-		private void back_button_click_event(object sender, RoutedEventArgs e)
+
+
+        private void back_button_click_event(object sender, RoutedEventArgs e)
 		{
 			this.Frame.Navigate(typeof(MainPage));
 		}
@@ -257,6 +264,7 @@ namespace FIA_Grupp2
 
 		private void choose_level_button_click_event(object sender, RoutedEventArgs e)
 		{
+			introAudio.StopPlayback();
 			this.Frame.Navigate(typeof(GamePage));
 		}
 	}

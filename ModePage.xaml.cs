@@ -26,10 +26,16 @@ namespace FIA_Grupp2
         {
             this.InitializeComponent();
         }
+        private AudioPlayer introAudio;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            introAudio = e.Parameter as AudioPlayer;
+        }
 
         private void OfflineButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(LobbyPage));
+            this.Frame.Navigate(typeof(LobbyPage), introAudio);
         }
     }
 }

@@ -40,16 +40,19 @@ namespace FIA_Grupp2
 		private DispatcherTimer turnTimer;
 		private TimeSpan remainingGameTime;
 		private TimeSpan remainingTurnTime;
+        public AudioPlayer gameAudio;
 
-		public GamePage()
+        public GamePage()
         {
             InitializeComponent();
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             Loaded += MainPage_Loaded;
+            gameAudio = new AudioPlayer();
+            StartMusic();
 
             //Get saved game session options data
-			string serializedData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
+            string serializedData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
 			if (!string.IsNullOrEmpty(serializedData))
 			{
 				GameSessionOptions sessionOptionsData = JsonConvert.DeserializeObject<GameSessionOptions>(serializedData);
@@ -74,6 +77,15 @@ namespace FIA_Grupp2
 				turnTimer.Start();
 			}
 		}
+
+        
+
+    
+        private async void StartMusic()
+        {
+            await gameAudio.InitializePlaylist("Assets\\Sound\\InGame");
+            gameAudio.StartPlayback();
+        }
 
         private void DiceClicked(object sender, RoutedEventArgs e)
         {

@@ -24,6 +24,8 @@ namespace FIA_Grupp2
     /// </summary>
     public sealed partial class MainPage : Page
     {
+
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -31,10 +33,18 @@ namespace FIA_Grupp2
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
         }
 
+        private AudioPlayer introAudio;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            introAudio = e.Parameter as AudioPlayer;
+        }
+
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ModePage));
+            this.Frame.Navigate(typeof(ModePage), introAudio);
 
         }
+
     }
 }
