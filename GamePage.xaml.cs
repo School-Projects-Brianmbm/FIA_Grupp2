@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Media;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -157,10 +158,30 @@ namespace FIA_Grupp2
             return string.Empty;
         }
 
+        //TODO: Maybe there is a color property somewhere, and this method is useless.
+        private Color GetColorFromTeamName(string teamName)
+        {
+            switch (teamName)
+            {
+                case "Cows":
+                    return ColorHelper.FromArgb(255, 144, 238, 144);
+                case "Hens":
+                    return ColorHelper.FromArgb(255, 255, 255, 0);
+                case "Sheeps":
+                    return ColorHelper.FromArgb(255, 173, 216, 230);
+                case "Pigs":
+                    return ColorHelper.FromArgb(255, 219, 112, 147);
+            }
+            return Colors.Black;
+        }
+
         private void ChangeActiveTeamIcon(string teamName)
         {
             BitmapImage newActiveTeamIcon = new BitmapImage(new Uri($"ms-appx:///Assets/TeamIcons/{ConvertNameToJPG(teamName)}.jpg"));
             activeTeamIcon.Source = newActiveTeamIcon;
+
+            activeDiceBorder.Background = new SolidColorBrush(GetColorFromTeamName(teamName));
+            activeTeamIconBorder.Background = new SolidColorBrush(GetColorFromTeamName(teamName));
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
