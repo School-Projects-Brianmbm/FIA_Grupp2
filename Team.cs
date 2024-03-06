@@ -10,6 +10,7 @@ namespace FIA_Grupp2
 {
     internal class Team
     {
+        public static int NUMBER_OF_TEAMS = 0;
         string name = "Team";
         public string Name { get => name; set => name = value; }
 
@@ -22,9 +23,9 @@ namespace FIA_Grupp2
 
         public Team(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
         {
+            NUMBER_OF_TEAMS++;
             nestIndex = start;
             boardgrid = gbg;
-
         }
 
         public virtual Pawn[] GetPawns()
