@@ -50,7 +50,7 @@ namespace FIA_Grupp2
         {
             _sender = sender;
 
-            PlayRandomSequence(2.0f);
+            PlayRandomSequence(0.5f);
             
         }
 
@@ -101,11 +101,12 @@ namespace FIA_Grupp2
         {
             Random r = new Random();
             return r.Next(1, 7);
+            //return r.Next(1, 7);
         }
 
         private void PlayRandomSequence(float seconds)
         {
-            _amountOfSpinsLeft = (int)(seconds / ((float)(_diceTimer.Interval.Milliseconds) / 1000f));
+            _amountOfSpinsLeft = (int)(seconds / ((float)(_diceTimer.Interval.Milliseconds) / 250f));
             _diceTimer.Start();
             ChangeDiceIcon($"ms-appx:///Assets/Dice_images/random_spin_1.gif");
         }

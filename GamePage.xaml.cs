@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Documents;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -34,8 +35,7 @@ namespace FIA_Grupp2
         };
 
         Team[] teams = new Team[nrOfPlayers];
-        bool isCows = true, isHens = true, isSheeps = true, isPigs = true;
-        Team cows, hens, sheeps, pigs;
+        // Team cows, hens, sheeps, pigs;
 
 
         private Dice _dice;
@@ -96,54 +96,63 @@ namespace FIA_Grupp2
         {
             int amountOfStepsToMove = _dice.DiceNumber;
 
-            //If i get a number between 2-5, and i have a pawn out on the board, move the piece, else if i dont have any pawns out on the board, skip to the next person. 
+            // OM MELLAN ETT & SEX
             if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
             {
+                // If i dont have any pawns out on the board, skip to the next person. 
                 if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
                 {
                     Debug.WriteLine("There is no one outside");
-                    //TODO: Skip to the next person
+                    // Skip to the next person
+                    NextTeamsTurn();
+                    return;
                 }
-                else if(teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
+                // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
+                else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
                 {
-                    for (int i = 0; i < amountOfStepsToMove; i++)
-                    {
-                        //TODO: Change so the current active team is moved, and not just the cows.
-                        teams[currentTeam].Pawn.Step();
-                    }
+                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
+                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
                 }
             }
-            //If i get the number 1 or 6, and if i dont have a pawn on the board, move one of my pawns on the board from the nest, or if i have pawn on the board, move it.
-            else if(_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
+            // move one of my pawns on the board from the nest, 
+            // OM ETT ELLER SEX
+            else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
             {
-                //TODO: Maybe you want to have the option to either move the pawn, or place one on the board.
-
-                //I dont have a pawn on the board, but i have one or more in the nest, move it out
+                //DOIN: We want to have the option to either move the pawn, or place one on the board.
+                //AND NO PAWNS ON BOARD BUT > 0 IN NEST
                 if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
                     teams[currentTeam].GetPawnsInTheNest().Length >= 0)
                 {
                     Debug.WriteLine("There is still pawns in the nest, and i can move one out");
-                    teams[currentTeam].Pawn.Step();       //FIXME : Maybe i want to move it 6 positions if i get a 6 from the dice.
+                    //FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
+                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
+                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
                 }
-                else
+                else //or if i have pawn on the board, move it.
                 {
-                    for (int i = 0; i < amountOfStepsToMove; i++)
-                    {
-                        //TODO: Change so the current active team is moved, and not just the cows.
-                        teams[currentTeam].Pawn.Step();
-                    }
+                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
+                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
                 }
             }
 
+            NextTeamsTurn();
+
+            //TODO: When a turn is finished, display the golden dice again
+            //_dice.NewTurn();
+        }
+
+        private void NextTeamsTurn()
+        {
+            int aprioTeam = currentTeam;
             currentTeam++;
+
             if (currentTeam > 3)
             {
                 currentTeam = 0;
             }
+            //teams[aprioTeam].Pawn.PawnCanvas.IsHitTestVisible = false;
+            //teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
             DebugTextUpdateModifier();
-
-            //TODO: When a turn is finished, display the golden dice again
-            //_dice.NewTurn();
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -158,6 +167,26 @@ namespace FIA_Grupp2
             gameGrid.SetEllipsesPositions(true, false, true);
             //gameGrid.SetEllipsesPositions(true,showInd: true);
 
+            CreatePawns();
+
+            // Add the elements to the canvas
+            foreach (Team team in teams)
+            {
+                layoutRoot.Children.Add(team.Pawn.PawnCanvas);
+            }
+
+            _dice = new Dice(this);
+            Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
+            //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
+        }
+
+        /// <summary>
+        /// Create the Teams of different types (species)
+        /// </summary>
+        bool isCows = true, isHens = true, isSheeps = true, isPigs = true;
+        // TODO replace above hardcoded with values passed from loby so we only create the teams chosen by a player
+        private void CreatePawns()
+        {
             for (int i = 0; i < teams.Length; i++)
             {
                 switch (i)
@@ -179,17 +208,7 @@ namespace FIA_Grupp2
                         break;
                 }
             }
-
-
-            // Add the elements to the canvas
-            foreach (Team team in teams)
-            {
-                layoutRoot.Children.Add(team.Pawn.PawnCanvas);
-            }
-
-            _dice = new Dice(this);
-            Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
-            //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
+            Debug.Write(Team.NUMBER_OF_TEAMS);
         }
 
         private void CoreWindow_PointerMoved(CoreWindow sender, PointerEventArgs args)
@@ -219,12 +238,7 @@ namespace FIA_Grupp2
 
         private new void PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            teams[currentTeam++].Pawn.Step();
-            if (currentTeam>3)
-            {
-                currentTeam = 0;
-            }
-            DebugTextUpdateModifier();
+            // NextTeamsTurn();
         }
 
         private new void PointerWheelChanged(object sender, PointerRoutedEventArgs e)
