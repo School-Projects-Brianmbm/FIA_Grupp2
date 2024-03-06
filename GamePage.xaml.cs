@@ -134,8 +134,33 @@ namespace FIA_Grupp2
             }
             DebugTextUpdateModifier();
 
+            ChangeActiveTeamIcon(teams[currentTeam].Name);
+
             //TODO: When a turn is finished, display the golden dice again
             //_dice.NewTurn();
+        }
+
+        private string ConvertNameToJPG(string teamName)
+        {
+            switch(teamName)
+            {
+                case "Cows":
+                    return "cow";
+                case "Hens":
+                    return "chicken";
+                case "Sheeps":
+                    return "sheep";
+                case "Pigs":
+                    return "pig";
+            }
+
+            return string.Empty;
+        }
+
+        private void ChangeActiveTeamIcon(string teamName)
+        {
+            BitmapImage newActiveTeamIcon = new BitmapImage(new Uri($"ms-appx:///Assets/TeamIcons/{ConvertNameToJPG(teamName)}.jpg"));
+            activeTeamIcon.Source = newActiveTeamIcon;
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -180,6 +205,9 @@ namespace FIA_Grupp2
             }
 
             _dice = new Dice(this);
+
+            ChangeActiveTeamIcon(teams[currentTeam].Name);
+
             Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }

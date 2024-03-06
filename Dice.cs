@@ -50,7 +50,7 @@ namespace FIA_Grupp2
         {
             _sender = sender;
 
-            PlayRandomSequence(2.0f);
+            PlayRandomSequence(1.5f);
             
         }
 
