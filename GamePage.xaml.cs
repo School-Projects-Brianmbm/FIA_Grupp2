@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Documents;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -17,22 +18,25 @@ namespace FIA_Grupp2
     public sealed partial class GamePage : Page
     {
         int MouseX, MouseY;
-
+        static int nrOfPlayers = 4;
+        static int currentTeam = 0;
         static GameBoardGrid gameGrid;
 
         Position goalPosition = new Position(5, 5);
 
         static Position[] globalCoarse = new Position[44]
         {
-            new Position(10, 6),new Position(9, 6),new Position(8, 6),new Position(7, 6),new Position(6, 6),new Position(6, 7),new Position(6, 8),new Position(6, 9),
-            new Position(6, 10),new Position(5, 10),new Position(4, 10),new Position(4, 9),new Position(4, 8),new Position(4, 7),new Position(4, 6),new Position(3, 6),
-            new Position(2, 6),new Position(1, 6),new Position(0, 6),new Position(0, 5),new Position(0, 4),new Position(1, 4),new Position(2, 4),new Position(3, 4),
-            new Position(4, 4),new Position(4, 3),new Position(4, 2),new Position(4, 1),new Position(4, 0),new Position(5, 0),new Position(6, 0),new Position(6, 1),
-            new Position(6, 2),new Position(6, 3),new Position(6, 4),new Position(7, 4),new Position(8, 4),new Position(9, 4),new Position(10, 4),new Position(10, 5),
-            new Position(9, 5),new Position(8, 5),new Position(7, 5),new Position(6, 5)
+            new Position(6, 10), new Position(6, 9), new Position(6, 8), new Position(6, 7), new Position(6, 6), new Position(7, 6), new Position(8, 6), new Position(9, 6),
+            new Position(10, 6), new Position(10, 5), new Position(10, 4), new Position(9, 4), new Position(8, 4), new Position(7, 4), new Position(6, 4), new Position(6, 3),
+            new Position(6, 2), new Position(6, 1), new Position(6, 0), new Position(5, 0), new Position(4, 0), new Position(4, 1), new Position(4, 2), new Position(4, 3),
+            new Position(4, 4), new Position(3, 4), new Position(2, 4), new Position(1, 4), new Position(0, 4), new Position(0, 5), new Position(0, 6), new Position(1, 6),
+            new Position(2, 6), new Position(3, 6), new Position(4, 6), new Position(4, 7), new Position(4, 8), new Position(4, 9), new Position(4, 10), new Position(5, 10),
+            new Position(5, 9),new Position(5, 8),new Position(5, 7),new Position(5, 6)
         };
 
-        Team cows, sheeps;
+        Team[] teams = new Team[nrOfPlayers];
+        // Team cows, hens, sheeps, pigs;
+
 
         private Dice _dice;
 
@@ -52,31 +56,39 @@ namespace FIA_Grupp2
             StartMusic();
 
             //Get saved game session options data
-            string serializedData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
-			if (!string.IsNullOrEmpty(serializedData))
-			{
-				GameSessionOptions sessionOptionsData = JsonConvert.DeserializeObject<GameSessionOptions>(serializedData);
-				int gameHours = int.Parse(sessionOptionsData.GameTimeHours.ToString());
-				int gameMinutes = int.Parse(sessionOptionsData.GameTimeMinutes.ToString());
-				int gameSeconds = int.Parse(sessionOptionsData.GameTimeSeconds.ToString());
-				int turnHours = int.Parse(sessionOptionsData.TurnTimeHours.ToString());
-				int turnMinutes = int.Parse(sessionOptionsData.TurnTimeMinutes.ToString());
-				int turnSeconds = int.Parse(sessionOptionsData.TurnTimeSeconds.ToString());
+            string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
+            if (!string.IsNullOrEmpty(gameSessionOptionsData))
+            {
+                GameSessionOptions sessionOptionsData = JsonConvert.DeserializeObject<GameSessionOptions>(gameSessionOptionsData);
+                int gameHours = int.Parse(sessionOptionsData.GameTimeHours.ToString());
+                int gameMinutes = int.Parse(sessionOptionsData.GameTimeMinutes.ToString());
+                int gameSeconds = int.Parse(sessionOptionsData.GameTimeSeconds.ToString());
+                int turnHours = int.Parse(sessionOptionsData.TurnTimeHours.ToString());
+                int turnMinutes = int.Parse(sessionOptionsData.TurnTimeMinutes.ToString());
+                int turnSeconds = int.Parse(sessionOptionsData.TurnTimeSeconds.ToString());
 
-				remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
-				remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
+                remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
+                remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
 
-				gameTimer = new DispatcherTimer();
-				gameTimer.Interval = TimeSpan.FromSeconds(1);
-				gameTimer.Tick += GameTimerTick;
-				gameTimer.Start();
+                gameTimer = new DispatcherTimer();
+                gameTimer.Interval = TimeSpan.FromSeconds(1);
+                gameTimer.Tick += GameTimerTick;
+                gameTimer.Start();
 
-				turnTimer = new DispatcherTimer();
-				turnTimer.Interval = TimeSpan.FromSeconds(1);
-				turnTimer.Tick += TurnTimerTick;
-				turnTimer.Start();
-			}
-		}
+                turnTimer = new DispatcherTimer();
+                turnTimer.Interval = TimeSpan.FromSeconds(1);
+                turnTimer.Tick += TurnTimerTick;
+                turnTimer.Start();
+            }
+
+            //Get saved lobby options data
+            string lobbyData = (string)ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"];
+            if (!string.IsNullOrEmpty(lobbyData))
+            {
+                LobbyOptions lobbyOptionsData = JsonConvert.DeserializeObject<LobbyOptions>(lobbyData);
+                //TODO: Initiate the settings from lobbydata
+            }
+        }
 
         
 
@@ -92,6 +104,69 @@ namespace FIA_Grupp2
             _dice.SpinDice(sender, e);
         }
 
+        public void DiceFinishedSpinning(object sender, EventArgs e)
+        {
+            int amountOfStepsToMove = _dice.DiceNumber;
+
+            // OM MELLAN ETT & SEX
+            if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
+            {
+                // If i dont have any pawns out on the board, skip to the next person. 
+                if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
+                {
+                    Debug.WriteLine("There is no one outside");
+                    // Skip to the next person
+                    NextTeamsTurn();
+                    return;
+                }
+                // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
+                else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
+                {
+                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
+                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
+                }
+            }
+            // move one of my pawns on the board from the nest, 
+            // OM ETT ELLER SEX
+            else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
+            {
+                //DOIN: We want to have the option to either move the pawn, or place one on the board.
+                //AND NO PAWNS ON BOARD BUT > 0 IN NEST
+                if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
+                    teams[currentTeam].GetPawnsInTheNest().Length >= 0)
+                {
+                    Debug.WriteLine("There is still pawns in the nest, and i can move one out");
+                    //FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
+                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
+                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
+                }
+                else //or if i have pawn on the board, move it.
+                {
+                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
+                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
+                }
+            }
+
+            NextTeamsTurn();
+
+            //TODO: When a turn is finished, display the golden dice again
+            //_dice.NewTurn();
+        }
+
+        private void NextTeamsTurn()
+        {
+            int aprioTeam = currentTeam;
+            currentTeam++;
+
+            if (currentTeam > 3)
+            {
+                currentTeam = 0;
+            }
+            //teams[aprioTeam].Pawn.PawnCanvas.IsHitTestVisible = false;
+            //teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
+            DebugTextUpdateModifier();
+        }
+
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             Debug.Write("BAM MainPage Loaded");
@@ -104,18 +179,49 @@ namespace FIA_Grupp2
             gameGrid.SetEllipsesPositions(true, false, true);
             //gameGrid.SetEllipsesPositions(true,showInd: true);
 
-            cows = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
-            sheeps = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
+            CreatePawns();
 
-            layoutRoot.Children.Add(cows.Pawn.PawnCanvas);
-            layoutRoot.Children.Add(sheeps.Pawn.PawnCanvas);
+            // Add the elements to the canvas
+            foreach (Team team in teams)
+            {
+                layoutRoot.Children.Add(team.Pawn.PawnCanvas);
+            }
 
-            _dice = new Dice();
+            _dice = new Dice(this);
             Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
 
-
+        /// <summary>
+        /// Create the Teams of different types (species)
+        /// </summary>
+        bool isCows = true, isHens = true, isSheeps = true, isPigs = true;
+        // TODO replace above hardcoded with values passed from loby so we only create the teams chosen by a player
+        private void CreatePawns()
+        {
+            for (int i = 0; i < teams.Length; i++)
+            {
+                switch (i)
+                {
+                    case 0 when isCows:
+                        teams[i] = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
+                        break;
+                    case 1 when isHens:
+                        teams[i] = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition);
+                        break;
+                    case 2 when isSheeps:
+                        teams[i] = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
+                        break;
+                    case 3 when isPigs:
+                        teams[i] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
+                        break;
+                    default:
+                        teams[i] = null;
+                        break;
+                }
+            }
+            Debug.Write(Team.NUMBER_OF_TEAMS);
+        }
 
         private void CoreWindow_PointerMoved(CoreWindow sender, PointerEventArgs args)
         {
@@ -131,22 +237,20 @@ namespace FIA_Grupp2
             int roundedY = (int)Math.Round(y);
             if (gameGrid != null)
             {
-                debugtext.Text = $"Mouse Position: X={roundedX}, Y={roundedY}, {gameGrid.Squish}";
+                debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish} Curent team is: {teams[currentTeam].Name}";
             }
             MouseX = roundedX;
             MouseY = roundedY;
         }
 
-
         private void DebugTextUpdateModifier()
         {
-            debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish}";
+            debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish} Curent team is: {teams[currentTeam].Name}";
         }
 
         private new void PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            cows.Pawn.Step();
-            sheeps.Pawn.Step();
+            // NextTeamsTurn();
         }
 
         private new void PointerWheelChanged(object sender, PointerRoutedEventArgs e)
