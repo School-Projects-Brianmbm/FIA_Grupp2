@@ -10,6 +10,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Documents;
+using Windows.Devices.Pwm;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -40,10 +41,10 @@ namespace FIA_Grupp2
 
         private Dice _dice;
 
-		private DispatcherTimer gameTimer;
-		private DispatcherTimer turnTimer;
-		private TimeSpan remainingGameTime;
-		private TimeSpan remainingTurnTime;
+        private DispatcherTimer gameTimer;
+        private DispatcherTimer turnTimer;
+        private TimeSpan remainingGameTime;
+        private TimeSpan remainingTurnTime;
 
         public GamePage()
         {
@@ -87,16 +88,19 @@ namespace FIA_Grupp2
             }
         }
 
-			private void DiceClicked(object sender, RoutedEventArgs e)
+        private void DiceClicked(object sender, RoutedEventArgs e)
         {
             _dice.SpinDice(sender, e);
         }
 
         public void DiceFinishedSpinning(object sender, EventArgs e)
         {
-            int amountOfStepsToMove = _dice.DiceNumber;
+            // int amountOfStepsToMove = _dice.DiceNumber;
 
             // OM MELLAN ETT & SEX
+            foreach (Pawn pwn in teams[currentTeam].pawns)
+            {
+
             if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
             {
                 // If i dont have any pawns out on the board, skip to the next person. 
@@ -110,8 +114,9 @@ namespace FIA_Grupp2
                 // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
                 else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
                 {
-                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
-                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
+                    
+                    pwn.TurnStepsLeft = _dice.DiceNumber;
+                    pwn.PawnCanvas.IsHitTestVisible = true;
                 }
             }
             // move one of my pawns on the board from the nest, 
@@ -125,33 +130,30 @@ namespace FIA_Grupp2
                 {
                     Debug.WriteLine("There is still pawns in the nest, and i can move one out");
                     //FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
-                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
-                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
+                    pwn.TurnStepsLeft = _dice.DiceNumber;
+                    pwn.PawnCanvas.IsHitTestVisible = true;
                 }
-                else //or if i have pawn on the board, move it.
+                else //or if i have pawn on the board, make it able to move.
                 {
-                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
-                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
+                    pwn.TurnStepsLeft = _dice.DiceNumber;
+                    pwn.PawnCanvas.IsHitTestVisible = true;
                 }
             }
+        }
 
             NextTeamsTurn();
-
             //TODO: When a turn is finished, display the golden dice again
             //_dice.NewTurn();
         }
 
         private void NextTeamsTurn()
         {
-            int aprioTeam = currentTeam;
+            // int aprioTeam = currentTeam;
             currentTeam++;
-
             if (currentTeam > 3)
             {
                 currentTeam = 0;
             }
-            //teams[aprioTeam].Pawn.PawnCanvas.IsHitTestVisible = false;
-            //teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
             DebugTextUpdateModifier();
         }
 
@@ -172,7 +174,8 @@ namespace FIA_Grupp2
             // Add the elements to the canvas
             foreach (Team team in teams)
             {
-                layoutRoot.Children.Add(team.Pawn.PawnCanvas);
+                foreach(Pawn pawn in team.Pawns)
+                layoutRoot.Children.Add(pawn.PawnCanvas);
             }
 
             _dice = new Dice(this);
@@ -270,41 +273,41 @@ namespace FIA_Grupp2
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
 
-		private void GameTimerTick(object sender, object e)
-		{
-			if (remainingGameTime.TotalSeconds > 0)
-			{
-				remainingGameTime = remainingGameTime.Subtract(TimeSpan.FromSeconds(1));
-				UpdateGameTimerText();
-			}
-			else
-			{
-				gameTimer.Stop();
-				// TODO Stop the game as the gametimer has run out.
-			}
-		}
+        private void GameTimerTick(object sender, object e)
+        {
+            if (remainingGameTime.TotalSeconds > 0)
+            {
+                remainingGameTime = remainingGameTime.Subtract(TimeSpan.FromSeconds(1));
+                UpdateGameTimerText();
+            }
+            else
+            {
+                gameTimer.Stop();
+                // TODO Stop the game as the gametimer has run out.
+            }
+        }
 
-		private void TurnTimerTick(object sender, object e)
-		{
-			if (remainingTurnTime.TotalSeconds > 0)
-			{
-				remainingTurnTime = remainingTurnTime.Subtract(TimeSpan.FromSeconds(1));
-				UpdateTurnTimerText();
-			}
-			else
-			{
-				gameTimer.Stop();
-				// TODO Stop the game as the gametimer has run out.
-			}
-		}
+        private void TurnTimerTick(object sender, object e)
+        {
+            if (remainingTurnTime.TotalSeconds > 0)
+            {
+                remainingTurnTime = remainingTurnTime.Subtract(TimeSpan.FromSeconds(1));
+                UpdateTurnTimerText();
+            }
+            else
+            {
+                gameTimer.Stop();
+                // TODO Stop the game as the gametimer has run out.
+            }
+        }
 
-		private void UpdateGameTimerText()
-		{
-			gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
-		}
-		private void UpdateTurnTimerText()
-		{
-			turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
-		}
-	}
+        private void UpdateGameTimerText()
+        {
+            gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
+        }
+        private void UpdateTurnTimerText()
+        {
+            turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
+        }
+    }
 }
