@@ -25,13 +25,13 @@ namespace FIA_Grupp2
 
     public sealed partial class StartPage : Page
     {
-        public AudioPlayer introAudio;
+        public Playlist introAudio;
 
         public StartPage()
         {
             this.InitializeComponent();
             startStoryBoard.Begin();
-            introAudio = new AudioPlayer();
+            introAudio = new Playlist();
             StartMusic();
             
         }

@@ -33,11 +33,11 @@ namespace FIA_Grupp2
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
         }
 
-        private AudioPlayer introAudio;
+        private Playlist introAudio;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            introAudio = e.Parameter as AudioPlayer;
+            introAudio = e.Parameter as Playlist;
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
@@ -46,5 +46,9 @@ namespace FIA_Grupp2
 
         }
 
+        private void ExitButtonClick(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Exit();
+        }
     }
 }

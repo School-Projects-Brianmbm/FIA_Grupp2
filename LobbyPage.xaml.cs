@@ -243,11 +243,11 @@ namespace FIA_Grupp2
 				slot4_teamicon.Source = teamicons[slot4IconIndex];
 			}
 		}
-        private AudioPlayer introAudio;
+        private Playlist introAudio;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            introAudio = e.Parameter as AudioPlayer;
+            introAudio = e.Parameter as Playlist;
         }
 
 

@@ -40,7 +40,7 @@ namespace FIA_Grupp2
 		private DispatcherTimer turnTimer;
 		private TimeSpan remainingGameTime;
 		private TimeSpan remainingTurnTime;
-        public AudioPlayer gameAudio;
+        public Playlist gameAudio;
 
         public GamePage()
         {
@@ -48,7 +48,7 @@ namespace FIA_Grupp2
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             Loaded += MainPage_Loaded;
-            gameAudio = new AudioPlayer();
+            gameAudio = new Playlist();
             StartMusic();
 
             //Get saved game session options data

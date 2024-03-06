@@ -119,7 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AudioPlayer.cs" />
+    <Compile Include="Playlist.cs" />
     <Compile Include="Dice.cs" />
     <Compile Include="DicePage.xaml.cs">
       <DependentUpon>DicePage.xaml</DependentUpon>
