@@ -376,7 +376,7 @@ namespace FIA_Grupp2
 
 
 
-        private void back_button_click_event(object sender, RoutedEventArgs e)
+        private void Back_button_click_event(object sender, RoutedEventArgs e)
 		{
 			this.Frame.Navigate(typeof(MainPage));
 		}
@@ -396,9 +396,6 @@ namespace FIA_Grupp2
 			//lobbyOptionsData.slot1Team = slot1_user_button.Content.ToString();
 
 			ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"] = JsonConvert.SerializeObject(lobbyOptionsData);
-
-		private void choose_level_button_click_event(object sender, RoutedEventArgs e)
-		{
 			introAudio.StopPlayback();
 			this.Frame.Navigate(typeof(GamePage));
 		}
