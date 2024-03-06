@@ -11,7 +11,7 @@
     <AssemblyName>FIA_Grupp2</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Playlist.cs" />
     <Compile Include="LobbyOptions.cs" />
     <Compile Include="Dice.cs" />
     <Compile Include="GameBoardGrid.cs" />
@@ -153,7 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Backgrounds\hay.jpg" />
-    <Content Include="Assets\Dice_images\BBUK_Golden_Dice.png" />
     <Content Include="Assets\Dice_images\dice_five.png" />
     <Content Include="Assets\Dice_images\dice_four.png" />
     <Content Include="Assets\Dice_images\dice_one.png" />
@@ -161,6 +161,7 @@
     <Content Include="Assets\Dice_images\dice_three.png" />
     <Content Include="Assets\Dice_images\dice_two.png" />
     <Content Include="Assets\Dice_images\random_spin_1.gif" />
+    <Content Include="Assets\Dice_images\white_dice.png" />
     <Content Include="Assets\initial_splash.jpg" />
     <Content Include="Assets\main_menu.jpg" />
     <Content Include="Assets\main_title.png" />
@@ -172,6 +173,13 @@
     <Content Include="Assets\Pawns\cow_1.png" />
     <Content Include="Assets\Pawns\cow_2.png" />
     <Content Include="Assets\Pawns\cow_3.png" />
+    <Content Include="Assets\Pawns\nearCowExperience.png" />
+    <Content Include="Assets\Sound\Credit.txt" />
+    <Content Include="Assets\Sound\InGame\1.sky_is_high_100_Darockart.mp3" />
+    <Content Include="Assets\Sound\InGame\2.far_from_the_city_Daddys_Music.mp3" />
+    <Content Include="Assets\Sound\InGame\3.it39s_all_country_Caffeine_Creek_Band.mp3" />
+    <Content Include="Assets\Sound\Menu\1.fried_taters_bluegrass_Caffeine_Creek_Band.mp3" />
+    <Content Include="Assets\Sound\Menu\2.more_country_Caffeine_Creek_Band.mp3" />
     <Content Include="Assets\Pawns\hen_0.png" />
     <Content Include="Assets\Pawns\hen_1.png" />
     <Content Include="Assets\Pawns\hen_2.png" />

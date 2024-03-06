@@ -4,6 +4,7 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Navigation;
 
 namespace FIA_Grupp2
 {	
@@ -366,8 +367,16 @@ namespace FIA_Grupp2
 				}
 			}
 		}
-		
-		private void Back_button_click_event(object sender, RoutedEventArgs e)
+        private Playlist introAudio;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            introAudio = e.Parameter as Playlist;
+        }
+
+
+
+        private void Back_button_click_event(object sender, RoutedEventArgs e)
 		{
 			this.Frame.Navigate(typeof(MainPage));
 		}
@@ -387,7 +396,7 @@ namespace FIA_Grupp2
 			//lobbyOptionsData.slot1Team = slot1_user_button.Content.ToString();
 
 			ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"] = JsonConvert.SerializeObject(lobbyOptionsData);
-
+			introAudio.StopPlayback();
 			this.Frame.Navigate(typeof(GamePage));
 		}
 
