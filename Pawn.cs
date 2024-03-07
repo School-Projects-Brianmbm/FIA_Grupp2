@@ -20,7 +20,7 @@ namespace FIA_Grupp2
         protected int direction;
         protected Position indexPosition;
         protected GameBoardGrid boardgrid;
-        protected int steps = 0;
+        private int steps = 0;
         private int turnStepsLeft = 0;
         internal int TurnStepsLeft { get => turnStepsLeft; set => turnStepsLeft = value; }
 
@@ -31,12 +31,15 @@ namespace FIA_Grupp2
 
         internal Image[] pawnImages = new Image[4];
 
+        public Position CurrentPosition { get; protected set; }
+
         public Canvas PawnCanvas { get => pawnCanvas; set => pawnCanvas = value; }
         public Image PawnImage { get => pawnImage; set => pawnImage = value; }
         Team team;
 
-        public bool AtNest { get { return steps == 0; }
-        }
+        public bool AtNest { get { return Steps == 0; } }
+
+        public int Steps { get => steps; set => steps = value; }
 
         public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
         {
@@ -72,6 +75,9 @@ namespace FIA_Grupp2
             Point pos = boardgrid.GetActualPositionOf(indexPosition.X, indexPosition.Y);
             double newX = pos.X;
             double newY = pos.Y;
+
+            CurrentPosition = new Position((int)indexPosition.X, (int)indexPosition.Y);
+
             Canvas.SetLeft(PawnImage, newX + 8 + (10 * localIndex));
             Canvas.SetTop(PawnImage, newY - 10 + (10 * localIndex));
         }
@@ -80,6 +86,9 @@ namespace FIA_Grupp2
             Point pos = boardgrid.GetActualPositionOf(ind.X, ind.Y);
             double newX = pos.X;
             double newY = pos.Y;
+
+            CurrentPosition = new Position((int)ind.X, (int)ind.Y);
+
             Canvas.SetLeft(PawnImage, newX + 8);
             Canvas.SetTop(PawnImage, newY - 10);
         }
@@ -92,9 +101,9 @@ namespace FIA_Grupp2
                 {
                     Debug.Write($"Im home already :)");
                 }
-                else if (steps == coarse.Length - 1)
+                else if (Steps == coarse.Length - 1)
                 {
-                    PositionAt(coarse[steps++]);
+                    PositionAt(coarse[Steps++]);
                     isInGoal = true;
                 }
                 else
@@ -105,16 +114,16 @@ namespace FIA_Grupp2
                     // Debug.Write($" To: {coarse[steps + 1]} ");
                     if (!IsSameDirection())
                     {
-                        if (direction == 2 && coarse[steps + 1].X < coarse[steps].X) { TurnImageLeft(); }
-                        else if (direction == 2 && coarse[steps + 1].X > coarse[steps].X) { TurnImageRight(); }
-                        else if (direction == 3 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageLeft(); }
-                        else if (direction == 3 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageRight(); }
-                        else if (direction == 0 && coarse[steps + 1].X < coarse[steps].X) { TurnImageRight(); }
-                        else if (direction == 0 && coarse[steps + 1].X > coarse[steps].X) { TurnImageLeft(); }
-                        else if (direction == 1 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageRight(); }
-                        else if (direction == 1 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageLeft(); }
+                        if (direction == 2 && coarse[Steps + 1].X < coarse[Steps].X) { TurnImageLeft(); }
+                        else if (direction == 2 && coarse[Steps + 1].X > coarse[Steps].X) { TurnImageRight(); }
+                        else if (direction == 3 && coarse[Steps + 1].Y < coarse[Steps].Y) { TurnImageLeft(); }
+                        else if (direction == 3 && coarse[Steps + 1].Y > coarse[Steps].Y) { TurnImageRight(); }
+                        else if (direction == 0 && coarse[Steps + 1].X < coarse[Steps].X) { TurnImageRight(); }
+                        else if (direction == 0 && coarse[Steps + 1].X > coarse[Steps].X) { TurnImageLeft(); }
+                        else if (direction == 1 && coarse[Steps + 1].Y < coarse[Steps].Y) { TurnImageRight(); }
+                        else if (direction == 1 && coarse[Steps + 1].Y > coarse[Steps].Y) { TurnImageLeft(); }
                     }
-                    PositionAt(coarse[steps++]);
+                    PositionAt(coarse[Steps++]);
                 }
             }
         }
@@ -123,13 +132,13 @@ namespace FIA_Grupp2
             if (direction == 3 || direction == 1)
             {
                 // Debug.Write($" Y ");
-                if (coarse[steps].Y == coarse[steps + 1].Y) { return true; }
+                if (coarse[Steps].Y == coarse[Steps + 1].Y) { return true; }
                 else { return false; }
             }
             else if (direction == 2 || direction == 0)
             {
                 // Debug.Write($" X ");
-                if (coarse[steps].X == coarse[steps + 1].X) { return true; }
+                if (coarse[Steps].X == coarse[Steps + 1].X) { return true; }
                 else { return false; }
             }
             return false;
