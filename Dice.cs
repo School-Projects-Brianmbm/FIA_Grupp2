@@ -105,11 +105,13 @@ namespace FIA_Grupp2
             {
                 BitmapImage newDiceImage = new BitmapImage(new Uri(path));
 
+                if (_sender != null ) { 
                 // Find the Image control inside the Button that has been pressed.
                 Image imageControl = (Image)((Button)_sender).Content;
 
                 // Update the Source property of the Button image control 
                 imageControl.Source = newDiceImage;
+                }
             }
             catch
             {
