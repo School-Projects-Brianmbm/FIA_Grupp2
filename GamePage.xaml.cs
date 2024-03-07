@@ -110,43 +110,47 @@ namespace FIA_Grupp2
 
         public void DiceFinishedSpinning(object sender, EventArgs e)
         {
-            // int amountOfStepsToMove = _dice.DiceNumber;
-
-            // OM MELLAN ETT & SEX
+            // FÖR VAR PJÄS I TEAMS
             foreach (Pawn pwn in teams[currentTeam].pawns)
             {
+                // OM INTE ETT OCH INTE SEX
                 if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
                 {
-                    // If i dont have any pawns out on the board, skip to the next person. 
+                    // OCH ALLA ÄR I BOET
                     if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
                     {
                         Debug.WriteLine("There is no one outside");
-                        // Skip to the next person
-                        NextTeamsTurnDelay(2000);
-                        return;
+                        // To the next team but through an delay
+                        NextTeamsTurnDelay();
+                        return; // Hoppa ut ur loopen, för ingen ska flyttas
                     }
-                    // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
+                    // OM PJÄSEN ÄR I BOET
+                    if (pwn.Steps == 0)
+                    {
+                        pwn.PawnCanvas.IsHitTestVisible = false;
+                        continue;  // Hoppa direkt till att undersöka nästa pjäs
+                    }
+                    // OM NÅGON ÄR UR BOET
                     else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
                 }
-                // move one of my pawns on the board from the nest, 
                 // OM ETT ELLER SEX
                 else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
                 {
-                    //DOIN: We want to have the option to either move the pawn, or place one on the board.
-                    //AND NO PAWNS ON BOARD BUT > 0 IN NEST
+                    // OCH INGEN PÅ BORDET MEN NÅGON I BOET
                     if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
                         teams[currentTeam].GetPawnsInTheNest().Length >= 0)
                     {
                         Debug.WriteLine("There is still pawns in the nest, and i can move one out");
-                        //FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
+                        // FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
-                    else //or if i have pawn on the board, make it able to move.
+                    else // OM NÅGON PÅ BORDET LÅT DEN GÅ
+                    // TODO KOLLA OM NÅGON ÄR I VÄGEN
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
