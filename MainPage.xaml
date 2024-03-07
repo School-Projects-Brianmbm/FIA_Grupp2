@@ -27,7 +27,7 @@
                 <Button Content="High-Scores" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
                 <Button Content="Settings" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
                 <Button Content="About" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
-                <Button Content="Exit" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
+                <Button Content="Exit" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" Click="ExitButtonClick"/>
 
 
             </StackPanel>

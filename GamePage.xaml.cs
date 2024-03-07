@@ -41,10 +41,12 @@ namespace FIA_Grupp2
 
         private Dice _dice;
 
-        private DispatcherTimer gameTimer;
-        private DispatcherTimer turnTimer;
-        private TimeSpan remainingGameTime;
-        private TimeSpan remainingTurnTime;
+		private DispatcherTimer gameTimer;
+		private DispatcherTimer turnTimer;
+		private TimeSpan remainingGameTime;
+		private TimeSpan remainingTurnTime;
+        public Playlist gameAudio;
+
 
         public GamePage()
         {
@@ -52,6 +54,8 @@ namespace FIA_Grupp2
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             Loaded += MainPage_Loaded;
+            gameAudio = new Playlist();
+            StartMusic();
 
             //Get saved game session options data
             string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
@@ -87,6 +91,17 @@ namespace FIA_Grupp2
                 //TODO: Initiate the settings from lobbydata
             }
         }
+
+
+        
+
+    
+        private async void StartMusic()
+        {
+            await gameAudio.InitializePlaylist("Assets\\Sound\\InGame");
+            gameAudio.StartPlayback();
+        }
+
 
         private void DiceClicked(object sender, RoutedEventArgs e)
         {

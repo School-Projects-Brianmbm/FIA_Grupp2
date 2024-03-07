@@ -20,21 +20,34 @@ using Windows.UI.Xaml.Navigation;
 namespace FIA_Grupp2
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Page for the starting menu of game. 
     /// </summary>
     public sealed partial class MainPage : Page
     {
+
+
         public MainPage()
         {
             this.InitializeComponent();
-            ApplicationView.PreferredLaunchViewSize = new Size(1500, 1000);
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+
+        }
+
+        private Playlist introAudio;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            introAudio = e.Parameter as Playlist;
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ModePage));
+            this.Frame.Navigate(typeof(ModePage), introAudio);
 
+        }
+
+        private void ExitButtonClick(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Exit();
         }
     }
 }
