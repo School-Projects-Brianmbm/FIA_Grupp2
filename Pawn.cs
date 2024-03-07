@@ -35,8 +35,10 @@ namespace FIA_Grupp2
         public Image PawnImage { get => pawnImage; set => pawnImage = value; }
         Team team;
 
-        public bool AtNest { get { return steps == 0; }
+        public bool AtNest { get { return Steps == 0; }
         }
+
+        internal int Steps { get => steps; set => steps = value; }
 
         public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
         {
@@ -92,9 +94,9 @@ namespace FIA_Grupp2
                 {
                     Debug.Write($"Im home already :)");
                 }
-                else if (steps == coarse.Length - 1)
+                else if (Steps == coarse.Length - 1)
                 {
-                    PositionAt(coarse[steps++]);
+                    PositionAt(coarse[Steps++]);
                     isInGoal = true;
                 }
                 else
@@ -105,16 +107,16 @@ namespace FIA_Grupp2
                     // Debug.Write($" To: {coarse[steps + 1]} ");
                     if (!IsSameDirection())
                     {
-                        if (direction == 2 && coarse[steps + 1].X < coarse[steps].X) { TurnImageLeft(); }
-                        else if (direction == 2 && coarse[steps + 1].X > coarse[steps].X) { TurnImageRight(); }
-                        else if (direction == 3 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageLeft(); }
-                        else if (direction == 3 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageRight(); }
-                        else if (direction == 0 && coarse[steps + 1].X < coarse[steps].X) { TurnImageRight(); }
-                        else if (direction == 0 && coarse[steps + 1].X > coarse[steps].X) { TurnImageLeft(); }
-                        else if (direction == 1 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageRight(); }
-                        else if (direction == 1 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageLeft(); }
+                        if (direction == 2 && coarse[Steps + 1].X < coarse[Steps].X) { TurnImageLeft(); }
+                        else if (direction == 2 && coarse[Steps + 1].X > coarse[Steps].X) { TurnImageRight(); }
+                        else if (direction == 3 && coarse[Steps + 1].Y < coarse[Steps].Y) { TurnImageLeft(); }
+                        else if (direction == 3 && coarse[Steps + 1].Y > coarse[Steps].Y) { TurnImageRight(); }
+                        else if (direction == 0 && coarse[Steps + 1].X < coarse[Steps].X) { TurnImageRight(); }
+                        else if (direction == 0 && coarse[Steps + 1].X > coarse[Steps].X) { TurnImageLeft(); }
+                        else if (direction == 1 && coarse[Steps + 1].Y < coarse[Steps].Y) { TurnImageRight(); }
+                        else if (direction == 1 && coarse[Steps + 1].Y > coarse[Steps].Y) { TurnImageLeft(); }
                     }
-                    PositionAt(coarse[steps++]);
+                    PositionAt(coarse[Steps++]);
                 }
             }
         }
@@ -123,13 +125,13 @@ namespace FIA_Grupp2
             if (direction == 3 || direction == 1)
             {
                 // Debug.Write($" Y ");
-                if (coarse[steps].Y == coarse[steps + 1].Y) { return true; }
+                if (coarse[Steps].Y == coarse[Steps + 1].Y) { return true; }
                 else { return false; }
             }
             else if (direction == 2 || direction == 0)
             {
                 // Debug.Write($" X ");
-                if (coarse[steps].X == coarse[steps + 1].X) { return true; }
+                if (coarse[Steps].X == coarse[Steps + 1].X) { return true; }
                 else { return false; }
             }
             return false;
