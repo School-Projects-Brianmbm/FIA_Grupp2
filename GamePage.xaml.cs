@@ -44,56 +44,121 @@ namespace FIA_Grupp2
 		private DispatcherTimer turnTimer;
 		private TimeSpan remainingGameTime;
 		private TimeSpan remainingTurnTime;
-        public Playlist gameAudio;
+		private int gameHours, gameMinutes, gameSeconds;
+        private int turnHours, turnMinutes, turnSeconds;
+		public Playlist gameAudio;
+        private bool isCows = false, isHens = false, isSheeps = false, isPigs = false;
+        private string slot1Usertype, slot2Usertype, slot3Usertype, slot4Usertype;
+        private string slot1Username, slot2Username, slot3Username, slot4Username;
+        private string slot1Team, slot2Team, slot3Team, slot4Team;
 
-        public GamePage()
+		public GamePage()
+		{
+			InitializeComponent();
+			Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
+			layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
+			Loaded += MainPage_Loaded;
+			gameAudio = new Playlist();
+			StartMusic();
+
+			LoadGameSessionOptions();
+			LoadLobbyOptions();
+
+            SetAvailableTeams();
+           
+			InitiateGameTimer();
+			InitiateTurnTimer();
+		}
+
+		private void LoadLobbyOptions()
+		{
+			string lobbyData = (string)ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"];
+			if (!string.IsNullOrEmpty(lobbyData))
+			{
+				LobbyOptions lobbyOptionsData = JsonConvert.DeserializeObject<LobbyOptions>(lobbyData);
+				slot1Usertype = lobbyOptionsData.slot1Usertype;
+				slot2Usertype = lobbyOptionsData.slot2Usertype;
+				slot3Usertype = lobbyOptionsData.slot3Usertype;
+				slot4Usertype = lobbyOptionsData.slot4Usertype;
+
+				slot1Username = lobbyOptionsData.slot1Username;
+				slot2Username = lobbyOptionsData.slot2Username;
+				slot3Username = lobbyOptionsData.slot3Username;
+				slot4Username = lobbyOptionsData.slot4Username;
+
+				slot1Team = lobbyOptionsData.slot1Team;
+				slot2Team = lobbyOptionsData.slot2Team;
+				slot3Team = lobbyOptionsData.slot3Team;
+				slot4Team = lobbyOptionsData.slot4Team;
+			}
+		}
+
+		private void LoadGameSessionOptions()
+		{
+			string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
+			if (!string.IsNullOrEmpty(gameSessionOptionsData))
+			{
+				GameSessionOptions sessionOptionsData = JsonConvert.DeserializeObject<GameSessionOptions>(gameSessionOptionsData);
+				gameHours = int.Parse(sessionOptionsData.GameTimeHours.ToString());
+				gameMinutes = int.Parse(sessionOptionsData.GameTimeMinutes.ToString());
+				gameSeconds = int.Parse(sessionOptionsData.GameTimeSeconds.ToString());
+				turnHours = int.Parse(sessionOptionsData.TurnTimeHours.ToString());
+				turnMinutes = int.Parse(sessionOptionsData.TurnTimeMinutes.ToString());
+				turnSeconds = int.Parse(sessionOptionsData.TurnTimeSeconds.ToString());
+			}
+		}
+
+        private void SetAvailableTeams() 
         {
-            InitializeComponent();
-            Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
-            layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
-            Loaded += MainPage_Loaded;
-            gameAudio = new Playlist();
-            StartMusic();
-
-            //Get saved game session options data
-            string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
-            if (!string.IsNullOrEmpty(gameSessionOptionsData))
+            if (slot1Usertype != "None")
             {
-                GameSessionOptions sessionOptionsData = JsonConvert.DeserializeObject<GameSessionOptions>(gameSessionOptionsData);
-                int gameHours = int.Parse(sessionOptionsData.GameTimeHours.ToString());
-                int gameMinutes = int.Parse(sessionOptionsData.GameTimeMinutes.ToString());
-                int gameSeconds = int.Parse(sessionOptionsData.GameTimeSeconds.ToString());
-                int turnHours = int.Parse(sessionOptionsData.TurnTimeHours.ToString());
-                int turnMinutes = int.Parse(sessionOptionsData.TurnTimeMinutes.ToString());
-                int turnSeconds = int.Parse(sessionOptionsData.TurnTimeSeconds.ToString());
+				isCows = (slot1Team == "cow");
+				isPigs = (slot1Team == "pig");
+				isHens = (slot1Team == "chicken");
+				isSheeps = (slot1Team == "sheep");
+			}
+			if (slot2Usertype != "None")
+			{
+				isCows = (slot1Team == "cow");
+				isPigs = (slot2Team == "pig");
+				isHens = (slot2Team == "chicken");
+				isSheeps = (slot2Team == "sheep");
+			}
+			if (slot3Usertype != "None")
+			{
+				isCows = (slot3Team == "cow");
+				isPigs = (slot3Team == "pig");
+				isHens = (slot3Team == "chicken");
+				isSheeps = (slot3Team == "sheep");
+			}
+			if (slot4Usertype != "None")
+			{
+				isCows = (slot4Team == "cow");
+				isPigs = (slot4Team == "pig");
+				isHens = (slot4Team == "chicken");
+				isSheeps = (slot4Team == "sheeps");
+			}
+		}
 
-                remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
-                remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
+		private void InitiateGameTimer()
+		{
+			remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
+			gameTimer = new DispatcherTimer();
+			gameTimer.Interval = TimeSpan.FromSeconds(1);
+			gameTimer.Tick += GameTimerTick;
+			gameTimer.Start();
+		}
 
-                gameTimer = new DispatcherTimer();
-                gameTimer.Interval = TimeSpan.FromSeconds(1);
-                gameTimer.Tick += GameTimerTick;
-                gameTimer.Start();
+		private void InitiateTurnTimer()
+		{
+			remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
+			turnTimer = new DispatcherTimer();
+			turnTimer.Interval = TimeSpan.FromSeconds(1);
+			turnTimer.Tick += TurnTimerTick;
+			turnTimer.Start();
+		}
 
-                turnTimer = new DispatcherTimer();
-                turnTimer.Interval = TimeSpan.FromSeconds(1);
-                turnTimer.Tick += TurnTimerTick;
-                turnTimer.Start();
-            }
-
-            //Get saved lobby options data
-            string lobbyData = (string)ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"];
-            if (!string.IsNullOrEmpty(lobbyData))
-            {
-                LobbyOptions lobbyOptionsData = JsonConvert.DeserializeObject<LobbyOptions>(lobbyData);
-                //TODO: Initiate the settings from lobbydata
-            }
-        }
-
-        
-
-    
-        private async void StartMusic()
+		private async void StartMusic()
         {
             await gameAudio.InitializePlaylist("Assets\\Sound\\InGame");
             gameAudio.StartPlayback();
@@ -165,9 +230,21 @@ namespace FIA_Grupp2
             //teams[aprioTeam].Pawn.PawnCanvas.IsHitTestVisible = false;
             //teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
             DebugTextUpdateModifier();
+            ResetTurnTimer();
         }
 
-        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+		private void ResetTurnTimer()
+		{
+			turnTimer.Stop();
+
+			remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
+			turnTimer = new DispatcherTimer();
+			turnTimer.Interval = TimeSpan.FromSeconds(1);
+			turnTimer.Tick += TurnTimerTick;
+			turnTimer.Start();
+		}
+
+		private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             Debug.Write("BAM MainPage Loaded");
             gameGrid = new GameBoardGrid(gameCanvas);
@@ -195,8 +272,6 @@ namespace FIA_Grupp2
         /// <summary>
         /// Create the Teams of different types (species)
         /// </summary>
-        bool isCows = true, isHens = true, isSheeps = true, isPigs = true;
-        // TODO replace above hardcoded with values passed from loby so we only create the teams chosen by a player
         private void CreatePawns()
         {
             for (int i = 0; i < teams.Length; i++)
@@ -305,8 +380,7 @@ namespace FIA_Grupp2
 			}
 			else
 			{
-				gameTimer.Stop();
-				// TODO Stop the game as the gametimer has run out.
+				NextTeamsTurn();
 			}
 		}
 

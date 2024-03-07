@@ -23,6 +23,11 @@ namespace FIA_Grupp2
 		private int slot3IconIndex;
 		private int slot4IconIndex;
 
+		private bool isIconIndex0Available = true;
+		private bool isIconIndex1Available = true;
+		private bool isIconIndex2Available = true;
+		private bool isIconIndex3Available = true;
+
 		public LobbyPage()
 		{
 			this.InitializeComponent();
