@@ -101,13 +101,22 @@ namespace FIA_Grupp2
 
         private void ChangeDiceIcon(string path)
         {
-            BitmapImage newDiceImage = new BitmapImage(new Uri(path));
+            try
+            {
+                BitmapImage newDiceImage = new BitmapImage(new Uri(path));
 
-            // Find the Image control inside the Button that has been pressed.
-            Image imageControl = (Image)((Button)_sender).Content;
+                if (_sender != null ) { 
+                // Find the Image control inside the Button that has been pressed.
+                Image imageControl = (Image)((Button)_sender).Content;
 
-            // Update the Source property of the Button image control 
-            imageControl.Source = newDiceImage;
+                // Update the Source property of the Button image control 
+                imageControl.Source = newDiceImage;
+                }
+            }
+            catch
+            {
+                
+            }
         }
 
         /// <summary>
@@ -115,7 +124,7 @@ namespace FIA_Grupp2
         /// </summary>
         public void NewTurn()
         {
-            ChangeDiceIcon($"ms-appx:///Assets/Dice_images/BBUK_Golden_Dice.png");
+            ChangeDiceIcon($"ms-appx:///Assets/Dice_images/white_dice.png");
         }
     }
 }

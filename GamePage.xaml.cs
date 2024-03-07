@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Documents;
 using Windows.Devices.Pwm;
+using Windows.UI.Xaml.Media;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -18,6 +19,8 @@ namespace FIA_Grupp2
 {
     public sealed partial class GamePage : Page
     {
+        public static GamePage Instance;
+
         int MouseX, MouseY;
         static int nrOfPlayers = 4;
         static int currentTeam = 0;
@@ -38,7 +41,6 @@ namespace FIA_Grupp2
         Team[] teams = new Team[nrOfPlayers];
         // Team cows, hens, sheeps, pigs;
 
-
         private Dice _dice;
 
 		private DispatcherTimer gameTimer;
@@ -47,10 +49,11 @@ namespace FIA_Grupp2
 		private TimeSpan remainingTurnTime;
         public Playlist gameAudio;
 
-
         public GamePage()
         {
             InitializeComponent();
+            Instance = this;
+
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             Loaded += MainPage_Loaded;
@@ -92,10 +95,6 @@ namespace FIA_Grupp2
             }
         }
 
-
-        
-
-    
         private async void StartMusic()
         {
             await gameAudio.InitializePlaylist("Assets\\Sound\\InGame");
@@ -115,53 +114,53 @@ namespace FIA_Grupp2
             // OM MELLAN ETT & SEX
             foreach (Pawn pwn in teams[currentTeam].pawns)
             {
-
-            if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
-            {
-                // If i dont have any pawns out on the board, skip to the next person. 
-                if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
+                if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
                 {
-                    Debug.WriteLine("There is no one outside");
-                    // Skip to the next person
-                    NextTeamsTurn();
-                    return;
+                    // If i dont have any pawns out on the board, skip to the next person. 
+                    if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
+                    {
+                        Debug.WriteLine("There is no one outside");
+                        // Skip to the next person
+                        NextTeamsTurn();
+                        return;
+                    }
+                    // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
+                    else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
+                    {
+                        pwn.TurnStepsLeft = _dice.DiceNumber;
+                        pwn.PawnCanvas.IsHitTestVisible = true;
+                    }
                 }
-                // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
-                else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
+                // move one of my pawns on the board from the nest, 
+                // OM ETT ELLER SEX
+                else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
                 {
-                    
-                    pwn.TurnStepsLeft = _dice.DiceNumber;
-                    pwn.PawnCanvas.IsHitTestVisible = true;
+                    //DOIN: We want to have the option to either move the pawn, or place one on the board.
+                    //AND NO PAWNS ON BOARD BUT > 0 IN NEST
+                    if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
+                        teams[currentTeam].GetPawnsInTheNest().Length >= 0)
+                    {
+                        Debug.WriteLine("There is still pawns in the nest, and i can move one out");
+                        //FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
+                        pwn.TurnStepsLeft = _dice.DiceNumber;
+                        pwn.PawnCanvas.IsHitTestVisible = true;
+                    }
+                    else //or if i have pawn on the board, make it able to move.
+                    {
+                        pwn.TurnStepsLeft = _dice.DiceNumber;
+                        pwn.PawnCanvas.IsHitTestVisible = true;
+                    }
                 }
             }
-            // move one of my pawns on the board from the nest, 
-            // OM ETT ELLER SEX
-            else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
-            {
-                //DOIN: We want to have the option to either move the pawn, or place one on the board.
-                //AND NO PAWNS ON BOARD BUT > 0 IN NEST
-                if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
-                    teams[currentTeam].GetPawnsInTheNest().Length >= 0)
-                {
-                    Debug.WriteLine("There is still pawns in the nest, and i can move one out");
-                    //FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
-                    pwn.TurnStepsLeft = _dice.DiceNumber;
-                    pwn.PawnCanvas.IsHitTestVisible = true;
-                }
-                else //or if i have pawn on the board, make it able to move.
-                {
-                    pwn.TurnStepsLeft = _dice.DiceNumber;
-                    pwn.PawnCanvas.IsHitTestVisible = true;
-                }
-            }
-        }
 
-            NextTeamsTurn();
+            //FIXME: Call only this when the pawn has been pressed, or when the dice is not valid, meaning 1 or 6
+            //NextTeamsTurn();
+
             //TODO: When a turn is finished, display the golden dice again
             //_dice.NewTurn();
         }
 
-        private void NextTeamsTurn()
+        public void NextTeamsTurn()
         {
             // int aprioTeam = currentTeam;
             currentTeam++;
@@ -170,6 +169,56 @@ namespace FIA_Grupp2
                 currentTeam = 0;
             }
             DebugTextUpdateModifier();
+
+            ChangeActiveTeamIcon(teams[currentTeam].Name);
+
+            //TODO: When a turn is finished, display the golden dice again
+            //_dice.NewTurn();
+        }
+
+        private string ConvertNameToJPG(string teamName)
+        {
+            switch(teamName)
+            {
+                case "Cows":
+                    return "cow";
+                case "Hens":
+                    return "chicken";
+                case "Sheeps":
+                    return "sheep";
+                case "Pigs":
+                    return "pig";
+            }
+
+            return string.Empty;
+        }
+
+        //TODO: Maybe there is a color property somewhere, and this method is useless.
+        private Color GetColorFromTeamName(string teamName)
+        {
+            switch (teamName)
+            {
+                case "Cows":
+                    return ColorHelper.FromArgb(255, 144, 238, 144);
+                case "Hens":
+                    return ColorHelper.FromArgb(255, 255, 255, 0);
+                case "Sheeps":
+                    return ColorHelper.FromArgb(255, 173, 216, 230);
+                case "Pigs":
+                    return ColorHelper.FromArgb(255, 219, 112, 147);
+            }
+            return Colors.Black;
+        }
+
+        private void ChangeActiveTeamIcon(string teamName)
+        {
+            BitmapImage newActiveTeamIcon = new BitmapImage(new Uri($"ms-appx:///Assets/TeamIcons/{ConvertNameToJPG(teamName)}.jpg"));
+            activeTeamIcon.Source = newActiveTeamIcon;
+
+            activeDiceBorder.Background = new SolidColorBrush(GetColorFromTeamName(teamName));
+            activeTeamIconBorder.Background = new SolidColorBrush(GetColorFromTeamName(teamName));
+
+            _dice.NewTurn();
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -226,7 +275,14 @@ namespace FIA_Grupp2
                         break;
                 }
             }
+
+            _dice = new Dice(this);
+
+            ChangeActiveTeamIcon(teams[currentTeam].Name);
+
+            Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
             Debug.Write(Team.NUMBER_OF_TEAMS);
+            //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
 
         private void CoreWindow_PointerMoved(CoreWindow sender, PointerEventArgs args)
