@@ -152,6 +152,23 @@ namespace FIA_Grupp2
                     }
                 }
             }
+            
+                
+                
+
+                /*if (!pwn.coarse.Length.Equals(5))
+                {
+                    break;
+                }
+                else
+                {
+                    Application.Current.Exit();
+                }*/
+
+
+            
+
+            
 
             //FIXME: Call only this when the pawn has been pressed, or when the dice is not valid, meaning 1 or 6
             //NextTeamsTurn();

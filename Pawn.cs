@@ -59,6 +59,19 @@ namespace FIA_Grupp2
                 Step();
                 foreach (Pawn pawn in team.Pawns)
                 {
+
+                    bool allPawnsInGoal = true;
+                    {
+                        if (!pawn.isInGoal)
+                        {
+                            allPawnsInGoal = false;
+                            continue;
+                        }
+                    }
+                    if (allPawnsInGoal)
+                    {
+                        Application.Current.Exit();
+                    }
                     pawn.pawnCanvas.IsHitTestVisible = false;
                 }
 
