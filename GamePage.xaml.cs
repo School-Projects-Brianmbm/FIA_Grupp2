@@ -59,7 +59,7 @@ namespace FIA_Grupp2
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             Loaded += MainPage_Loaded;
             gameAudio = new Playlist();
-            StartMusic();
+            //StartMusic();
 
             //Get saved game session options data
             string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];

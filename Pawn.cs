@@ -59,26 +59,30 @@ namespace FIA_Grupp2
             {
                 Debug.Write($"{globalIndex} {localIndex} {Name} is clicked And canWalk = {canWalk}\n");
                 Step();
-                foreach (Pawn pawn in team.Pawns)
-                {
-
-                    bool allPawnsInGoal = true;
-                    {
-                        if (!pawn.isInGoal)
-                        {
-                            allPawnsInGoal = false;
-                            continue;
-                        }
-                    }
-                    if (allPawnsInGoal)
-                    {
-                        Application.Current.Exit();
-                    }
-                    pawn.pawnCanvas.IsHitTestVisible = false;
-                }
+                CheckWinner();
 
                 // Calling for the next teams turn
                 GamePage.Instance.NextTeamsTurn();
+            }
+        }
+
+        private void CheckWinner()
+        {
+            bool allPawnsInGoal = true;
+
+            foreach (Pawn pawn in team.Pawns)
+            {
+
+                if (!pawn.isInGoal)
+                {
+                    allPawnsInGoal = false;
+                }
+
+                pawn.pawnCanvas.IsHitTestVisible = false;
+            }
+            if (allPawnsInGoal)
+            {
+                Debug.Write("All pawns are in goal");
             }
         }
 
