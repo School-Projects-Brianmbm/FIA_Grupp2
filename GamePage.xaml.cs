@@ -388,26 +388,6 @@ namespace FIA_Grupp2
             turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
         }
 
-        private bool IsThereAPawnOnThisPosition(Position position)
-        {
-            foreach(Team team in teams)
-            {
-                foreach (Pawn pawn in team.Pawns)
-                {
-                    if(pawn.CurrentPosition.X == position.X &&
-                       pawn.CurrentPosition.Y == position.Y)
-                    {
-                        Debug.WriteLine("");
-                        Debug.WriteLine("This pawn is at the same position");
-                        return true;
-                    }
-                }
-
-            }
-
-            return false;
-        }
-
         private Team CheckOtherTeamsPositions(Team currentActiveTeam)
         {
             foreach (Team team in teams)
