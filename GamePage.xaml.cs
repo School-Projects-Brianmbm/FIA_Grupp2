@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Documents;
 using Windows.Devices.Pwm;
 using Windows.UI.Xaml.Media;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -121,7 +122,7 @@ namespace FIA_Grupp2
                     {
                         Debug.WriteLine("There is no one outside");
                         // Skip to the next person
-                        NextTeamsTurn();
+                        NextTeamsTurnDelay(2000);
                         return;
                     }
                     // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
@@ -160,6 +161,15 @@ namespace FIA_Grupp2
             //_dice.NewTurn();
         }
 
+        public async void NextTeamsTurnDelay(int ms = 1000)
+        {
+            diceCross.Visibility = Visibility.Visible;
+            await Task.Delay(ms);
+            // Here i want a delay before the NextTeamsTurn Executes ?
+            NextTeamsTurn();
+            diceCross.Visibility = Visibility.Collapsed;
+        }
+
         public void NextTeamsTurn()
         {
             // int aprioTeam = currentTeam;
@@ -171,9 +181,6 @@ namespace FIA_Grupp2
             DebugTextUpdateModifier();
 
             ChangeActiveTeamIcon(teams[currentTeam].Name);
-
-            //TODO: When a turn is finished, display the golden dice again
-            //_dice.NewTurn();
         }
 
         private string ConvertNameToJPG(string teamName)
