@@ -32,18 +32,15 @@ namespace FIA_Grupp2
 
         public Canvas PawnCanvas { get => pawnCanvas; set => pawnCanvas = value; }
         public Image PawnImage { get => pawnImage; set => pawnImage = value; }
+        Team team;
 
-
-        public bool AtNest
-        {
-            get { return steps == 0; }
+        public bool AtNest { get { return steps == 0; }
         }
 
-
-        public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
+        public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
         {
+            team = myTeam;
             PawnCanvas.IsHitTestVisible = false;
-            Debug.Write(Team.NUMBER_OF_TEAMS);
             globalIndex = GLOBAL_INDEX++;
             pawnCanvas.Children.Add(pawnImage);
             indexPosition = startpos;
@@ -59,7 +56,10 @@ namespace FIA_Grupp2
             {
                 Debug.Write($"{globalIndex} {localIndex} {Name} is clicked And canWalk = {canWalk}\n");
                 Step();
-                pawnCanvas.IsHitTestVisible = false;
+                foreach (Pawn pawn in team.Pawns)
+                {
+                    pawn.pawnCanvas.IsHitTestVisible = false;
+                }
             }
         }
 
@@ -68,8 +68,8 @@ namespace FIA_Grupp2
             Point pos = boardgrid.GetActualPositionOf(indexPosition.X, indexPosition.Y);
             double newX = pos.X;
             double newY = pos.Y;
-            Canvas.SetLeft(PawnImage, newX + 8);
-            Canvas.SetTop(PawnImage, newY - 10);
+            Canvas.SetLeft(PawnImage, newX + 8 + (10 * localIndex));
+            Canvas.SetTop(PawnImage, newY - 10 + (10 * localIndex));
         }
         public virtual void PositionAt(Position ind)
         {
@@ -153,9 +153,11 @@ namespace FIA_Grupp2
     }
     internal class Cow : Pawn
     {
-        public Cow(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
-            : base(gbg, startpos, ref teamcoarse)
+        public Cow(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
+            : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
+            localIndex = globalIndex % 4;
+
             Name = "Cow";
             pawnCanvas.Name = "Cow";
             direction = 3;
@@ -169,12 +171,14 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
+
         }
     }
     internal class Hen : Pawn
     {
-        public Hen(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
-            : base(gbg, startpos, ref teamcoarse)
+        public Hen(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
+            : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
             localIndex = globalIndex % 4;
 
@@ -191,12 +195,13 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
         }
     }
     internal class Sheep : Pawn
     {
-        public Sheep(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
-            : base(gbg, startpos, ref teamcoarse)
+        public Sheep(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
+            : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
             localIndex = globalIndex % 4;
 
@@ -213,12 +218,13 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
         }
     }
     internal class Pig : Pawn
     {
-        public Pig(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
-            : base(gbg, startpos, ref teamcoarse)
+        public Pig(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
+            : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
             localIndex = globalIndex % 4;
 
@@ -235,6 +241,7 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
         }
     }
 }
