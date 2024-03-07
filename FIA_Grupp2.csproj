@@ -169,6 +169,22 @@
     <Content Include="Assets\main_title3.jpg" />
     <Content Include="Assets\mode_image.jpg" />
     <Content Include="Assets\name_credit.png" />
+    <Content Include="Assets\Pawns\cow_0.png" />
+    <Content Include="Assets\Pawns\cow_1.png" />
+    <Content Include="Assets\Pawns\cow_2.png" />
+    <Content Include="Assets\Pawns\cow_3.png" />
+    <Content Include="Assets\Pawns\hen_0.png" />
+    <Content Include="Assets\Pawns\hen_1.png" />
+    <Content Include="Assets\Pawns\hen_2.png" />
+    <Content Include="Assets\Pawns\hen_3.png" />
+    <Content Include="Assets\Pawns\pig_0.png" />
+    <Content Include="Assets\Pawns\pig_1.png" />
+    <Content Include="Assets\Pawns\pig_2.png" />
+    <Content Include="Assets\Pawns\pig_3.png" />
+    <Content Include="Assets\Pawns\sheep_0.png" />
+    <Content Include="Assets\Pawns\sheep_1.png" />
+    <Content Include="Assets\Pawns\sheep_2.png" />
+    <Content Include="Assets\Pawns\sheep_3.png" />
     <Content Include="Assets\Sound\Credit.txt" />
     <Content Include="Assets\Sound\InGame\1.sky_is_high_100_Darockart.mp3" />
     <Content Include="Assets\Sound\InGame\2.far_from_the_city_Daddys_Music.mp3" />
@@ -227,9 +243,7 @@
       <Version>13.0.3</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\Pawns\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
