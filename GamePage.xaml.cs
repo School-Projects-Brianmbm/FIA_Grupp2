@@ -23,7 +23,7 @@ namespace FIA_Grupp2
         public static GamePage Instance;
 
         int MouseX, MouseY;
-        static int nrOfPlayers = 4;
+        static int nrOfPlayers = 1;
         static int currentTeam = 0;
         static GameBoardGrid gameGrid;
 
@@ -149,12 +149,17 @@ namespace FIA_Grupp2
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
-                    else // OM NÅGON PÅ BORDET LÅT DEN GÅ
-                    // TODO KOLLA OM NÅGON ÄR I VÄGEN
+                    // OM NÅGON PÅ BORDET LÅT DEN GÅ Såvida inte går utanför corase
+                    else if (pwn.Steps + _dice.DiceNumber <= globalCoarse.Length +2 )
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
+                    else
+                    {
+                        Debug.Write("FÖR MÅNGA STEG FÖR ATT GÅ JÄMNT I MÅL");
+                    }
+                    // TODO KOLLA OM NÅGON ÄR I VÄGEN
                 }
             }
 
@@ -178,7 +183,7 @@ namespace FIA_Grupp2
         {
             // int aprioTeam = currentTeam;
             currentTeam++;
-            if (currentTeam > 3)
+            if (currentTeam > nrOfPlayers -1)
             {
                 currentTeam = 0;
             }
@@ -261,7 +266,7 @@ namespace FIA_Grupp2
         /// <summary>
         /// Create the Teams of different types (species)
         /// </summary>
-        bool isCows = true, isHens = true, isSheeps = true, isPigs = true;
+        bool isCows = true, isHens = false, isSheeps = false, isPigs = false;
         // TODO replace above hardcoded with values passed from loby so we only create the teams chosen by a player
         private void CreatePawns()
         {
