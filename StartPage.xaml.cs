@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -18,19 +19,35 @@ using Windows.UI.Xaml.Navigation;
 namespace FIA_Grupp2
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Splashscreen starting page for app.
     /// </summary>
+    /// 
+
+
     public sealed partial class StartPage : Page
     {
+        public Playlist introAudio;
+
         public StartPage()
         {
             this.InitializeComponent();
+            ApplicationView.PreferredLaunchViewSize = new Size(1500, 1000);
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             startStoryBoard.Begin();
+            introAudio = new Playlist();
+            StartMusic();
+            
+        }
+
+        private async void StartMusic()
+        {
+            await introAudio.InitializePlaylist("Assets\\Sound\\Menu");
+            introAudio.StartPlayback();
         }
 
         private void SplashButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(MainPage));
+            this.Frame.Navigate(typeof(MainPage), introAudio);
         }
     }
 }

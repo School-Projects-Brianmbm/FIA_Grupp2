@@ -157,16 +157,16 @@ namespace FIA_Grupp2
                         switch (_pathArray[row, col])
                         {
                             case 2:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.LightBlue), Width = _brickSize, Height = _brickSize };
-                                break;
-                            case 3:
                                 _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.PaleVioletRed), Width = _brickSize, Height = _brickSize };
                                 break;
-                            case 4:
+                            case 3:
                                 _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.LightGreen), Width = _brickSize, Height = _brickSize };
                                 break;
-                            case 5:
+                            case 4:
                                 _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.Yellow), Width = _brickSize, Height = _brickSize };
+                                break;
+                            case 5:
+                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.LightBlue), Width = _brickSize, Height = _brickSize };
                                 break;
                             default:
                                 break;
@@ -279,11 +279,11 @@ namespace FIA_Grupp2
                     // Debug text index
                     if (showPos && showInd)
                     {
-                        currentText.Text += $"\nX={row}, Y={col}";
+                        currentText.Text += $"\nX={col}, Y={row}";
                     }
                     else if (showInd)
                     {
-                        currentText.Text = $"X={row}, Y={col}";
+                        currentText.Text = $"X={col}, Y={row}";
                     }
 
 
