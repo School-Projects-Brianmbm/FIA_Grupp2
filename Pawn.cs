@@ -20,7 +20,7 @@ namespace FIA_Grupp2
         protected int direction;
         protected Position indexPosition;
         protected GameBoardGrid boardgrid;
-        private int steps = 0;
+        protected int steps = 0;
         private int turnStepsLeft = 0;
         internal int TurnStepsLeft { get => turnStepsLeft; set => turnStepsLeft = value; }
 

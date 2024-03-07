@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Documents;
 using Windows.Devices.Pwm;
 using Windows.UI.Xaml.Media;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -59,7 +60,7 @@ namespace FIA_Grupp2
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             Loaded += MainPage_Loaded;
             gameAudio = new Playlist();
-            //StartMusic();
+            StartMusic();
 
             //Get saved game session options data
             string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
@@ -110,47 +111,56 @@ namespace FIA_Grupp2
 
         public void DiceFinishedSpinning(object sender, EventArgs e)
         {
-            // int amountOfStepsToMove = _dice.DiceNumber;
-
-            // OM MELLAN ETT & SEX
+            // FÖR VAR PJÄS I TEAMS
             foreach (Pawn pwn in teams[currentTeam].pawns)
             {
+                // OM INTE ETT OCH INTE SEX
                 if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
                 {
-                    // If i dont have any pawns out on the board, skip to the next person. 
+                    // OCH ALLA ÄR I BOET
                     if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
                     {
                         Debug.WriteLine("There is no one outside");
-                        // Skip to the next person
-                        NextTeamsTurn();
-                        return;
+                        // To the next team but through an delay
+                        NextTeamsTurnDelay();
+                        return; // Hoppa ut ur loopen, för ingen ska flyttas
                     }
-                    // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
+                    // OM PJÄSEN ÄR I BOET
+                    if (pwn.Steps == 0)
+                    {
+                        pwn.PawnCanvas.IsHitTestVisible = false;
+                        continue;  // Hoppa direkt till att undersöka nästa pjäs
+                    }
+                    // OM NÅGON ÄR UR BOET
                     else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
                 }
-                // move one of my pawns on the board from the nest, 
                 // OM ETT ELLER SEX
                 else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
                 {
-                    //DOIN: We want to have the option to either move the pawn, or place one on the board.
-                    //AND NO PAWNS ON BOARD BUT > 0 IN NEST
+                    // OCH INGEN PÅ BORDET MEN NÅGON I BOET
                     if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
                         teams[currentTeam].GetPawnsInTheNest().Length >= 0)
                     {
                         Debug.WriteLine("There is still pawns in the nest, and i can move one out");
-                        //FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
+                        // FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
-                    else //or if i have pawn on the board, make it able to move.
+                    // OM NÅGON PÅ BORDET LÅT DEN GÅ Såvida inte går utanför corase
+                    else if (pwn.Steps + _dice.DiceNumber <= globalCoarse.Length +2 )
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
+                    else
+                    {
+                        Debug.Write("FÖR MÅNGA STEG FÖR ATT GÅ JÄMNT I MÅL");
+                    }
+                    // TODO KOLLA OM NÅGON ÄR I VÄGEN
                 }
             }
 
@@ -159,6 +169,15 @@ namespace FIA_Grupp2
 
             //TODO: When a turn is finished, display the golden dice again
             //_dice.NewTurn();
+        }
+
+        public async void NextTeamsTurnDelay(int ms = 1000)
+        {
+            diceCross.Visibility = Visibility.Visible;
+            await Task.Delay(ms);
+            // Here i want a delay before the NextTeamsTurn Executes ?
+            NextTeamsTurn();
+            diceCross.Visibility = Visibility.Collapsed;
         }
 
         public void NextTeamsTurn()
@@ -170,17 +189,13 @@ namespace FIA_Grupp2
             //IsThereAPawnOnThisPosition(new Position(6, 10));
             
             currentTeam++;
-            if (currentTeam > 3)
+            if (currentTeam > nrOfPlayers -1)
             {
                 currentTeam = 0;
             }
             DebugTextUpdateModifier();
 
             ChangeActiveTeamIcon(teams[currentTeam].Name);
-
-
-            //TODO: When a turn is finished, display the golden dice again
-            //_dice.NewTurn();
         }
 
         private string ConvertNameToJPG(string teamName)
