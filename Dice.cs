@@ -1,18 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace FIA_Grupp2
@@ -50,7 +38,7 @@ namespace FIA_Grupp2
         {
             _sender = sender;
 
-            PlayRandomSequence(1.5f);
+            PlayRandomSequence(0.5f);
             
         }
 
@@ -101,11 +89,12 @@ namespace FIA_Grupp2
         {
             Random r = new Random();
             return r.Next(1, 7);
+            //return r.Next(1, 7);
         }
 
         private void PlayRandomSequence(float seconds)
         {
-            _amountOfSpinsLeft = (int)(seconds / ((float)(_diceTimer.Interval.Milliseconds) / 1000f));
+            _amountOfSpinsLeft = (int)(seconds / ((float)(_diceTimer.Interval.Milliseconds) / 250f));
             _diceTimer.Start();
             ChangeDiceIcon($"ms-appx:///Assets/Dice_images/random_spin_1.gif");
         }

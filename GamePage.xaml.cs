@@ -9,6 +9,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Documents;
+using Windows.Devices.Pwm;
 using Windows.UI.Xaml.Media;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -35,9 +37,7 @@ namespace FIA_Grupp2
         };
 
         Team[] teams = new Team[nrOfPlayers];
-        bool isCows = true, isHens = true, isSheeps = true, isPigs = true;
-        Team cows, hens, sheeps, pigs;
-
+        // Team cows, hens, sheeps, pigs;
 
         private Dice _dice;
 
@@ -45,40 +45,58 @@ namespace FIA_Grupp2
 		private DispatcherTimer turnTimer;
 		private TimeSpan remainingGameTime;
 		private TimeSpan remainingTurnTime;
+        public Playlist gameAudio;
 
-		public GamePage()
+        public GamePage()
         {
             InitializeComponent();
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             Loaded += MainPage_Loaded;
+            gameAudio = new Playlist();
+            StartMusic();
 
             //Get saved game session options data
-			string serializedData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
-			if (!string.IsNullOrEmpty(serializedData))
-			{
-				GameSessionOptions sessionOptionsData = JsonConvert.DeserializeObject<GameSessionOptions>(serializedData);
-				int gameHours = int.Parse(sessionOptionsData.GameTimeHours.ToString());
-				int gameMinutes = int.Parse(sessionOptionsData.GameTimeMinutes.ToString());
-				int gameSeconds = int.Parse(sessionOptionsData.GameTimeSeconds.ToString());
-				int turnHours = int.Parse(sessionOptionsData.TurnTimeHours.ToString());
-				int turnMinutes = int.Parse(sessionOptionsData.TurnTimeMinutes.ToString());
-				int turnSeconds = int.Parse(sessionOptionsData.TurnTimeSeconds.ToString());
+            string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
+            if (!string.IsNullOrEmpty(gameSessionOptionsData))
+            {
+                GameSessionOptions sessionOptionsData = JsonConvert.DeserializeObject<GameSessionOptions>(gameSessionOptionsData);
+                int gameHours = int.Parse(sessionOptionsData.GameTimeHours.ToString());
+                int gameMinutes = int.Parse(sessionOptionsData.GameTimeMinutes.ToString());
+                int gameSeconds = int.Parse(sessionOptionsData.GameTimeSeconds.ToString());
+                int turnHours = int.Parse(sessionOptionsData.TurnTimeHours.ToString());
+                int turnMinutes = int.Parse(sessionOptionsData.TurnTimeMinutes.ToString());
+                int turnSeconds = int.Parse(sessionOptionsData.TurnTimeSeconds.ToString());
 
-				remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
-				remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
+                remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
+                remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
 
-				gameTimer = new DispatcherTimer();
-				gameTimer.Interval = TimeSpan.FromSeconds(1);
-				gameTimer.Tick += GameTimerTick;
-				gameTimer.Start();
+                gameTimer = new DispatcherTimer();
+                gameTimer.Interval = TimeSpan.FromSeconds(1);
+                gameTimer.Tick += GameTimerTick;
+                gameTimer.Start();
 
-				turnTimer = new DispatcherTimer();
-				turnTimer.Interval = TimeSpan.FromSeconds(1);
-				turnTimer.Tick += TurnTimerTick;
-				turnTimer.Start();
-			}
-		}
+                turnTimer = new DispatcherTimer();
+                turnTimer.Interval = TimeSpan.FromSeconds(1);
+                turnTimer.Tick += TurnTimerTick;
+                turnTimer.Start();
+            }
+
+            //Get saved lobby options data
+            string lobbyData = (string)ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"];
+            if (!string.IsNullOrEmpty(lobbyData))
+            {
+                LobbyOptions lobbyOptionsData = JsonConvert.DeserializeObject<LobbyOptions>(lobbyData);
+                //TODO: Initiate the settings from lobbydata
+            }
+        }
+
+        private async void StartMusic()
+        {
+            await gameAudio.InitializePlaylist("Assets\\Sound\\InGame");
+            gameAudio.StartPlayback();
+        }
+
 
         private void DiceClicked(object sender, RoutedEventArgs e)
         {
@@ -87,47 +105,60 @@ namespace FIA_Grupp2
 
         public void DiceFinishedSpinning(object sender, EventArgs e)
         {
-            int amountOfStepsToMove = _dice.DiceNumber;
+            // int amountOfStepsToMove = _dice.DiceNumber;
 
-            //If i get a number between 2-5, and i have a pawn out on the board, move the piece, else if i dont have any pawns out on the board, skip to the next person. 
+            // OM MELLAN ETT & SEX
+            foreach (Pawn pwn in teams[currentTeam].pawns)
+            {
+
             if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
             {
+                // If i dont have any pawns out on the board, skip to the next person. 
                 if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
                 {
                     Debug.WriteLine("There is no one outside");
-                    //TODO: Skip to the next person
+                    // Skip to the next person
+                    NextTeamsTurn();
+                    return;
                 }
-                else if(teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
+                // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
+                else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
                 {
-                    for (int i = 0; i < amountOfStepsToMove; i++)
-                    {
-                        //TODO: Change so the current active team is moved, and not just the cows.
-                        teams[currentTeam].Pawn.Step();
-                    }
+                    
+                    pwn.TurnStepsLeft = _dice.DiceNumber;
+                    pwn.PawnCanvas.IsHitTestVisible = true;
                 }
             }
-            //If i get the number 1 or 6, and if i dont have a pawn on the board, move one of my pawns on the board from the nest, or if i have pawn on the board, move it.
-            else if(_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
+            // move one of my pawns on the board from the nest, 
+            // OM ETT ELLER SEX
+            else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
             {
-                //TODO: Maybe you want to have the option to either move the pawn, or place one on the board.
-
-                //I dont have a pawn on the board, but i have one or more in the nest, move it out
+                //DOIN: We want to have the option to either move the pawn, or place one on the board.
+                //AND NO PAWNS ON BOARD BUT > 0 IN NEST
                 if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
                     teams[currentTeam].GetPawnsInTheNest().Length >= 0)
                 {
                     Debug.WriteLine("There is still pawns in the nest, and i can move one out");
-                    teams[currentTeam].Pawn.Step();       //FIXME : Maybe i want to move it 6 positions if i get a 6 from the dice.
+                    //FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
+                    pwn.TurnStepsLeft = _dice.DiceNumber;
+                    pwn.PawnCanvas.IsHitTestVisible = true;
                 }
-                else
+                else //or if i have pawn on the board, make it able to move.
                 {
-                    for (int i = 0; i < amountOfStepsToMove; i++)
-                    {
-                        //TODO: Change so the current active team is moved, and not just the cows.
-                        teams[currentTeam].Pawn.Step();
-                    }
+                    pwn.TurnStepsLeft = _dice.DiceNumber;
+                    pwn.PawnCanvas.IsHitTestVisible = true;
                 }
             }
+        }
 
+            NextTeamsTurn();
+            //TODO: When a turn is finished, display the golden dice again
+            //_dice.NewTurn();
+        }
+
+        private void NextTeamsTurn()
+        {
+            // int aprioTeam = currentTeam;
             currentTeam++;
             if (currentTeam > 3)
             {
@@ -196,6 +227,27 @@ namespace FIA_Grupp2
             gameGrid.SetEllipsesPositions(true, false, true);
             //gameGrid.SetEllipsesPositions(true,showInd: true);
 
+            CreatePawns();
+
+            // Add the elements to the canvas
+            foreach (Team team in teams)
+            {
+                foreach(Pawn pawn in team.Pawns)
+                layoutRoot.Children.Add(pawn.PawnCanvas);
+            }
+
+            _dice = new Dice(this);
+            Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
+            //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
+        }
+
+        /// <summary>
+        /// Create the Teams of different types (species)
+        /// </summary>
+        bool isCows = true, isHens = true, isSheeps = true, isPigs = true;
+        // TODO replace above hardcoded with values passed from loby so we only create the teams chosen by a player
+        private void CreatePawns()
+        {
             for (int i = 0; i < teams.Length; i++)
             {
                 switch (i)
@@ -218,18 +270,12 @@ namespace FIA_Grupp2
                 }
             }
 
-
-            // Add the elements to the canvas
-            foreach (Team team in teams)
-            {
-                layoutRoot.Children.Add(team.Pawn.PawnCanvas);
-            }
-
             _dice = new Dice(this);
 
             ChangeActiveTeamIcon(teams[currentTeam].Name);
 
             Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
+            Debug.Write(Team.NUMBER_OF_TEAMS);
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
 
@@ -260,12 +306,7 @@ namespace FIA_Grupp2
 
         private new void PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            teams[currentTeam++].Pawn.Step();
-            if (currentTeam>3)
-            {
-                currentTeam = 0;
-            }
-            DebugTextUpdateModifier();
+            // NextTeamsTurn();
         }
 
         private new void PointerWheelChanged(object sender, PointerRoutedEventArgs e)
@@ -297,41 +338,41 @@ namespace FIA_Grupp2
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
 
-		private void GameTimerTick(object sender, object e)
-		{
-			if (remainingGameTime.TotalSeconds > 0)
-			{
-				remainingGameTime = remainingGameTime.Subtract(TimeSpan.FromSeconds(1));
-				UpdateGameTimerText();
-			}
-			else
-			{
-				gameTimer.Stop();
-				// TODO Stop the game as the gametimer has run out.
-			}
-		}
+        private void GameTimerTick(object sender, object e)
+        {
+            if (remainingGameTime.TotalSeconds > 0)
+            {
+                remainingGameTime = remainingGameTime.Subtract(TimeSpan.FromSeconds(1));
+                UpdateGameTimerText();
+            }
+            else
+            {
+                gameTimer.Stop();
+                // TODO Stop the game as the gametimer has run out.
+            }
+        }
 
-		private void TurnTimerTick(object sender, object e)
-		{
-			if (remainingTurnTime.TotalSeconds > 0)
-			{
-				remainingTurnTime = remainingTurnTime.Subtract(TimeSpan.FromSeconds(1));
-				UpdateTurnTimerText();
-			}
-			else
-			{
-				gameTimer.Stop();
-				// TODO Stop the game as the gametimer has run out.
-			}
-		}
+        private void TurnTimerTick(object sender, object e)
+        {
+            if (remainingTurnTime.TotalSeconds > 0)
+            {
+                remainingTurnTime = remainingTurnTime.Subtract(TimeSpan.FromSeconds(1));
+                UpdateTurnTimerText();
+            }
+            else
+            {
+                gameTimer.Stop();
+                // TODO Stop the game as the gametimer has run out.
+            }
+        }
 
-		private void UpdateGameTimerText()
-		{
-			gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
-		}
-		private void UpdateTurnTimerText()
-		{
-			turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
-		}
-	}
+        private void UpdateGameTimerText()
+        {
+            gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
+        }
+        private void UpdateTurnTimerText()
+        {
+            turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
+        }
+    }
 }

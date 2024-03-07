@@ -10,26 +10,30 @@ namespace FIA_Grupp2
 {
     internal class Team
     {
+        public static int NUMBER_OF_TEAMS = 0;
         string name = "Team";
         public string Name { get => name; set => name = value; }
 
         protected static Position nestIndex;
         public Position[] coarse;
         protected GameBoardGrid boardgrid;
-        internal Pawn pawn;
 
+        internal Pawn pawn;
         internal Pawn Pawn { get => pawn; set => pawn = value; }
+
+        internal Pawn[] pawns;
+        internal Pawn[] Pawns { get => pawns; set => pawns = value; }
 
         public Team(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
         {
+            NUMBER_OF_TEAMS++;
             nestIndex = start;
             boardgrid = gbg;
-
         }
 
         public virtual Pawn[] GetPawns()
         {
-            return new Pawn[] { pawn }; //TODO: When there are more pawns, add them here.
+            return pawns;
         }
 
         public virtual Pawn[] GetPawnsOnTheBoard()
@@ -47,6 +51,7 @@ namespace FIA_Grupp2
 
             return pawnsOnTheField.ToArray();
         }
+
         public virtual Pawn[] GetPawnsInTheNest()
         {
             Pawn[] allPawns = GetPawns();
@@ -66,19 +71,35 @@ namespace FIA_Grupp2
     }
     internal class Cows : Team
     {
-        // string name = "Cows";
-        //new public string Name { get => name; set => name = value; }
-
         public Cows(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
         : base(gbg, coarse, start, goal)
         {
             Name = "Cows";
+            Position[] firstpart = new Position[40];
+            Position[] lastpart = new Position[4]
+            {
+                new Position(5, 9),new Position(5, 8),new Position(5, 7),new Position(5, 6)
+            };
+            // Split the original coarse array into two equal parts
+            Array.Copy(coarse, 0, firstpart, 0, 40); // Copy the first 40 elements to firstpart
+
+            Position[] combinedCoarse = new Position[coarse.Length + 1];
+            Array.Copy(firstpart, 0, combinedCoarse, 0, firstpart.Length);
+
             // Combine the original coarse array with the goal position
             this.coarse = new Position[coarse.Length + 1];
+
             Array.Copy(coarse, this.coarse, coarse.Length);
+
             this.coarse[coarse.Length] = goal;
 
-            pawn = new Cow(boardgrid, nestIndex, ref this.coarse);
+            pawns = new Pawn[4]{
+                new Cow(boardgrid, nestIndex, ref this.coarse, this),
+                new Cow(boardgrid, nestIndex, ref this.coarse, this),
+                new Cow(boardgrid, nestIndex, ref this.coarse, this),
+                new Cow(boardgrid, nestIndex, ref this.coarse, this)
+            };
+
         }
 
     }
@@ -90,8 +111,6 @@ namespace FIA_Grupp2
             Name = "Hens";
             Position[] firstpart = new Position[10];
             Position[] secondpart = new Position[30];
-            Position[] lpart = new Position[4];
-
             Position[] lastpart = new Position[4]
             {
                 new Position(9, 5),new Position(8, 5),new Position(7, 5),new Position(6, 5)
@@ -113,8 +132,13 @@ namespace FIA_Grupp2
 
             // Assign the combined array back to this.coarse
             this.coarse = combinedCoarse;
+            pawns = new Pawn[4]{
+                new Hen(boardgrid, nestIndex, ref this.coarse, this),
+                new Hen(boardgrid, nestIndex, ref this.coarse, this),
+                new Hen(boardgrid, nestIndex, ref this.coarse, this),
+                new Hen(boardgrid, nestIndex, ref this.coarse, this)
+            };
 
-            pawn = new Hen(boardgrid, nestIndex, ref this.coarse);
         }
 
     }
@@ -150,7 +174,13 @@ namespace FIA_Grupp2
             // Assign the combined array back to this.coarse
             this.coarse = combinedCoarse;
 
-            pawn = new Sheep(boardgrid, nestIndex, ref this.coarse);
+            // pawn = new Sheep(boardgrid, nestIndex, ref this.coarse);
+            pawns = new Pawn[4]{
+                new Sheep(boardgrid, nestIndex, ref this.coarse , this),
+                new Sheep(boardgrid, nestIndex, ref this.coarse , this),
+                new Sheep(boardgrid, nestIndex, ref this.coarse , this),
+                new Sheep(boardgrid, nestIndex, ref this.coarse , this)
+            };
         }
 
     }
@@ -186,7 +216,13 @@ namespace FIA_Grupp2
             // Assign the combined array back to this.coarse
             this.coarse = combinedCoarse;
 
-            pawn = new Pig(boardgrid, nestIndex, ref this.coarse);
+            // pawn = new Pig(boardgrid, nestIndex, ref this.coarse);
+            pawns = new Pawn[4]{
+                new Pig(boardgrid, nestIndex, ref this.coarse, this),
+                new Pig(boardgrid, nestIndex, ref this.coarse, this),
+                new Pig(boardgrid, nestIndex, ref this.coarse, this),
+                new Pig(boardgrid, nestIndex, ref this.coarse, this)
+            };
         }
 
     }
