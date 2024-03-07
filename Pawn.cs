@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace FIA_Grupp2
 {
+
     internal class Pawn
     {
         protected bool canWalk = false;
@@ -60,6 +61,9 @@ namespace FIA_Grupp2
                 {
                     pawn.pawnCanvas.IsHitTestVisible = false;
                 }
+
+                // Calling for the next teams turn
+                GamePage.Instance.NextTeamsTurn();
             }
         }
 

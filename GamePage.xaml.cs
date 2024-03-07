@@ -19,6 +19,8 @@ namespace FIA_Grupp2
 {
     public sealed partial class GamePage : Page
     {
+        public static GamePage Instance;
+
         int MouseX, MouseY;
         static int nrOfPlayers = 4;
         static int currentTeam = 0;
@@ -50,6 +52,8 @@ namespace FIA_Grupp2
         public GamePage()
         {
             InitializeComponent();
+            Instance = this;
+
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             Loaded += MainPage_Loaded;
@@ -110,53 +114,53 @@ namespace FIA_Grupp2
             // OM MELLAN ETT & SEX
             foreach (Pawn pwn in teams[currentTeam].pawns)
             {
-
-            if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
-            {
-                // If i dont have any pawns out on the board, skip to the next person. 
-                if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
+                if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
                 {
-                    Debug.WriteLine("There is no one outside");
-                    // Skip to the next person
-                    NextTeamsTurn();
-                    return;
+                    // If i dont have any pawns out on the board, skip to the next person. 
+                    if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
+                    {
+                        Debug.WriteLine("There is no one outside");
+                        // Skip to the next person
+                        NextTeamsTurn();
+                        return;
+                    }
+                    // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
+                    else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
+                    {
+                        pwn.TurnStepsLeft = _dice.DiceNumber;
+                        pwn.PawnCanvas.IsHitTestVisible = true;
+                    }
                 }
-                // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
-                else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
+                // move one of my pawns on the board from the nest, 
+                // OM ETT ELLER SEX
+                else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
                 {
-                    
-                    pwn.TurnStepsLeft = _dice.DiceNumber;
-                    pwn.PawnCanvas.IsHitTestVisible = true;
+                    //DOIN: We want to have the option to either move the pawn, or place one on the board.
+                    //AND NO PAWNS ON BOARD BUT > 0 IN NEST
+                    if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
+                        teams[currentTeam].GetPawnsInTheNest().Length >= 0)
+                    {
+                        Debug.WriteLine("There is still pawns in the nest, and i can move one out");
+                        //FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
+                        pwn.TurnStepsLeft = _dice.DiceNumber;
+                        pwn.PawnCanvas.IsHitTestVisible = true;
+                    }
+                    else //or if i have pawn on the board, make it able to move.
+                    {
+                        pwn.TurnStepsLeft = _dice.DiceNumber;
+                        pwn.PawnCanvas.IsHitTestVisible = true;
+                    }
                 }
             }
-            // move one of my pawns on the board from the nest, 
-            // OM ETT ELLER SEX
-            else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
-            {
-                //DOIN: We want to have the option to either move the pawn, or place one on the board.
-                //AND NO PAWNS ON BOARD BUT > 0 IN NEST
-                if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
-                    teams[currentTeam].GetPawnsInTheNest().Length >= 0)
-                {
-                    Debug.WriteLine("There is still pawns in the nest, and i can move one out");
-                    //FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
-                    pwn.TurnStepsLeft = _dice.DiceNumber;
-                    pwn.PawnCanvas.IsHitTestVisible = true;
-                }
-                else //or if i have pawn on the board, make it able to move.
-                {
-                    pwn.TurnStepsLeft = _dice.DiceNumber;
-                    pwn.PawnCanvas.IsHitTestVisible = true;
-                }
-            }
-        }
 
-            NextTeamsTurn();
+            //FIXME: Call only this when the pawn has been pressed, or when the dice is not valid, meaning 1 or 6
+            //NextTeamsTurn();
+
             //TODO: When a turn is finished, display the golden dice again
             //_dice.NewTurn();
         }
 
-        private void NextTeamsTurn()
+        public void NextTeamsTurn()
         {
             // int aprioTeam = currentTeam;
             currentTeam++;
@@ -213,6 +217,8 @@ namespace FIA_Grupp2
 
             activeDiceBorder.Background = new SolidColorBrush(GetColorFromTeamName(teamName));
             activeTeamIconBorder.Background = new SolidColorBrush(GetColorFromTeamName(teamName));
+
+            _dice.NewTurn();
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
