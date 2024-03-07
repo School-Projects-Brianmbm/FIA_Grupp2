@@ -83,6 +83,7 @@ namespace FIA_Grupp2
             if (allPawnsInGoal)
             {
                 Debug.Write("All pawns are in goal");
+                GamePage.Instance.Frame.Navigate(typeof(StartPage));
             }
         }
 
