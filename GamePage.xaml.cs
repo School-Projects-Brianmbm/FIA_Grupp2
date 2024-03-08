@@ -10,6 +10,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Documents;
+using System.Collections.Generic;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -40,6 +41,7 @@ namespace FIA_Grupp2
 
         private Dice _dice;
 
+        private bool isTurnTimerEnabled = false;
 		private DispatcherTimer gameTimer;
 		private DispatcherTimer turnTimer;
 		private TimeSpan remainingGameTime;
@@ -55,9 +57,11 @@ namespace FIA_Grupp2
 		public GamePage()
 		{
 			InitializeComponent();
+            
+
 			Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
 			layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
-			Loaded += MainPage_Loaded;
+			
 			gameAudio = new Playlist();
 			StartMusic();
 
@@ -65,10 +69,14 @@ namespace FIA_Grupp2
 			LoadLobbyOptions();
 
             SetAvailableTeams();
-           
-			InitiateGameTimer();
+            nrOfPlayers = GetPlayerCount();
+            teams = new Team[nrOfPlayers];
+            
+            InitiateGameTimer();
 			InitiateTurnTimer();
-		}
+
+            Loaded += MainPage_Loaded;
+        }
 
 		private void LoadLobbyOptions()
 		{
@@ -92,6 +100,30 @@ namespace FIA_Grupp2
 				slot4Team = lobbyOptionsData.slot4Team;
 			}
 		}
+
+        private int GetPlayerCount()
+        {
+            int playerCount = 0;
+
+            if(isCows)
+            {
+                playerCount++;
+            }
+            if (isSheeps)
+            {
+                playerCount++;
+            }
+            if (isHens)
+            {
+                playerCount++;
+            }
+            if (isPigs)
+            {
+                playerCount++;
+            }
+
+            return playerCount;
+        }
 
 		private void LoadGameSessionOptions()
 		{
@@ -223,7 +255,7 @@ namespace FIA_Grupp2
             int aprioTeam = currentTeam;
             currentTeam++;
 
-            if (currentTeam > 3)
+            if (currentTeam >= nrOfPlayers)
             {
                 currentTeam = 0;
             }
@@ -274,7 +306,32 @@ namespace FIA_Grupp2
         /// </summary>
         private void CreatePawns()
         {
-            for (int i = 0; i < teams.Length; i++)
+            int index = 0;
+            if (isCows)
+            {
+                teams[index] = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
+                index++;
+            }
+
+            if (isHens)
+            {
+                teams[index] = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition);
+                index++;
+            }
+
+            if (isSheeps)
+            {
+                teams[index] = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
+                index++;
+            }
+
+            if (isPigs)
+            {
+                teams[index] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
+                index++;
+            }
+
+            /*for (int i = 0; i < teams.Length; i++)
             {
                 switch (i)
                 {
@@ -294,7 +351,7 @@ namespace FIA_Grupp2
                         teams[i] = null;
                         break;
                 }
-            }
+            }*/
             Debug.Write(Team.NUMBER_OF_TEAMS);
         }
 
@@ -320,7 +377,10 @@ namespace FIA_Grupp2
 
         private void DebugTextUpdateModifier()
         {
-            debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish} Curent team is: {teams[currentTeam].Name}";
+            if (teams[currentTeam] != null)
+            {
+                debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish} Curent team is: {teams[currentTeam].Name}";
+            }
         }
 
         private new void PointerReleased(object sender, PointerRoutedEventArgs e)
@@ -380,7 +440,10 @@ namespace FIA_Grupp2
 			}
 			else
 			{
-				NextTeamsTurn();
+				if(isTurnTimerEnabled)
+                {
+                    NextTeamsTurn();
+                }
 			}
 		}
 
