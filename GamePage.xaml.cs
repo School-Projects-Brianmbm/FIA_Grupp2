@@ -142,33 +142,87 @@ namespace FIA_Grupp2
 
         private void SetAvailableTeams() 
         {
+
+
             if (slot1Usertype != "None")
             {
-				isCows = (slot1Team == "cow");
-				isPigs = (slot1Team == "pig");
-				isHens = (slot1Team == "chicken");
-				isSheeps = (slot1Team == "sheep");
+                if (slot1Team == "cow")
+                {
+                    isCows = true;
+                }
+                else if (slot1Team == "pig")
+                {
+					isPigs = true;
+				}
+				else if (slot1Team == "chicken")
+				{
+					isHens = true;
+				}
+
+				else if (slot1Team == "sheep")
+				{
+					isSheeps = true;
+				}
 			}
 			if (slot2Usertype != "None")
 			{
-				isCows = (slot1Team == "cow");
-				isPigs = (slot2Team == "pig");
-				isHens = (slot2Team == "chicken");
-				isSheeps = (slot2Team == "sheep");
+				if (slot2Team == "cow")
+				{
+					isCows = true;
+				}
+				else if (slot2Team == "pig")
+				{
+					isPigs = true;
+				}
+				else if (slot2Team == "chicken")
+				{
+					isHens = true;
+				}
+
+				else if (slot2Team == "sheep")
+				{
+					isSheeps = true;
+				}
 			}
 			if (slot3Usertype != "None")
 			{
-				isCows = (slot3Team == "cow");
-				isPigs = (slot3Team == "pig");
-				isHens = (slot3Team == "chicken");
-				isSheeps = (slot3Team == "sheep");
+				if (slot3Team == "cow")
+				{
+					isCows = true;
+				}
+				else if (slot3Team == "pig")
+				{
+					isPigs = true;
+				}
+				else if (slot3Team == "chicken")
+				{
+					isHens = true;
+				}
+
+				else if (slot3Team == "sheep")
+				{
+					isSheeps = true;
+				}
 			}
 			if (slot4Usertype != "None")
 			{
-				isCows = (slot4Team == "cow");
-				isPigs = (slot4Team == "pig");
-				isHens = (slot4Team == "chicken");
-				isSheeps = (slot4Team == "sheeps");
+				if (slot4Team == "cow")
+				{
+					isCows = true;
+				}
+				else if (slot4Team == "pig")
+				{
+					isPigs = true;
+				}
+				else if (slot4Team == "chicken")
+				{
+					isHens = true;
+				}
+
+				else if (slot4Team == "sheep")
+				{
+					isSheeps = true;
+				}
 			}
 		}
 
