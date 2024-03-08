@@ -363,7 +363,7 @@ namespace FIA_Grupp2
 
             gameGrid.CalculateActualPositions();
             gameGrid.CalculateOrigoY();
-            gameGrid.SetEllipsesPositions(true, false, true);
+            gameGrid.SetEllipsesPositions();
             //gameGrid.SetEllipsesPositions(true,showInd: true);
 
             CreatePawns();
@@ -495,30 +495,67 @@ namespace FIA_Grupp2
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
 
-		private void GameTimerTick(object sender, object e)
-		{
-			if (remainingGameTime.TotalSeconds > 0)
-			{
-				remainingGameTime = remainingGameTime.Subtract(TimeSpan.FromSeconds(1));
-				UpdateGameTimerText();
-			}
-			else
-			{
-				gameTimer.Stop();
-				// TODO Stop the game as the gametimer has run out.
-			}
-		}
+        private void GameTimerTick(object sender, object e)
+        {
+            if (remainingGameTime.TotalSeconds > 0)
+            {
+                remainingGameTime = remainingGameTime.Subtract(TimeSpan.FromSeconds(1));
+                UpdateGameTimerText();
+            }
+            else
+            {
+                gameTimer.Stop();
+                // TODO Stop the game as the gametimer has run out.
+            }
+        }
 
-		private void TurnTimerTick(object sender, object e)
-		{
-			if (remainingTurnTime.TotalSeconds > 0)
-			{
-				remainingTurnTime = remainingTurnTime.Subtract(TimeSpan.FromSeconds(1));
-				UpdateTurnTimerText();
-			}
-			else
-			{
-				if(isTurnTimerEnabled)
+        private void TurnTimerTick(object sender, object e)
+        {
+            if (remainingTurnTime.TotalSeconds > 0)
+            {
+                remainingTurnTime = remainingTurnTime.Subtract(TimeSpan.FromSeconds(1));
+                UpdateTurnTimerText();
+            }
+            else
+            {
+                gameTimer.Stop();
+                // TODO Stop the game as the gametimer has run out.
+            }
+        }
+
+        private void UpdateGameTimerText()
+        {
+            gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
+        }
+        private void UpdateTurnTimerText()
+        {
+            turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
+        }
+
+        private Team CheckOtherTeamsPositions(Team currentActiveTeam)
+        {
+            foreach (Team team in teams)
+            {
+                if (team.Name != currentActiveTeam.Name)
+                {
+                    foreach(Pawn activePawn in currentActiveTeam.Pawns)
+                    {
+                        foreach (Pawn opposingPawn in team.Pawns)
+                        {
+                            if(activePawn.CurrentPosition.X == opposingPawn.CurrentPosition.X &&
+                               activePawn.CurrentPosition.Y == opposingPawn.CurrentPosition.Y)
+                            {
+                                opposingPawn.Steps = 0;
+                                opposingPawn.ResetDirection();
+                                opposingPawn.ReplaceImage();
+                                opposingPawn.PositionAtNest();
+                                return team;
+                            }
+                        }
+                    }
+                }
+                else
+
                 {
                     NextTeamsTurn();
                 }
