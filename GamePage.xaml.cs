@@ -252,7 +252,7 @@ namespace FIA_Grupp2
 
             gameGrid.CalculateActualPositions();
             gameGrid.CalculateOrigoY();
-            gameGrid.SetEllipsesPositions(true, false, true);
+            gameGrid.SetEllipsesPositions();
             //gameGrid.SetEllipsesPositions(true,showInd: true);
 
             CreatePawns();
@@ -417,6 +417,8 @@ namespace FIA_Grupp2
                                activePawn.CurrentPosition.Y == opposingPawn.CurrentPosition.Y)
                             {
                                 opposingPawn.Steps = 0;
+                                opposingPawn.ResetDirection();
+                                opposingPawn.ReplaceImage();
                                 opposingPawn.PositionAtNest();
                                 return team;
                             }
