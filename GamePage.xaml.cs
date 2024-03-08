@@ -23,7 +23,7 @@ namespace FIA_Grupp2
         public static GamePage Instance;
 
         int MouseX, MouseY;
-        static int nrOfPlayers = 1;
+        static int nrOfPlayers = 4;
         static int currentTeam = 0;
         static GameBoardGrid gameGrid;
 
@@ -266,7 +266,7 @@ namespace FIA_Grupp2
         /// <summary>
         /// Create the Teams of different types (species)
         /// </summary>
-        bool isCows = true, isHens = false, isSheeps = false, isPigs = false;
+        bool isCows = true, isHens = true, isSheeps = true, isPigs = true;
         // TODO replace above hardcoded with values passed from loby so we only create the teams chosen by a player
         private void CreatePawns()
         {
