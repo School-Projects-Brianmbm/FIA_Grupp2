@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Documents;
 using Windows.Devices.Pwm;
 using Windows.UI.Xaml.Media;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -182,6 +183,11 @@ namespace FIA_Grupp2
         public void NextTeamsTurn()
         {
             // int aprioTeam = currentTeam;
+            Debug.WriteLine("");
+            Debug.WriteLine($"{teams[currentTeam].Name} attacked : {CheckOtherTeamsPositions(teams[currentTeam])}");
+
+            //IsThereAPawnOnThisPosition(new Position(6, 10));
+            
             currentTeam++;
             if (currentTeam > nrOfPlayers -1)
             {
@@ -395,6 +401,35 @@ namespace FIA_Grupp2
         private void UpdateTurnTimerText()
         {
             turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
+        }
+
+        private Team CheckOtherTeamsPositions(Team currentActiveTeam)
+        {
+            foreach (Team team in teams)
+            {
+                if (team.Name != currentActiveTeam.Name)
+                {
+                    foreach(Pawn activePawn in currentActiveTeam.Pawns)
+                    {
+                        foreach (Pawn opposingPawn in team.Pawns)
+                        {
+                            if(activePawn.CurrentPosition.X == opposingPawn.CurrentPosition.X &&
+                               activePawn.CurrentPosition.Y == opposingPawn.CurrentPosition.Y)
+                            {
+                                opposingPawn.Steps = 0;
+                                opposingPawn.PositionAtNest();
+                                return team;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -31,14 +31,15 @@ namespace FIA_Grupp2
 
         internal Image[] pawnImages = new Image[4];
 
+        public Position CurrentPosition { get; protected set; }
+
         public Canvas PawnCanvas { get => pawnCanvas; set => pawnCanvas = value; }
         public Image PawnImage { get => pawnImage; set => pawnImage = value; }
         Team team;
 
-        public bool AtNest { get { return Steps == 0; }
-        }
+        public bool AtNest { get { return Steps == 0; } }
 
-        internal int Steps { get => steps; set => steps = value; }
+        public int Steps { get => steps; set => steps = value; }
 
         public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
         {
@@ -74,6 +75,9 @@ namespace FIA_Grupp2
             Point pos = boardgrid.GetActualPositionOf(indexPosition.X, indexPosition.Y);
             double newX = pos.X;
             double newY = pos.Y;
+
+            CurrentPosition = new Position((int)indexPosition.X, (int)indexPosition.Y);
+
             Canvas.SetLeft(PawnImage, newX + 8 + (10 * localIndex));
             Canvas.SetTop(PawnImage, newY - 10 + (10 * localIndex));
         }
@@ -82,6 +86,9 @@ namespace FIA_Grupp2
             Point pos = boardgrid.GetActualPositionOf(ind.X, ind.Y);
             double newX = pos.X;
             double newY = pos.Y;
+
+            CurrentPosition = new Position((int)ind.X, (int)ind.Y);
+
             Canvas.SetLeft(PawnImage, newX + 8);
             Canvas.SetTop(PawnImage, newY - 10);
         }
