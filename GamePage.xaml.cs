@@ -42,6 +42,7 @@ namespace FIA_Grupp2
         private Dice _dice;
 
         private bool isTurnTimerEnabled = false;
+		private bool isGameTimerEnabled = false;
 		private DispatcherTimer gameTimer;
 		private DispatcherTimer turnTimer;
 		private TimeSpan remainingGameTime;
@@ -73,7 +74,12 @@ namespace FIA_Grupp2
             teams = new Team[nrOfPlayers];
             
             InitiateGameTimer();
+
+			
 			InitiateTurnTimer();
+
+
+			
 
             Loaded += MainPage_Loaded;
         }
@@ -229,19 +235,35 @@ namespace FIA_Grupp2
 		private void InitiateGameTimer()
 		{
 			remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
-			gameTimer = new DispatcherTimer();
-			gameTimer.Interval = TimeSpan.FromSeconds(1);
-			gameTimer.Tick += GameTimerTick;
-			gameTimer.Start();
+			if (remainingGameTime.TotalSeconds > 0)
+			{
+				isGameTimerEnabled = true;
+			}
+
+            if (isGameTimerEnabled)
+            {
+				gameTimer = new DispatcherTimer();
+				gameTimer.Interval = TimeSpan.FromSeconds(1);
+				gameTimer.Tick += GameTimerTick;
+				gameTimer.Start();
+			}
 		}
 
 		private void InitiateTurnTimer()
 		{
 			remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
-			turnTimer = new DispatcherTimer();
-			turnTimer.Interval = TimeSpan.FromSeconds(1);
-			turnTimer.Tick += TurnTimerTick;
-			turnTimer.Start();
+			if (remainingTurnTime.TotalSeconds > 0)
+			{
+				isTurnTimerEnabled = true;
+			}
+
+			if (isTurnTimerEnabled)
+			{
+				turnTimer = new DispatcherTimer();
+				turnTimer.Interval = TimeSpan.FromSeconds(1);
+				turnTimer.Tick += TurnTimerTick;
+				turnTimer.Start();
+			}
 		}
 
 		private async void StartMusic()
@@ -316,8 +338,10 @@ namespace FIA_Grupp2
             //teams[aprioTeam].Pawn.PawnCanvas.IsHitTestVisible = false;
             //teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
             DebugTextUpdateModifier();
-            ResetTurnTimer();
-        }
+			if (isTurnTimerEnabled) {
+				ResetTurnTimer();
+			}
+		}
 
 		private void ResetTurnTimer()
 		{
