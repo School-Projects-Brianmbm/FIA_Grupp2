@@ -383,12 +383,12 @@ namespace FIA_Grupp2
 
         private void Back_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(MainPage));
+			this.Frame.Navigate(typeof(MainPage), introAudio);
 		}
 
 		private void Options_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(GameSessionOptionsPage));
+			this.Frame.Navigate(typeof(GameSessionOptionsPage), introAudio);
 		}
 
 		private void Choose_level_button_click_event(object sender, RoutedEventArgs e)
