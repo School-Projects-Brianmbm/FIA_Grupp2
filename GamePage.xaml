@@ -56,7 +56,7 @@
         <Border x:Name="activeTeamIconBorder"  Background="#FF606C38" Width="144" Height="140" CornerRadius="10" Margin="0,0,58,212" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
         <Border x:Name="activeDiceBorder"  Background="#FF606C31" Width="196" Height="196" CornerRadius="10" Margin="0,0,32,27" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
-        <Button Margin="0,0,32,31" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="192" Width="192" Background="Transparent" Click="DiceClicked">
+        <Button x:Name="diceButton" Margin="0,0,32,31" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="192" Width="192" Background="Transparent" Click="DiceClicked">
             <Image Source="ms-appx:///Assets/Dice_images/white_dice.png" Width="180" Height="180" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Button>
         <Canvas x:Name="diceCross" Margin="0,0,32,31" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="192" Width="192" Background="Transparent" Visibility="Collapsed" IsHitTestVisible="False">

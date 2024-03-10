@@ -111,6 +111,7 @@ namespace FIA_Grupp2
 
         public void DiceFinishedSpinning(object sender, EventArgs e)
         {
+            diceButton.IsEnabled = false;
             // FÖR VAR PJÄS I TEAMS
             foreach (Pawn pwn in teams[currentTeam].pawns)
             {
@@ -182,6 +183,7 @@ namespace FIA_Grupp2
 
         public void NextTeamsTurn()
         {
+            diceButton.IsEnabled = true;
             // int aprioTeam = currentTeam;
             Debug.WriteLine("");
             Debug.WriteLine($"{teams[currentTeam].Name} attacked : {CheckOtherTeamsPositions(teams[currentTeam])}");
