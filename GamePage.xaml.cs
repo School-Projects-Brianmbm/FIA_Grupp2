@@ -163,29 +163,9 @@ namespace FIA_Grupp2
                     // TODO KOLLA OM NÅGON ÄR I VÄGEN
                 }
             }
-            
-                
-                
-
-                /*if (!pwn.coarse.Length.Equals(5))
-                {
-                    break;
-                }
-                else
-                {
-                    Application.Current.Exit();
-                }*/
-
-
-            
-
-            
 
             //FIXME: Call only this when the pawn has been pressed, or when the dice is not valid, meaning 1 or 6
             //NextTeamsTurn();
-
-            //TODO: When a turn is finished, display the golden dice again
-            //_dice.NewTurn();
         }
 
         public async void NextTeamsTurnDelay(int ms = 1000)
