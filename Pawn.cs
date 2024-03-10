@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 namespace FIA_Grupp2
 {
 
-    internal class Pawn
+    internal abstract class Pawn
     {
         protected bool canWalk = false;
         protected static int GLOBAL_INDEX = 0;
@@ -31,14 +31,15 @@ namespace FIA_Grupp2
 
         internal Image[] pawnImages = new Image[4];
 
+        public Position CurrentPosition { get; protected set; }
+
         public Canvas PawnCanvas { get => pawnCanvas; set => pawnCanvas = value; }
         public Image PawnImage { get => pawnImage; set => pawnImage = value; }
         Team team;
 
-        public bool AtNest { get { return Steps == 0; }
-        }
+        public bool AtNest { get { return Steps == 0; } }
 
-        internal int Steps { get => steps; set => steps = value; }
+        public int Steps { get => steps; set => steps = value; }
 
         public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
         {
@@ -95,16 +96,48 @@ namespace FIA_Grupp2
         public virtual void PositionAtNest()
         {
             Point pos = boardgrid.GetActualPositionOf(indexPosition.X, indexPosition.Y);
-            double newX = pos.X;
-            double newY = pos.Y;
-            Canvas.SetLeft(PawnImage, newX + 8 + (10 * localIndex));
-            Canvas.SetTop(PawnImage, newY - 10 + (10 * localIndex));
+            double newPosX = pos.X;
+            double newPosY = pos.Y;
+
+            CurrentPosition = new Position((int)indexPosition.X, (int)indexPosition.Y);
+           
+
+            double modiY = 0, modiX = 0;
+            switch (localIndex)
+            {
+                case 2:
+                    modiX = -25;
+                    modiY = +25;
+                    break;
+                case 3:
+                    modiX = +25;
+                    modiY = +25;
+                    break;
+                case 1:
+                    modiX = +25;
+                    modiY = -25;
+                    break;
+                case 0:
+                    modiX = -25;
+                    modiY = -25;
+                    break;
+                default:
+                    break;
+            }
+
+
+
+            Canvas.SetLeft(PawnImage, newPosX + modiX);
+            Canvas.SetTop(PawnImage, newPosY + modiY);
         }
         public virtual void PositionAt(Position ind)
         {
             Point pos = boardgrid.GetActualPositionOf(ind.X, ind.Y);
             double newX = pos.X;
             double newY = pos.Y;
+
+            CurrentPosition = new Position((int)ind.X, (int)ind.Y);
+
             Canvas.SetLeft(PawnImage, newX + 8);
             Canvas.SetTop(PawnImage, newY - 10);
         }
@@ -179,6 +212,7 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
         }
+        internal abstract void ResetDirection();
     }
     internal class Cow : Pawn
     {
@@ -202,7 +236,9 @@ namespace FIA_Grupp2
             PositionAtNest();
             Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
 
-        }
+
+    }
+        internal override void ResetDirection(){ direction = 3; }
     }
     internal class Hen : Pawn
     {
@@ -213,7 +249,7 @@ namespace FIA_Grupp2
 
             Name = "Hen";
             pawnCanvas.Name = "Hen";
-            direction = 0;
+            direction = 2;
             pawnImages = new Image[4]
             {
                 new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/hen_0.png")), Height = 80, Width = 80 },
@@ -226,6 +262,7 @@ namespace FIA_Grupp2
             PositionAtNest();
             Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
         }
+        internal override void ResetDirection() { direction = 2; }
     }
     internal class Sheep : Pawn
     {
@@ -249,6 +286,8 @@ namespace FIA_Grupp2
             PositionAtNest();
             Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
         }
+        internal override void ResetDirection() { direction = 1; }
+
     }
     internal class Pig : Pawn
     {
@@ -259,7 +298,7 @@ namespace FIA_Grupp2
 
             Name = "Pig";
             pawnCanvas.Name = "Pig";
-            direction = 2;
+            direction = 0;
             pawnImages = new Image[4]
             {
                 new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/pig_0.png")), Height = 80, Width = 80 },
@@ -272,5 +311,6 @@ namespace FIA_Grupp2
             PositionAtNest();
             Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
         }
+        internal override void ResetDirection() { direction = 0; }
     }
 }

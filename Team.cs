@@ -133,6 +133,7 @@ namespace FIA_Grupp2
 
             // Assign the combined array back to this.coarse
             this.coarse = combinedCoarse;
+
             pawns = new Pawn[4]{
                 new Hen(boardgrid, nestIndex, ref this.coarse, this),
                 new Hen(boardgrid, nestIndex, ref this.coarse, this),

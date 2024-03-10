@@ -180,13 +180,6 @@
     <Content Include="Assets\Pawns\cow_1.png" />
     <Content Include="Assets\Pawns\cow_2.png" />
     <Content Include="Assets\Pawns\cow_3.png" />
-    <Content Include="Assets\Pawns\nearCowExperience.png" />
-    <Content Include="Assets\Sound\Credit.txt" />
-    <Content Include="Assets\Sound\InGame\1.sky_is_high_100_Darockart.mp3" />
-    <Content Include="Assets\Sound\InGame\2.far_from_the_city_Daddys_Music.mp3" />
-    <Content Include="Assets\Sound\InGame\3.it39s_all_country_Caffeine_Creek_Band.mp3" />
-    <Content Include="Assets\Sound\Menu\1.fried_taters_bluegrass_Caffeine_Creek_Band.mp3" />
-    <Content Include="Assets\Sound\Menu\2.more_country_Caffeine_Creek_Band.mp3" />
     <Content Include="Assets\Pawns\hen_0.png" />
     <Content Include="Assets\Pawns\hen_1.png" />
     <Content Include="Assets\Pawns\hen_2.png" />
@@ -199,6 +192,12 @@
     <Content Include="Assets\Pawns\sheep_1.png" />
     <Content Include="Assets\Pawns\sheep_2.png" />
     <Content Include="Assets\Pawns\sheep_3.png" />
+    <Content Include="Assets\Sound\Credit.txt" />
+    <Content Include="Assets\Sound\InGame\1.sky_is_high_100_Darockart.mp3" />
+    <Content Include="Assets\Sound\InGame\2.far_from_the_city_Daddys_Music.mp3" />
+    <Content Include="Assets\Sound\InGame\3.it39s_all_country_Caffeine_Creek_Band.mp3" />
+    <Content Include="Assets\Sound\Menu\1.fried_taters_bluegrass_Caffeine_Creek_Band.mp3" />
+    <Content Include="Assets\Sound\Menu\2.more_country_Caffeine_Creek_Band.mp3" />
     <Content Include="Assets\TeamIcons\all_icons.jpg" />
     <Content Include="Assets\TeamIcons\chicken.jpg" />
     <Content Include="Assets\TeamIcons\cow.jpg" />
