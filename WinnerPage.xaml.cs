@@ -20,7 +20,7 @@ using Windows.UI.Xaml.Navigation;
 namespace FIA_Grupp2
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Page for displaying the winner of the game
     /// </summary>
     public sealed partial class WinnerPage : Page
     {
@@ -42,6 +42,10 @@ namespace FIA_Grupp2
             Debug.Write($" On Navigate Winner: {name}");
             SetBackgroundImage();
         }
+
+        /// <summary>
+        /// Background changes dynamically depending on winner of game
+        /// </summary>
         private void SetBackgroundImage()
         {
             Debug.Write($" Set Background Winner: {name}");

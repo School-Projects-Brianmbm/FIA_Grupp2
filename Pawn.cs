@@ -67,6 +67,9 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Checks if all pawns are in goal. Navigates to winnerpage with the name of the winning team
+        /// </summary>
         private void CheckWinner()
         {
             bool allPawnsInGoal = true;
