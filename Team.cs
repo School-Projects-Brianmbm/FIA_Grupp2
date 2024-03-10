@@ -33,7 +33,7 @@ namespace FIA_Grupp2
 
         public virtual Pawn[] GetPawns()
         {
-            return new Pawn[] { pawn }; //TODO: When there are more pawns, add them here.
+            return pawns;
         }
 
         public virtual Pawn[] GetPawnsOnTheBoard()

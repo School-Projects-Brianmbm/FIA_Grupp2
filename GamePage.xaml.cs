@@ -345,7 +345,7 @@ namespace FIA_Grupp2
 
         public void NextTeamsTurn()
         {
-
+            CheckOtherTeamsPositions(teams[currentTeam]);
             currentTeam++;
             if (currentTeam > nrOfPlayers - 1)
             {
