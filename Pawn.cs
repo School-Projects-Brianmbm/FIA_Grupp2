@@ -31,18 +31,20 @@ namespace FIA_Grupp2
 
         internal Image[] pawnImages = new Image[4];
 
+        public Position CurrentPosition { get; protected set; }
+
         public Canvas PawnCanvas { get => pawnCanvas; set => pawnCanvas = value; }
         public Image PawnImage { get => pawnImage; set => pawnImage = value; }
+        Team team;
 
+        public bool AtNest { get { return Steps == 0; } }
 
-        public bool AtNest
-        {
-            get { return steps == 0; }
-        }
+        public int Steps { get => steps; set => steps = value; }
 
 
         public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
         {
+            team = myTeam;
             PawnCanvas.IsHitTestVisible = false;
             globalIndex = GLOBAL_INDEX++;
             pawnCanvas.Children.Add(pawnImage);

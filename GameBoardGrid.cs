@@ -20,7 +20,7 @@ namespace FIA_Grupp2
         private static double _colDist = 30;
         static readonly double _rowDist = 60;
         static readonly double _goalSize = _colDist * 2;
-        static readonly double _nestSize = _colDist * 5;
+        static readonly double _nestSize = _colDist * 3;
         readonly double _origoX;
         private double _origoY;
 

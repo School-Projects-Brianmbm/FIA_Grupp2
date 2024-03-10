@@ -42,80 +42,71 @@ namespace FIA_Grupp2
 
         Team[] teams = new Team[nrOfPlayers];
         // Team cows, hens, sheeps, pigs;
+        public Playlist gameAudio;
 
         private Dice _dice;
 
         private bool isTurnTimerEnabled = false;
-		private bool isGameTimerEnabled = false;
-		private DispatcherTimer gameTimer;
-		private DispatcherTimer turnTimer;
-		private TimeSpan remainingGameTime;
-		private TimeSpan remainingTurnTime;
-		private int gameHours, gameMinutes, gameSeconds;
+        private bool isGameTimerEnabled = false;
+        private DispatcherTimer gameTimer;
+        private DispatcherTimer turnTimer;
+        private TimeSpan remainingGameTime;
+        private TimeSpan remainingTurnTime;
+        private int gameHours, gameMinutes, gameSeconds;
         private int turnHours, turnMinutes, turnSeconds;
-		public Playlist gameAudio;
         private bool isCows = false, isHens = false, isSheeps = false, isPigs = false;
         private string slot1Usertype, slot2Usertype, slot3Usertype, slot4Usertype;
         private string slot1Username, slot2Username, slot3Username, slot4Username;
         private string slot1Team, slot2Team, slot3Team, slot4Team;
 
-		public GamePage()
-		{
-			InitializeComponent();
-            
+        public GamePage()
+        {
+            InitializeComponent();
+            Instance = this;
+            Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
+            layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
+            gameAudio = new Playlist();
+            StartMusic();
 
-			Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
-			layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
-			
-			gameAudio = new Playlist();
-			StartMusic();
-
-			LoadGameSessionOptions();
-			LoadLobbyOptions();
-
+            LoadGameSessionOptions();
+            LoadLobbyOptions();
             SetAvailableTeams();
             nrOfPlayers = GetPlayerCount();
             teams = new Team[nrOfPlayers];
-            
             InitiateGameTimer();
-
-			
-			InitiateTurnTimer();
-
-
-			
+            InitiateTurnTimer();
 
             Loaded += MainPage_Loaded;
         }
 
-		private void LoadLobbyOptions()
-		{
-			string lobbyData = (string)ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"];
-			if (!string.IsNullOrEmpty(lobbyData))
-			{
-				LobbyOptions lobbyOptionsData = JsonConvert.DeserializeObject<LobbyOptions>(lobbyData);
-				slot1Usertype = lobbyOptionsData.slot1Usertype;
-				slot2Usertype = lobbyOptionsData.slot2Usertype;
-				slot3Usertype = lobbyOptionsData.slot3Usertype;
-				slot4Usertype = lobbyOptionsData.slot4Usertype;
+        private void LoadLobbyOptions()
+        {
+            string lobbyData = (string)ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"];
+            if (!string.IsNullOrEmpty(lobbyData))
+            {
+                LobbyOptions lobbyOptionsData = JsonConvert.DeserializeObject<LobbyOptions>(lobbyData);
+                slot1Usertype = lobbyOptionsData.slot1Usertype;
+                slot2Usertype = lobbyOptionsData.slot2Usertype;
+                slot3Usertype = lobbyOptionsData.slot3Usertype;
+                slot4Usertype = lobbyOptionsData.slot4Usertype;
 
-				slot1Username = lobbyOptionsData.slot1Username;
-				slot2Username = lobbyOptionsData.slot2Username;
-				slot3Username = lobbyOptionsData.slot3Username;
-				slot4Username = lobbyOptionsData.slot4Username;
+                slot1Username = lobbyOptionsData.slot1Username;
+                slot2Username = lobbyOptionsData.slot2Username;
+                slot3Username = lobbyOptionsData.slot3Username;
+                slot4Username = lobbyOptionsData.slot4Username;
 
-				slot1Team = lobbyOptionsData.slot1Team;
-				slot2Team = lobbyOptionsData.slot2Team;
-				slot3Team = lobbyOptionsData.slot3Team;
-				slot4Team = lobbyOptionsData.slot4Team;
-			}
-		}
+                slot1Team = lobbyOptionsData.slot1Team;
+                slot2Team = lobbyOptionsData.slot2Team;
+                slot3Team = lobbyOptionsData.slot3Team;
+                slot4Team = lobbyOptionsData.slot4Team;
+            }
+        }
 
         private int GetPlayerCount()
         {
             int playerCount = 0;
 
-            if(isCows)
+            if (isCows)
             {
                 playerCount++;
             }
@@ -135,22 +126,22 @@ namespace FIA_Grupp2
             return playerCount;
         }
 
-		private void LoadGameSessionOptions()
-		{
-			string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
-			if (!string.IsNullOrEmpty(gameSessionOptionsData))
-			{
-				GameSessionOptions sessionOptionsData = JsonConvert.DeserializeObject<GameSessionOptions>(gameSessionOptionsData);
-				gameHours = int.Parse(sessionOptionsData.GameTimeHours.ToString());
-				gameMinutes = int.Parse(sessionOptionsData.GameTimeMinutes.ToString());
-				gameSeconds = int.Parse(sessionOptionsData.GameTimeSeconds.ToString());
-				turnHours = int.Parse(sessionOptionsData.TurnTimeHours.ToString());
-				turnMinutes = int.Parse(sessionOptionsData.TurnTimeMinutes.ToString());
-				turnSeconds = int.Parse(sessionOptionsData.TurnTimeSeconds.ToString());
-			}
-		}
+        private void LoadGameSessionOptions()
+        {
+            string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
+            if (!string.IsNullOrEmpty(gameSessionOptionsData))
+            {
+                GameSessionOptions sessionOptionsData = JsonConvert.DeserializeObject<GameSessionOptions>(gameSessionOptionsData);
+                gameHours = int.Parse(sessionOptionsData.GameTimeHours.ToString());
+                gameMinutes = int.Parse(sessionOptionsData.GameTimeMinutes.ToString());
+                gameSeconds = int.Parse(sessionOptionsData.GameTimeSeconds.ToString());
+                turnHours = int.Parse(sessionOptionsData.TurnTimeHours.ToString());
+                turnMinutes = int.Parse(sessionOptionsData.TurnTimeMinutes.ToString());
+                turnSeconds = int.Parse(sessionOptionsData.TurnTimeSeconds.ToString());
+            }
+        }
 
-        private void SetAvailableTeams() 
+        private void SetAvailableTeams()
         {
 
 
@@ -162,115 +153,115 @@ namespace FIA_Grupp2
                 }
                 else if (slot1Team == "pig")
                 {
-					isPigs = true;
-				}
-				else if (slot1Team == "chicken")
-				{
-					isHens = true;
-				}
+                    isPigs = true;
+                }
+                else if (slot1Team == "chicken")
+                {
+                    isHens = true;
+                }
 
-				else if (slot1Team == "sheep")
-				{
-					isSheeps = true;
-				}
-			}
-			if (slot2Usertype != "None")
-			{
-				if (slot2Team == "cow")
-				{
-					isCows = true;
-				}
-				else if (slot2Team == "pig")
-				{
-					isPigs = true;
-				}
-				else if (slot2Team == "chicken")
-				{
-					isHens = true;
-				}
+                else if (slot1Team == "sheep")
+                {
+                    isSheeps = true;
+                }
+            }
+            if (slot2Usertype != "None")
+            {
+                if (slot2Team == "cow")
+                {
+                    isCows = true;
+                }
+                else if (slot2Team == "pig")
+                {
+                    isPigs = true;
+                }
+                else if (slot2Team == "chicken")
+                {
+                    isHens = true;
+                }
 
-				else if (slot2Team == "sheep")
-				{
-					isSheeps = true;
-				}
-			}
-			if (slot3Usertype != "None")
-			{
-				if (slot3Team == "cow")
-				{
-					isCows = true;
-				}
-				else if (slot3Team == "pig")
-				{
-					isPigs = true;
-				}
-				else if (slot3Team == "chicken")
-				{
-					isHens = true;
-				}
+                else if (slot2Team == "sheep")
+                {
+                    isSheeps = true;
+                }
+            }
+            if (slot3Usertype != "None")
+            {
+                if (slot3Team == "cow")
+                {
+                    isCows = true;
+                }
+                else if (slot3Team == "pig")
+                {
+                    isPigs = true;
+                }
+                else if (slot3Team == "chicken")
+                {
+                    isHens = true;
+                }
 
-				else if (slot3Team == "sheep")
-				{
-					isSheeps = true;
-				}
-			}
-			if (slot4Usertype != "None")
-			{
-				if (slot4Team == "cow")
-				{
-					isCows = true;
-				}
-				else if (slot4Team == "pig")
-				{
-					isPigs = true;
-				}
-				else if (slot4Team == "chicken")
-				{
-					isHens = true;
-				}
+                else if (slot3Team == "sheep")
+                {
+                    isSheeps = true;
+                }
+            }
+            if (slot4Usertype != "None")
+            {
+                if (slot4Team == "cow")
+                {
+                    isCows = true;
+                }
+                else if (slot4Team == "pig")
+                {
+                    isPigs = true;
+                }
+                else if (slot4Team == "chicken")
+                {
+                    isHens = true;
+                }
 
-				else if (slot4Team == "sheep")
-				{
-					isSheeps = true;
-				}
-			}
-		}
+                else if (slot4Team == "sheep")
+                {
+                    isSheeps = true;
+                }
+            }
+        }
 
-		private void InitiateGameTimer()
-		{
-			remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
-			if (remainingGameTime.TotalSeconds > 0)
-			{
-				isGameTimerEnabled = true;
-			}
+        private void InitiateGameTimer()
+        {
+            remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
+            if (remainingGameTime.TotalSeconds > 0)
+            {
+                isGameTimerEnabled = true;
+            }
 
             if (isGameTimerEnabled)
             {
-				gameTimer = new DispatcherTimer();
-				gameTimer.Interval = TimeSpan.FromSeconds(1);
-				gameTimer.Tick += GameTimerTick;
-				gameTimer.Start();
-			}
-		}
+                gameTimer = new DispatcherTimer();
+                gameTimer.Interval = TimeSpan.FromSeconds(1);
+                gameTimer.Tick += GameTimerTick;
+                gameTimer.Start();
+            }
+        }
 
-		private void InitiateTurnTimer()
-		{
-			remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
-			if (remainingTurnTime.TotalSeconds > 0)
-			{
-				isTurnTimerEnabled = true;
-			}
+        private void InitiateTurnTimer()
+        {
+            remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
+            if (remainingTurnTime.TotalSeconds > 0)
+            {
+                isTurnTimerEnabled = true;
+            }
 
-			if (isTurnTimerEnabled)
-			{
-				turnTimer = new DispatcherTimer();
-				turnTimer.Interval = TimeSpan.FromSeconds(1);
-				turnTimer.Tick += TurnTimerTick;
-				turnTimer.Start();
-			}
-		}
+            if (isTurnTimerEnabled)
+            {
+                turnTimer = new DispatcherTimer();
+                turnTimer.Interval = TimeSpan.FromSeconds(1);
+                turnTimer.Tick += TurnTimerTick;
+                turnTimer.Start();
+            }
+        }
 
-		private async void StartMusic()
+        private async void StartMusic()
         {
             await gameAudio.InitializePlaylist("Assets\\Sound\\InGame");
             gameAudio.StartPlayback();
@@ -323,7 +314,7 @@ namespace FIA_Grupp2
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
                     // OM NÅGON PÅ BORDET LÅT DEN GÅ Såvida inte går utanför corase
-                    else if (pwn.Steps + _dice.DiceNumber <= globalCoarse.Length +2 )
+                    else if (pwn.Steps + _dice.DiceNumber <= globalCoarse.Length + 2)
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
@@ -359,9 +350,9 @@ namespace FIA_Grupp2
             Debug.WriteLine($"{teams[currentTeam].Name} attacked : {CheckOtherTeamsPositions(teams[currentTeam])}");
 
             //IsThereAPawnOnThisPosition(new Position(6, 10));
-            
+
             currentTeam++;
-            if (currentTeam > nrOfPlayers -1)
+            if (currentTeam > nrOfPlayers - 1)
             {
                 currentTeam = 0;
             }
@@ -376,7 +367,7 @@ namespace FIA_Grupp2
 
         private string ConvertNameToJPG(string teamName)
         {
-            switch(teamName)
+            switch (teamName)
             {
                 case "Cows":
                     return "cow";
@@ -448,8 +439,8 @@ namespace FIA_Grupp2
             // Add the elements to the canvas
             foreach (Team team in teams)
             {
-                foreach(Pawn pawn in team.Pawns)
-                layoutRoot.Children.Add(pawn.PawnCanvas);
+                foreach (Pawn pawn in team.Pawns)
+                    layoutRoot.Children.Add(pawn.PawnCanvas);
             }
 
             _dice = new Dice(this);
@@ -551,43 +542,34 @@ namespace FIA_Grupp2
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
 
-		private void GameTimerTick(object sender, object e)
-		{
-			if (remainingGameTime.TotalSeconds > 0)
-			{
-				remainingGameTime = remainingGameTime.Subtract(TimeSpan.FromSeconds(1));
-				UpdateGameTimerText();
-			}
-			else
-			{
-				gameTimer.Stop();
-				// TODO Stop the game as the gametimer has run out.
-			}
-		}
+        private void GameTimerTick(object sender, object e)
+        {
+            if (remainingGameTime.TotalSeconds > 0)
+            {
+                remainingGameTime = remainingGameTime.Subtract(TimeSpan.FromSeconds(1));
+                UpdateGameTimerText();
+            }
+            else
+            {
+                gameTimer.Stop();
+                // TODO Stop the game as the gametimer has run out.
+            }
+        }
 
-		private void TurnTimerTick(object sender, object e)
-		{
-			if (remainingTurnTime.TotalSeconds > 0)
-			{
-				remainingTurnTime = remainingTurnTime.Subtract(TimeSpan.FromSeconds(1));
-				UpdateTurnTimerText();
-			}
-			else
-			{
-				if(isTurnTimerEnabled)
+        private void TurnTimerTick(object sender, object e)
+        {
+            if (remainingTurnTime.TotalSeconds > 0)
+            {
+                remainingTurnTime = remainingTurnTime.Subtract(TimeSpan.FromSeconds(1));
+                UpdateTurnTimerText();
+            }
+            else
+            {
+                if (isTurnTimerEnabled)
                 {
                     NextTeamsTurn();
                 }
-			}
-		}
-
-        private void UpdateGameTimerText()
-        {
-            gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
-        }
-        private void UpdateTurnTimerText()
-        {
-            turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
+            }
         }
 
         private Team CheckOtherTeamsPositions(Team currentActiveTeam)
@@ -596,11 +578,11 @@ namespace FIA_Grupp2
             {
                 if (team.Name != currentActiveTeam.Name)
                 {
-                    foreach(Pawn activePawn in currentActiveTeam.Pawns)
+                    foreach (Pawn activePawn in currentActiveTeam.Pawns)
                     {
                         foreach (Pawn opposingPawn in team.Pawns)
                         {
-                            if(activePawn.CurrentPosition.X == opposingPawn.CurrentPosition.X &&
+                            if (activePawn.CurrentPosition.X == opposingPawn.CurrentPosition.X &&
                                activePawn.CurrentPosition.Y == opposingPawn.CurrentPosition.Y)
                             {
                                 opposingPawn.Steps = 0;
@@ -620,14 +602,14 @@ namespace FIA_Grupp2
 
             return null;
         }
+        private void UpdateGameTimerText()
+        {
+            gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
+        }
+        private void UpdateTurnTimerText()
+        {
+            turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
+        }
     }
-		private void UpdateGameTimerText()
-		{
-			gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
-		}
-		private void UpdateTurnTimerText()
-		{
-			turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
-		}
-	}
 }
+
