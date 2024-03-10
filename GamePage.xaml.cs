@@ -45,10 +45,10 @@ namespace FIA_Grupp2
 
         private Dice _dice;
 
-		private DispatcherTimer gameTimer;
-		private DispatcherTimer turnTimer;
-		private TimeSpan remainingGameTime;
-		private TimeSpan remainingTurnTime;
+        private DispatcherTimer gameTimer;
+        private DispatcherTimer turnTimer;
+        private TimeSpan remainingGameTime;
+        private TimeSpan remainingTurnTime;
         public Playlist gameAudio;
 
         public GamePage()
@@ -121,9 +121,7 @@ namespace FIA_Grupp2
                     // OCH ALLA ÄR I BOET
                     if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
                     {
-                        Debug.WriteLine("There is no one outside");
-                        // To the next team but through an delay
-                        NextTeamsTurnDelay();
+                        AutoPass();
                         return; // Hoppa ut ur loopen, för ingen ska flyttas
                     }
                     // OM PJÄSEN ÄR I BOET
@@ -132,11 +130,16 @@ namespace FIA_Grupp2
                         pwn.PawnCanvas.IsHitTestVisible = false;
                         continue;  // Hoppa direkt till att undersöka nästa pjäs
                     }
-                    // OM NÅGON ÄR UR BOET
-                    else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
+                    // OM NÅGON ÄR UR BOET LÅT DEN GÅ Såvida inte går utanför corase
+                    else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0 && pwn.Steps + _dice.DiceNumber < globalCoarse.Length + 2)
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
+                    }
+                    else
+                    {
+                        Debug.Write("FÖR MÅNGA STEG FÖR ATT GÅ JÄMNT I MÅL 1");
+                        pwn.PawnCanvas.IsHitTestVisible = false;
                     }
                 }
                 // OM ETT ELLER SEX
@@ -146,33 +149,55 @@ namespace FIA_Grupp2
                     if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
                         teams[currentTeam].GetPawnsInTheNest().Length >= 0)
                     {
-                        Debug.WriteLine("There is still pawns in the nest, and i can move one out");
+                        //Debug.WriteLine("There is still pawns in the nest, and i can move one out");
                         // FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
                     // OM NÅGON PÅ BORDET LÅT DEN GÅ Såvida inte går utanför corase
-                    else if (pwn.Steps + _dice.DiceNumber <= globalCoarse.Length +2 )
+                    else if (pwn.Steps + _dice.DiceNumber < globalCoarse.Length + 2)
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
                     else
                     {
-                        Debug.Write("FÖR MÅNGA STEG FÖR ATT GÅ JÄMNT I MÅL");
+                        Debug.Write("FÖR MÅNGA STEG FÖR ATT GÅ JÄMNT I MÅL 2");
+                        pwn.PawnCanvas.IsHitTestVisible = false;
                     }
                     // TODO KOLLA OM NÅGON ÄR I VÄGEN
                 }
             }
 
-            //FIXME: Call only this when the pawn has been pressed, or when the dice is not valid, meaning 1 or 6
-            //NextTeamsTurn();
+            // TODO OM INGEN ÄR HIT TEST VISIBLE
 
-            //TODO: When a turn is finished, display the golden dice again
-            //_dice.NewTurn();
+            if (!AnyHitTestVisible())
+            {
+                AutoPass();
+            }
+
+            bool AnyHitTestVisible()
+            {
+                foreach (Pawn pwn in teams[currentTeam].pawns)
+                {
+                    if (pwn.PawnCanvas.IsHitTestVisible)
+                    {
+                        return true; 
+                    }
+                }
+                return false;
+            }
+
+            void AutoPass()
+            {
+                Debug.WriteLine("No valid move avilable");
+                // To the next team but through an delay
+                NextTeamsTurnDelay();
+            }
+
         }
 
-        public async void NextTeamsTurnDelay(int ms = 1000)
+        public async void NextTeamsTurnDelay(int ms = 500)
         {
             diceCross.Visibility = Visibility.Visible;
             await Task.Delay(ms);
@@ -186,12 +211,13 @@ namespace FIA_Grupp2
             diceButton.IsEnabled = true;
             // int aprioTeam = currentTeam;
             Debug.WriteLine("");
-            Debug.WriteLine($"{teams[currentTeam].Name} attacked : {CheckOtherTeamsPositions(teams[currentTeam])}");
+            // Note to embeed actuall functionality in a Debug.Write cant be good practice.
+            CheckOtherTeamsPositions(teams[currentTeam]);
 
             //IsThereAPawnOnThisPosition(new Position(6, 10));
-            
+
             currentTeam++;
-            if (currentTeam > nrOfPlayers -1)
+            if (currentTeam > nrOfPlayers - 1)
             {
                 currentTeam = 0;
             }
@@ -202,7 +228,7 @@ namespace FIA_Grupp2
 
         private string ConvertNameToJPG(string teamName)
         {
-            switch(teamName)
+            switch (teamName)
             {
                 case "Cows":
                     return "cow";
@@ -262,8 +288,8 @@ namespace FIA_Grupp2
             // Add the elements to the canvas
             foreach (Team team in teams)
             {
-                foreach(Pawn pawn in team.Pawns)
-                layoutRoot.Children.Add(pawn.PawnCanvas);
+                foreach (Pawn pawn in team.Pawns)
+                    layoutRoot.Children.Add(pawn.PawnCanvas);
             }
 
             _dice = new Dice(this);
@@ -411,13 +437,15 @@ namespace FIA_Grupp2
             {
                 if (team.Name != currentActiveTeam.Name)
                 {
-                    foreach(Pawn activePawn in currentActiveTeam.Pawns)
+                    foreach (Pawn activePawn in currentActiveTeam.Pawns)
                     {
                         foreach (Pawn opposingPawn in team.Pawns)
                         {
-                            if(activePawn.CurrentPosition.X == opposingPawn.CurrentPosition.X &&
+                            if (opposingPawn.IsInGoal == false &&
+                               activePawn.CurrentPosition.X == opposingPawn.CurrentPosition.X &&
                                activePawn.CurrentPosition.Y == opposingPawn.CurrentPosition.Y)
                             {
+                                Debug.WriteLine($"{currentActiveTeam.Name} attacked : {currentActiveTeam.Name}");
                                 opposingPawn.Steps = 0;
                                 opposingPawn.ResetDirection();
                                 opposingPawn.ReplaceImage();
