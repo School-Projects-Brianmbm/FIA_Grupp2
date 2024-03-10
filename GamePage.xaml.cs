@@ -66,7 +66,7 @@ namespace FIA_Grupp2
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             gameAudio = new Playlist();
-            StartMusic();
+            //StartMusic();
 
             LoadGameSessionOptions();
             LoadLobbyOptions();
@@ -434,7 +434,8 @@ namespace FIA_Grupp2
             // Add the elements to the canvas
             foreach (Team team in teams)
             {
-                layoutRoot.Children.Add(team.Pawn.PawnCanvas);
+                foreach (Pawn pawn in team.Pawns)
+                    layoutRoot.Children.Add(pawn.PawnCanvas);
             }
 
             _dice = new Dice(this);
@@ -447,34 +448,35 @@ namespace FIA_Grupp2
         /// </summary>
         private void CreatePawns()
         {
-            for (int i = 0; i < teams.Length; i++)
+            int index = 0;
+            if (isCows)
             {
-                switch (i)
-                {
-                    case 0 when isCows:
-                        teams[i] = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
-                        break;
-                    case 1 when isHens:
-                        teams[i] = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition);
-                        break;
-                    case 2 when isSheeps:
-                        teams[i] = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
-                        break;
-                    case 3 when isPigs:
-                        teams[i] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
-                        break;
-                    default:
-                        teams[i] = null;
-                        break;
-                }
+                teams[index] = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
+                index++;
+            }
+
+            if (isHens)
+            {
+                teams[index] = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition);
+                index++;
+            }
+
+            if (isSheeps)
+            {
+                teams[index] = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
+                index++;
+            }
+
+            if (isPigs)
+            {
+                teams[index] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
+                index++;
             }
 
             _dice = new Dice(this);
 
             ChangeActiveTeamIcon(teams[currentTeam].Name);
-
-            Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
-            Debug.Write(Team.NUMBER_OF_TEAMS);
+            Debug.Write("Number of teams is: " + Team.NUMBER_OF_TEAMS);
         }
 
         private void CoreWindow_PointerMoved(CoreWindow sender, PointerEventArgs args)
