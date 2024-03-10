@@ -8,7 +8,8 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace FIA_Grupp2
 {
-    internal class Pawn
+
+    internal abstract class Pawn
     {
         protected bool canWalk = false;
         protected static int GLOBAL_INDEX = 0;
@@ -40,10 +41,9 @@ namespace FIA_Grupp2
         }
 
 
-        public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
+        public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
         {
             PawnCanvas.IsHitTestVisible = false;
-            Debug.Write(Team.NUMBER_OF_TEAMS);
             globalIndex = GLOBAL_INDEX++;
             pawnCanvas.Children.Add(pawnImage);
             indexPosition = startpos;
@@ -59,23 +59,61 @@ namespace FIA_Grupp2
             {
                 Debug.Write($"{globalIndex} {localIndex} {Name} is clicked And canWalk = {canWalk}\n");
                 Step();
-                pawnCanvas.IsHitTestVisible = false;
+                foreach (Pawn pawn in team.Pawns)
+                {
+                    pawn.pawnCanvas.IsHitTestVisible = false;
+                }
+
+                // Calling for the next teams turn
+                GamePage.Instance.NextTeamsTurn();
             }
         }
 
         public virtual void PositionAtNest()
         {
             Point pos = boardgrid.GetActualPositionOf(indexPosition.X, indexPosition.Y);
-            double newX = pos.X;
-            double newY = pos.Y;
-            Canvas.SetLeft(PawnImage, newX + 8);
-            Canvas.SetTop(PawnImage, newY - 10);
+            double newPosX = pos.X;
+            double newPosY = pos.Y;
+
+            CurrentPosition = new Position((int)indexPosition.X, (int)indexPosition.Y);
+           
+
+            double modiY = 0, modiX = 0;
+            switch (localIndex)
+            {
+                case 2:
+                    modiX = -25;
+                    modiY = +25;
+                    break;
+                case 3:
+                    modiX = +25;
+                    modiY = +25;
+                    break;
+                case 1:
+                    modiX = +25;
+                    modiY = -25;
+                    break;
+                case 0:
+                    modiX = -25;
+                    modiY = -25;
+                    break;
+                default:
+                    break;
+            }
+
+
+
+            Canvas.SetLeft(PawnImage, newPosX + modiX);
+            Canvas.SetTop(PawnImage, newPosY + modiY);
         }
         public virtual void PositionAt(Position ind)
         {
             Point pos = boardgrid.GetActualPositionOf(ind.X, ind.Y);
             double newX = pos.X;
             double newY = pos.Y;
+
+            CurrentPosition = new Position((int)ind.X, (int)ind.Y);
+
             Canvas.SetLeft(PawnImage, newX + 8);
             Canvas.SetTop(PawnImage, newY - 10);
         }
@@ -88,9 +126,9 @@ namespace FIA_Grupp2
                 {
                     Debug.Write($"Im home already :)");
                 }
-                else if (steps == coarse.Length - 1)
+                else if (Steps == coarse.Length - 1)
                 {
-                    PositionAt(coarse[steps++]);
+                    PositionAt(coarse[Steps++]);
                     isInGoal = true;
                 }
                 else
@@ -101,16 +139,16 @@ namespace FIA_Grupp2
                     // Debug.Write($" To: {coarse[steps + 1]} ");
                     if (!IsSameDirection())
                     {
-                        if (direction == 2 && coarse[steps + 1].X < coarse[steps].X) { TurnImageLeft(); }
-                        else if (direction == 2 && coarse[steps + 1].X > coarse[steps].X) { TurnImageRight(); }
-                        else if (direction == 3 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageLeft(); }
-                        else if (direction == 3 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageRight(); }
-                        else if (direction == 0 && coarse[steps + 1].X < coarse[steps].X) { TurnImageRight(); }
-                        else if (direction == 0 && coarse[steps + 1].X > coarse[steps].X) { TurnImageLeft(); }
-                        else if (direction == 1 && coarse[steps + 1].Y < coarse[steps].Y) { TurnImageRight(); }
-                        else if (direction == 1 && coarse[steps + 1].Y > coarse[steps].Y) { TurnImageLeft(); }
+                        if (direction == 2 && coarse[Steps + 1].X < coarse[Steps].X) { TurnImageLeft(); }
+                        else if (direction == 2 && coarse[Steps + 1].X > coarse[Steps].X) { TurnImageRight(); }
+                        else if (direction == 3 && coarse[Steps + 1].Y < coarse[Steps].Y) { TurnImageLeft(); }
+                        else if (direction == 3 && coarse[Steps + 1].Y > coarse[Steps].Y) { TurnImageRight(); }
+                        else if (direction == 0 && coarse[Steps + 1].X < coarse[Steps].X) { TurnImageRight(); }
+                        else if (direction == 0 && coarse[Steps + 1].X > coarse[Steps].X) { TurnImageLeft(); }
+                        else if (direction == 1 && coarse[Steps + 1].Y < coarse[Steps].Y) { TurnImageRight(); }
+                        else if (direction == 1 && coarse[Steps + 1].Y > coarse[Steps].Y) { TurnImageLeft(); }
                     }
-                    PositionAt(coarse[steps++]);
+                    PositionAt(coarse[Steps++]);
                 }
             }
         }
@@ -119,13 +157,13 @@ namespace FIA_Grupp2
             if (direction == 3 || direction == 1)
             {
                 // Debug.Write($" Y ");
-                if (coarse[steps].Y == coarse[steps + 1].Y) { return true; }
+                if (coarse[Steps].Y == coarse[Steps + 1].Y) { return true; }
                 else { return false; }
             }
             else if (direction == 2 || direction == 0)
             {
                 // Debug.Write($" X ");
-                if (coarse[steps].X == coarse[steps + 1].X) { return true; }
+                if (coarse[Steps].X == coarse[Steps + 1].X) { return true; }
                 else { return false; }
             }
             return false;
@@ -150,12 +188,15 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
         }
+        internal abstract void ResetDirection();
     }
     internal class Cow : Pawn
     {
-        public Cow(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
-            : base(gbg, startpos, ref teamcoarse)
+        public Cow(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
+            : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
+            localIndex = globalIndex % 4;
+
             Name = "Cow";
             pawnCanvas.Name = "Cow";
             direction = 3;
@@ -169,18 +210,22 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
-        }
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
+
+
+    }
+        internal override void ResetDirection(){ direction = 3; }
     }
     internal class Hen : Pawn
     {
-        public Hen(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
-            : base(gbg, startpos, ref teamcoarse)
+        public Hen(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
+            : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
             localIndex = globalIndex % 4;
 
             Name = "Hen";
             pawnCanvas.Name = "Hen";
-            direction = 0;
+            direction = 2;
             pawnImages = new Image[4]
             {
                 new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/hen_0.png")), Height = 80, Width = 80 },
@@ -191,12 +236,14 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
         }
+        internal override void ResetDirection() { direction = 2; }
     }
     internal class Sheep : Pawn
     {
-        public Sheep(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
-            : base(gbg, startpos, ref teamcoarse)
+        public Sheep(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
+            : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
             localIndex = globalIndex % 4;
 
@@ -213,18 +260,21 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
         }
+        internal override void ResetDirection() { direction = 1; }
+
     }
     internal class Pig : Pawn
     {
-        public Pig(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse)
-            : base(gbg, startpos, ref teamcoarse)
+        public Pig(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
+            : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
             localIndex = globalIndex % 4;
 
             Name = "Pig";
             pawnCanvas.Name = "Pig";
-            direction = 2;
+            direction = 0;
             pawnImages = new Image[4]
             {
                 new Image { Source = new BitmapImage(new Uri("ms-appx:///Assets/Pawns/pig_0.png")), Height = 80, Width = 80 },
@@ -235,6 +285,8 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
         }
+        internal override void ResetDirection() { direction = 0; }
     }
 }

@@ -10,6 +10,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Documents;
+using Windows.Devices.Pwm;
+using Windows.UI.Xaml.Media;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -18,6 +21,8 @@ namespace FIA_Grupp2
 {
     public sealed partial class GamePage : Page
     {
+        public static GamePage Instance;
+
         int MouseX, MouseY;
         static int nrOfPlayers = 4;
         static int currentTeam = 0;
@@ -37,7 +42,6 @@ namespace FIA_Grupp2
 
         Team[] teams = new Team[nrOfPlayers];
         // Team cows, hens, sheeps, pigs;
-
 
         private Dice _dice;
 
@@ -279,82 +283,155 @@ namespace FIA_Grupp2
 
         public void DiceFinishedSpinning(object sender, EventArgs e)
         {
-            int amountOfStepsToMove = _dice.DiceNumber;
-
-            // OM MELLAN ETT & SEX
-            if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
+            // FÖR VAR PJÄS I TEAMS
+            foreach (Pawn pwn in teams[currentTeam].pawns)
             {
-                // If i dont have any pawns out on the board, skip to the next person. 
-                if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
+                // OM INTE ETT OCH INTE SEX
+                if (_dice.DiceNumber != 1 && _dice.DiceNumber != 6)
                 {
-                    Debug.WriteLine("There is no one outside");
-                    // Skip to the next person
-                    NextTeamsTurn();
-                    return;
+                    // OCH ALLA ÄR I BOET
+                    if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0)
+                    {
+                        Debug.WriteLine("There is no one outside");
+                        // To the next team but through an delay
+                        NextTeamsTurnDelay();
+                        return; // Hoppa ut ur loopen, för ingen ska flyttas
+                    }
+                    // OM PJÄSEN ÄR I BOET
+                    if (pwn.Steps == 0)
+                    {
+                        pwn.PawnCanvas.IsHitTestVisible = false;
+                        continue;  // Hoppa direkt till att undersöka nästa pjäs
+                    }
+                    // OM NÅGON ÄR UR BOET
+                    else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
+                    {
+                        pwn.TurnStepsLeft = _dice.DiceNumber;
+                        pwn.PawnCanvas.IsHitTestVisible = true;
+                    }
                 }
-                // If i get a number between 2-5, and i have a pawn out on the board, move the piece,
-                else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0)
+                // OM ETT ELLER SEX
+                else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
                 {
-                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
-                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
+                    // OCH INGEN PÅ BORDET MEN NÅGON I BOET
+                    if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
+                        teams[currentTeam].GetPawnsInTheNest().Length >= 0)
+                    {
+                        Debug.WriteLine("There is still pawns in the nest, and i can move one out");
+                        // FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
+                        pwn.TurnStepsLeft = _dice.DiceNumber;
+                        pwn.PawnCanvas.IsHitTestVisible = true;
+                    }
+                    // OM NÅGON PÅ BORDET LÅT DEN GÅ Såvida inte går utanför corase
+                    else if (pwn.Steps + _dice.DiceNumber <= globalCoarse.Length +2 )
+                    {
+                        pwn.TurnStepsLeft = _dice.DiceNumber;
+                        pwn.PawnCanvas.IsHitTestVisible = true;
+                    }
+                    else
+                    {
+                        Debug.Write("FÖR MÅNGA STEG FÖR ATT GÅ JÄMNT I MÅL");
+                    }
+                    // TODO KOLLA OM NÅGON ÄR I VÄGEN
                 }
             }
-            // move one of my pawns on the board from the nest, 
-            // OM ETT ELLER SEX
-            else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
-            {
-                //DOIN: We want to have the option to either move the pawn, or place one on the board.
-                //AND NO PAWNS ON BOARD BUT > 0 IN NEST
-                if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
-                    teams[currentTeam].GetPawnsInTheNest().Length >= 0)
-                {
-                    Debug.WriteLine("There is still pawns in the nest, and i can move one out");
-                    //FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
-                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
-                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
-                }
-                else //or if i have pawn on the board, move it.
-                {
-                    teams[currentTeam].Pawn.TurnStepsLeft = _dice.DiceNumber;
-                    teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
-                }
-            }
 
-            NextTeamsTurn();
+            //FIXME: Call only this when the pawn has been pressed, or when the dice is not valid, meaning 1 or 6
+            //NextTeamsTurn();
 
             //TODO: When a turn is finished, display the golden dice again
             //_dice.NewTurn();
         }
 
-        private void NextTeamsTurn()
+        public async void NextTeamsTurnDelay(int ms = 1000)
         {
-            int aprioTeam = currentTeam;
-            currentTeam++;
+            diceCross.Visibility = Visibility.Visible;
+            await Task.Delay(ms);
+            // Here i want a delay before the NextTeamsTurn Executes ?
+            NextTeamsTurn();
+            diceCross.Visibility = Visibility.Collapsed;
+        }
 
-            if (currentTeam >= nrOfPlayers)
+        public void NextTeamsTurn()
+        {
+            // int aprioTeam = currentTeam;
+            Debug.WriteLine("");
+            Debug.WriteLine($"{teams[currentTeam].Name} attacked : {CheckOtherTeamsPositions(teams[currentTeam])}");
+
+            //IsThereAPawnOnThisPosition(new Position(6, 10));
+            
+            currentTeam++;
+            if (currentTeam > nrOfPlayers -1)
             {
                 currentTeam = 0;
             }
-            //teams[aprioTeam].Pawn.PawnCanvas.IsHitTestVisible = false;
-            //teams[currentTeam].Pawn.PawnCanvas.IsHitTestVisible = true;
             DebugTextUpdateModifier();
-			if (isTurnTimerEnabled) {
-				ResetTurnTimer();
-			}
-		}
 
-		private void ResetTurnTimer()
-		{
-			turnTimer.Stop();
+            ChangeActiveTeamIcon(teams[currentTeam].Name);
+            if (isTurnTimerEnabled)
+            {
+                ResetTurnTimer();
+            }
+        }
 
-			remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
-			turnTimer = new DispatcherTimer();
-			turnTimer.Interval = TimeSpan.FromSeconds(1);
-			turnTimer.Tick += TurnTimerTick;
-			turnTimer.Start();
-		}
+        private string ConvertNameToJPG(string teamName)
+        {
+            switch(teamName)
+            {
+                case "Cows":
+                    return "cow";
+                case "Hens":
+                    return "chicken";
+                case "Sheeps":
+                    return "sheep";
+                case "Pigs":
+                    return "pig";
+            }
 
-		private void MainPage_Loaded(object sender, RoutedEventArgs e)
+            return string.Empty;
+        }
+
+        //TODO: Maybe there is a color property somewhere, and this method is useless.
+        private Color GetColorFromTeamName(string teamName)
+        {
+            switch (teamName)
+            {
+                case "Cows":
+                    return ColorHelper.FromArgb(255, 144, 238, 144);
+                case "Hens":
+                    return ColorHelper.FromArgb(255, 255, 255, 0);
+                case "Sheeps":
+                    return ColorHelper.FromArgb(255, 173, 216, 230);
+                case "Pigs":
+                    return ColorHelper.FromArgb(255, 219, 112, 147);
+            }
+            return Colors.Black;
+        }
+
+        private void ChangeActiveTeamIcon(string teamName)
+        {
+            BitmapImage newActiveTeamIcon = new BitmapImage(new Uri($"ms-appx:///Assets/TeamIcons/{ConvertNameToJPG(teamName)}.jpg"));
+            activeTeamIcon.Source = newActiveTeamIcon;
+
+            activeDiceBorder.Background = new SolidColorBrush(GetColorFromTeamName(teamName));
+            activeTeamIconBorder.Background = new SolidColorBrush(GetColorFromTeamName(teamName));
+
+            _dice.NewTurn();
+        }
+
+        private void ResetTurnTimer()
+        {
+            turnTimer.Stop();
+
+            remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
+            turnTimer = new DispatcherTimer();
+            turnTimer.Interval = TimeSpan.FromSeconds(1);
+            turnTimer.Tick += TurnTimerTick;
+            turnTimer.Start();
+        }
+
+
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             Debug.Write("BAM MainPage Loaded");
             gameGrid = new GameBoardGrid(gameCanvas);
@@ -363,7 +440,7 @@ namespace FIA_Grupp2
 
             gameGrid.CalculateActualPositions();
             gameGrid.CalculateOrigoY();
-            gameGrid.SetEllipsesPositions(true, false, true);
+            gameGrid.SetEllipsesPositions();
             //gameGrid.SetEllipsesPositions(true,showInd: true);
 
             CreatePawns();
@@ -371,7 +448,8 @@ namespace FIA_Grupp2
             // Add the elements to the canvas
             foreach (Team team in teams)
             {
-                layoutRoot.Children.Add(team.Pawn.PawnCanvas);
+                foreach(Pawn pawn in team.Pawns)
+                layoutRoot.Children.Add(pawn.PawnCanvas);
             }
 
             _dice = new Dice(this);
@@ -384,32 +462,7 @@ namespace FIA_Grupp2
         /// </summary>
         private void CreatePawns()
         {
-            int index = 0;
-            if (isCows)
-            {
-                teams[index] = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
-                index++;
-            }
-
-            if (isHens)
-            {
-                teams[index] = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition);
-                index++;
-            }
-
-            if (isSheeps)
-            {
-                teams[index] = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
-                index++;
-            }
-
-            if (isPigs)
-            {
-                teams[index] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
-                index++;
-            }
-
-            /*for (int i = 0; i < teams.Length; i++)
+            for (int i = 0; i < teams.Length; i++)
             {
                 switch (i)
                 {
@@ -429,7 +482,13 @@ namespace FIA_Grupp2
                         teams[i] = null;
                         break;
                 }
-            }*/
+            }
+
+            _dice = new Dice(this);
+
+            ChangeActiveTeamIcon(teams[currentTeam].Name);
+
+            Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
             Debug.Write(Team.NUMBER_OF_TEAMS);
         }
 
@@ -455,10 +514,7 @@ namespace FIA_Grupp2
 
         private void DebugTextUpdateModifier()
         {
-            if (teams[currentTeam] != null)
-            {
-                debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish} Curent team is: {teams[currentTeam].Name}";
-            }
+            debugtext.Text = $"Mouse Position: X={MouseX}, Y={MouseY}, {gameGrid.Squish} Curent team is: {teams[currentTeam].Name}";
         }
 
         private new void PointerReleased(object sender, PointerRoutedEventArgs e)
@@ -525,6 +581,46 @@ namespace FIA_Grupp2
 			}
 		}
 
+        private void UpdateGameTimerText()
+        {
+            gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
+        }
+        private void UpdateTurnTimerText()
+        {
+            turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
+        }
+
+        private Team CheckOtherTeamsPositions(Team currentActiveTeam)
+        {
+            foreach (Team team in teams)
+            {
+                if (team.Name != currentActiveTeam.Name)
+                {
+                    foreach(Pawn activePawn in currentActiveTeam.Pawns)
+                    {
+                        foreach (Pawn opposingPawn in team.Pawns)
+                        {
+                            if(activePawn.CurrentPosition.X == opposingPawn.CurrentPosition.X &&
+                               activePawn.CurrentPosition.Y == opposingPawn.CurrentPosition.Y)
+                            {
+                                opposingPawn.Steps = 0;
+                                opposingPawn.ResetDirection();
+                                opposingPawn.ReplaceImage();
+                                opposingPawn.PositionAtNest();
+                                return team;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            return null;
+        }
+    }
 		private void UpdateGameTimerText()
 		{
 			gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
