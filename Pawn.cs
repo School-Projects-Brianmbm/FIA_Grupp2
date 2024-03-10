@@ -60,6 +60,10 @@ namespace FIA_Grupp2
             {
                 Debug.Write($"{globalIndex} {localIndex} {Name} is clicked And canWalk = {canWalk}\n");
                 Step();
+                foreach (Pawn pawn in team.Pawns)
+                {
+                    pawn.pawnCanvas.IsHitTestVisible = false;
+                }
                 CheckWinner();
 
                 // Calling for the next teams turn
