@@ -35,7 +35,7 @@ namespace FIA_Grupp2
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             startStoryBoard.Begin();
             introAudio = new Playlist();
-            //StartMusic();
+            StartMusic();
             
         }
 

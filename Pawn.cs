@@ -82,8 +82,13 @@ namespace FIA_Grupp2
             }
             if (allPawnsInGoal)
             {
+                
+
                 Debug.Write("All pawns are in goal");
-                GamePage.Instance.Frame.Navigate(typeof(StartPage));
+                Debug.Write("Current team is: " + team.Name);
+                
+                var winnerParameters = Tuple.Create(team.Name, GamePage.Instance.gameAudio);
+                GamePage.Instance.Frame.Navigate(typeof(WinnerPage), winnerParameters);
             }
         }
 
