@@ -345,11 +345,6 @@ namespace FIA_Grupp2
 
         public void NextTeamsTurn()
         {
-            // int aprioTeam = currentTeam;
-            Debug.WriteLine("");
-            Debug.WriteLine($"{teams[currentTeam].Name} attacked : {CheckOtherTeamsPositions(teams[currentTeam])}");
-
-            //IsThereAPawnOnThisPosition(new Position(6, 10));
 
             currentTeam++;
             if (currentTeam > nrOfPlayers - 1)
@@ -439,8 +434,7 @@ namespace FIA_Grupp2
             // Add the elements to the canvas
             foreach (Team team in teams)
             {
-                foreach (Pawn pawn in team.Pawns)
-                    layoutRoot.Children.Add(pawn.PawnCanvas);
+                layoutRoot.Children.Add(team.Pawn.PawnCanvas);
             }
 
             _dice = new Dice(this);
