@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -31,6 +32,7 @@ namespace FIA_Grupp2
         readonly Ellipse[][] _dotsArray = new Ellipse[_numberOfRows][];
         readonly Point[,] _actualPositions = new Point[_numberOfRows, _numberOfColumns];
         readonly int[,] _pathArray = new int[11, 11];
+        readonly List<Position> latches = new List<Position>();
 
         /// <summary>
         /// Generic map
@@ -55,6 +57,8 @@ namespace FIA_Grupp2
         readonly TextBlock[][] textArray = new TextBlock[_numberOfRows][];
 
         public double Squish { get => squish; set => squish = value; }
+
+        internal List<Position> Latches => latches;
 
         /// <summary>
         /// Constructor for the generic parques map
@@ -81,6 +85,13 @@ namespace FIA_Grupp2
             _origoX = canvas.ActualWidth / 2;
             CreateArrayOfPoints();
             CreateArrayOfDots();
+        }
+
+        public bool IsPositionLatched(Position position)
+        {
+            if (latches.Contains(position))
+                return true;
+            return false;
         }
 
         /// <summary>
@@ -268,15 +279,12 @@ namespace FIA_Grupp2
                     Canvas.SetLeft(currentEllipse, actualX - (currentEllipse.Width / 2));
                     Canvas.SetTop(currentEllipse, actualY - (currentEllipse.Height / 2));
 
-                    //// Comment to hide the text at each point
-                    //// Debug text coordinates
+                    
                     if (showPos)
                     {
                         currentText.Text = $"X={actualX}, Y={actualY}";
                     }
 
-                    // Uncomment to show the index of each point
-                    // Debug text index
                     if (showPos && showInd)
                     {
                         currentText.Text += $"\nX={col}, Y={row}";
