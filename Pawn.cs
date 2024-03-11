@@ -60,13 +60,19 @@ namespace FIA_Grupp2
         {
             if (e.OriginalSource is UIElement clickedElement)
             {
-                Debug.Write($"{globalIndex} {localIndex} {Name} is clicked And canWalk = {canWalk}\n");
+                // Debug.Write($"{globalIndex} {localIndex} {Name} is clicked And canWalk = {canWalk}\n");
                 Step();
                 foreach (Pawn pawn in team.Pawns)
                 {
                     pawn.pawnCanvas.IsHitTestVisible = false;
                 }
                 CheckWinner();
+
+                // Print each position
+                foreach (Position position in boardgrid.Latches)
+                {
+                    Debug.Write($"Latch At {position}"); // Calls the overridden ToString() method
+                }
 
                 // Calling for the next teams turn
                 GamePage.Instance.NextTeamsTurn();
@@ -92,11 +98,11 @@ namespace FIA_Grupp2
             }
             if (allPawnsInGoal)
             {
-                
+
 
                 Debug.Write("All pawns are in goal");
                 Debug.Write("Current team is: " + team.Name);
-                
+
                 var winnerParameters = Tuple.Create(team.Name, GamePage.Instance.gameAudio);
                 GamePage.Instance.Frame.Navigate(typeof(WinnerPage), winnerParameters);
             }
@@ -109,7 +115,7 @@ namespace FIA_Grupp2
             double newPosY = pos.Y;
 
             CurrentPosition = new Position((int)indexPosition.X, (int)indexPosition.Y);
-           
+
 
             double modiY = 0, modiX = 0;
             switch (localIndex)
@@ -139,7 +145,7 @@ namespace FIA_Grupp2
             Canvas.SetLeft(PawnImage, newPosX + modiX);
             Canvas.SetTop(PawnImage, newPosY + modiY);
         }
-        public virtual void PositionAt(Position ind)
+        public virtual void PositionAt(Position ind, bool latch = false)
         {
             Point pos = boardgrid.GetActualPositionOf(ind.X, ind.Y);
             double newX = pos.X;
@@ -147,8 +153,17 @@ namespace FIA_Grupp2
 
             CurrentPosition = new Position((int)ind.X, (int)ind.Y);
 
-            Canvas.SetLeft(PawnImage, newX + 8);
-            Canvas.SetTop(PawnImage, newY - 10);
+            if (latch)
+            {
+                Canvas.SetLeft(PawnImage, newX + 8);
+                Canvas.SetTop(PawnImage, newY - 10 - 15);
+            }
+            else
+            {
+                Canvas.SetLeft(PawnImage, newX + 8);
+                Canvas.SetTop(PawnImage, newY - 10);
+            }
+
         }
         internal virtual void Step()
         {
@@ -182,7 +197,30 @@ namespace FIA_Grupp2
                         else if (direction == 1 && coarse[Steps + 1].Y < coarse[Steps].Y) { TurnImageRight(); }
                         else if (direction == 1 && coarse[Steps + 1].Y > coarse[Steps].Y) { TurnImageLeft(); }
                     }
-                    PositionAt(coarse[Steps++]);
+                    // If move onto homie add latch
+                    if (boardgrid.IsPositionLatched(coarse[Steps]))
+                    {
+                        boardgrid.Latches.Remove(coarse[Steps]);
+                        Debug.WriteLine("BAM Latch removed");
+                        PositionAt(coarse[Steps]);
+                    }
+                    // FIXME Debug why it fails to remove when latch is left.
+                    else if (team.ComparePositions(localIndex, coarse[Steps]))
+                    {
+                        boardgrid.Latches.Add(coarse[Steps]);
+                        Debug.WriteLine("BAM Latch added");
+                        PositionAt(coarse[Steps],true);
+                    }
+                    else
+                    {
+                        PositionAt(coarse[Steps]);
+                    }
+
+                    Steps++;
+
+
+                    // IF previous was a latch remove it
+
                 }
             }
         }
@@ -247,8 +285,8 @@ namespace FIA_Grupp2
             Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
 
 
-    }
-        internal override void ResetDirection(){ direction = 3; }
+        }
+        internal override void ResetDirection() { direction = 3; }
     }
     internal class Hen : Pawn
     {
