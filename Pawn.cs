@@ -65,9 +65,39 @@ namespace FIA_Grupp2
                 {
                     pawn.pawnCanvas.IsHitTestVisible = false;
                 }
+                CheckWinner();
 
                 // Calling for the next teams turn
                 GamePage.Instance.NextTeamsTurn();
+            }
+        }
+
+        /// <summary>
+        /// Checks if all pawns are in goal. Navigates to winnerpage with the name of the winning team
+        /// </summary>
+        private void CheckWinner()
+        {
+            bool allPawnsInGoal = true;
+
+            foreach (Pawn pawn in team.Pawns)
+            {
+
+                if (!pawn.isInGoal)
+                {
+                    allPawnsInGoal = false;
+                }
+
+                pawn.pawnCanvas.IsHitTestVisible = false;
+            }
+            if (allPawnsInGoal)
+            {
+                
+
+                Debug.Write("All pawns are in goal");
+                Debug.Write("Current team is: " + team.Name);
+                
+                var winnerParameters = Tuple.Create(team.Name, GamePage.Instance.gameAudio);
+                GamePage.Instance.Frame.Navigate(typeof(WinnerPage), winnerParameters);
             }
         }
 

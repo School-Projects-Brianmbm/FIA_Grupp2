@@ -50,7 +50,7 @@ namespace FIA_Grupp2
         private TimeSpan remainingGameTime;
         private TimeSpan remainingTurnTime;
         public Playlist gameAudio;
-
+        
         public GamePage()
         {
             InitializeComponent();
