@@ -16,7 +16,7 @@ namespace FIA_Grupp2
         protected int globalIndex;
         protected int localIndex;
         protected string Name = "Pawn";
-        protected bool isInGoal = false;
+        private bool isInGoal = false;
         protected int direction;
         protected Position indexPosition;
         protected GameBoardGrid boardgrid;
@@ -40,6 +40,7 @@ namespace FIA_Grupp2
         public bool AtNest { get { return Steps == 0; } }
 
         public int Steps { get => steps; set => steps = value; }
+        internal bool IsInGoal { get => isInGoal; set => isInGoal = value; }
 
 
         public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
@@ -65,9 +66,39 @@ namespace FIA_Grupp2
                 {
                     pawn.pawnCanvas.IsHitTestVisible = false;
                 }
+                CheckWinner();
 
                 // Calling for the next teams turn
                 GamePage.Instance.NextTeamsTurn();
+            }
+        }
+
+        /// <summary>
+        /// Checks if all pawns are in goal. Navigates to winnerpage with the name of the winning team
+        /// </summary>
+        private void CheckWinner()
+        {
+            bool allPawnsInGoal = true;
+
+            foreach (Pawn pawn in team.Pawns)
+            {
+
+                if (!pawn.isInGoal)
+                {
+                    allPawnsInGoal = false;
+                }
+
+                pawn.pawnCanvas.IsHitTestVisible = false;
+            }
+            if (allPawnsInGoal)
+            {
+                
+
+                Debug.Write("All pawns are in goal");
+                Debug.Write("Current team is: " + team.Name);
+                
+                var winnerParameters = Tuple.Create(team.Name, GamePage.Instance.gameAudio);
+                GamePage.Instance.Frame.Navigate(typeof(WinnerPage), winnerParameters);
             }
         }
 
@@ -124,14 +155,15 @@ namespace FIA_Grupp2
             while (turnStepsLeft-- > 0)
             {
 
-                if (isInGoal)
+                if (IsInGoal)
                 {
                     Debug.Write($"Im home already :)");
                 }
                 else if (Steps == coarse.Length - 1)
                 {
                     PositionAt(coarse[Steps++]);
-                    isInGoal = true;
+                    IsInGoal = true;
+                    pawnCanvas.Visibility = Visibility.Collapsed;
                 }
                 else
                 {

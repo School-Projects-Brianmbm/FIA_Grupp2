@@ -146,6 +146,9 @@
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Team.cs" />
+    <Compile Include="WinnerPage.xaml.cs">
+      <DependentUpon>WinnerPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -153,7 +156,11 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Backgrounds\chickens_win.png" />
+    <Content Include="Assets\Backgrounds\cows_win.jpg" />
     <Content Include="Assets\Backgrounds\hay.jpg" />
+    <Content Include="Assets\Backgrounds\pigs_win.jpg" />
+    <Content Include="Assets\Backgrounds\sheep_win.jpg" />
     <Content Include="Assets\Dice_images\dice_five.png" />
     <Content Include="Assets\Dice_images\dice_four.png" />
     <Content Include="Assets\Dice_images\dice_one.png" />
@@ -197,6 +204,8 @@
     <Content Include="Assets\TeamIcons\cow.jpg" />
     <Content Include="Assets\TeamIcons\pig.jpg" />
     <Content Include="Assets\TeamIcons\sheep.jpg" />
+    <Content Include="Assets\Textures\beige-wooden-textured-flooring-background.jpg" />
+    <Content Include="Assets\Textures\grass-texture-background.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -232,6 +241,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="StartPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WinnerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
