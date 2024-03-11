@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    >
+    RequestedTheme="Light">
 
     <Grid Width="1500" Height="1000">
         <Image VerticalAlignment="Top" Source="Assets/main_menu.jpg" HorizontalAlignment="Center" Stretch="Fill"/>

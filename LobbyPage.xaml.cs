@@ -23,6 +23,11 @@ namespace FIA_Grupp2
 		private int slot3IconIndex;
 		private int slot4IconIndex;
 
+		private bool isIconIndex0Available = true;
+		private bool isIconIndex1Available = true;
+		private bool isIconIndex2Available = true;
+		private bool isIconIndex3Available = true;
+
 		public LobbyPage()
 		{
 			this.InitializeComponent();
@@ -378,12 +383,12 @@ namespace FIA_Grupp2
 
         private void Back_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(MainPage));
+			this.Frame.Navigate(typeof(MainPage), introAudio);
 		}
 
 		private void Options_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(GameSessionOptionsPage));
+			this.Frame.Navigate(typeof(GameSessionOptionsPage), introAudio);
 		}
 
 		private void Choose_level_button_click_event(object sender, RoutedEventArgs e)
