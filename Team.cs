@@ -31,6 +31,24 @@ namespace FIA_Grupp2
             boardgrid = gbg;
         }
 
+        public virtual bool ComparePositions(int indexOfMoved, Position positionMovingTo) 
+        {
+            for (int i = 0; i < pawns.Length; i++)
+            {
+                // Do not compare with self, will return true every time
+                if (indexOfMoved == i)
+                {
+                    continue;
+                }
+                if (positionMovingTo.X == pawns[i].CurrentPosition.X &&
+                    positionMovingTo.Y == pawns[i].CurrentPosition.Y)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public virtual Pawn[] GetPawns()
         {
             return pawns;
