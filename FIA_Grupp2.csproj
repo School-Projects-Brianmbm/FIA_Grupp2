@@ -203,6 +203,8 @@
     <Content Include="Assets\TeamIcons\cow.jpg" />
     <Content Include="Assets\TeamIcons\pig.jpg" />
     <Content Include="Assets\TeamIcons\sheep.jpg" />
+    <Content Include="Assets\Textures\beige-wooden-textured-flooring-background.jpg" />
+    <Content Include="Assets\Textures\grass-texture-background.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
