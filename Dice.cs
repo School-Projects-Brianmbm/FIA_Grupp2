@@ -39,7 +39,7 @@ namespace FIA_Grupp2
             _sender = sender;
 
             PlayRandomSequence(0.5f);
-            
+
         }
 
         private void Timer_Tick(object sender, object e)
@@ -105,17 +105,18 @@ namespace FIA_Grupp2
             {
                 BitmapImage newDiceImage = new BitmapImage(new Uri(path));
 
-                if (_sender != null ) { 
-                // Find the Image control inside the Button that has been pressed.
-                Image imageControl = (Image)((Button)_sender).Content;
+                if (_sender != null)
+                {
+                    // Find the Image control inside the Button that has been pressed.
+                    Image imageControl = (Image)((Button)_sender).Content;
 
-                // Update the Source property of the Button image control 
-                imageControl.Source = newDiceImage;
+                    // Update the Source property of the Button image control 
+                    imageControl.Source = newDiceImage;
                 }
             }
             catch
             {
-                
+
             }
         }
 

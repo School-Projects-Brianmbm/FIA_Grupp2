@@ -184,6 +184,7 @@
     <Content Include="Assets\Pawns\hen_1.png" />
     <Content Include="Assets\Pawns\hen_2.png" />
     <Content Include="Assets\Pawns\hen_3.png" />
+    <Content Include="Assets\Pawns\nearCowExperience.png" />
     <Content Include="Assets\Pawns\pig_0.png" />
     <Content Include="Assets\Pawns\pig_1.png" />
     <Content Include="Assets\Pawns\pig_2.png" />

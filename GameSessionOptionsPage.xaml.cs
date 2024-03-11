@@ -53,7 +53,7 @@ namespace FIA_Grupp2
 
 		private void Back_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(LobbyPage));
+			this.Frame.Navigate(typeof(LobbyPage), introAudio);
 		}
 
 		private void Save_button_click_event(object sender, RoutedEventArgs e)
@@ -69,7 +69,7 @@ namespace FIA_Grupp2
 
 			ApplicationData.Current.LocalSettings.Values["SessionOptionsData"] = JsonConvert.SerializeObject(sessionOptionsData);
 
-			this.Frame.Navigate(typeof(LobbyPage));
+			this.Frame.Navigate(typeof(LobbyPage), introAudio);
 		}
 
 		private void TextBox_OnBeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
@@ -96,7 +96,14 @@ namespace FIA_Grupp2
 			
 		}
 
-		private void GameTimeMinutesSecondsAndTurnTimeSeconds_LostFocus(object sender, RoutedEventArgs args)
+        private Playlist introAudio;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            introAudio = e.Parameter as Playlist;
+        }
+
+        private void GameTimeMinutesSecondsAndTurnTimeSeconds_LostFocus(object sender, RoutedEventArgs args)
 		{
 			TextBox textbox = sender as TextBox;
 			if (int.Parse(textbox.Text) >= 99)

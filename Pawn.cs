@@ -42,6 +42,7 @@ namespace FIA_Grupp2
         public int Steps { get => steps; set => steps = value; }
         internal bool IsInGoal { get => isInGoal; set => isInGoal = value; }
 
+
         public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
         {
             team = myTeam;
