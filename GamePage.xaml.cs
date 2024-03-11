@@ -293,7 +293,7 @@ namespace FIA_Grupp2
                         pwn.PawnCanvas.IsHitTestVisible = false;
                         continue;  // Hoppa direkt till att undersöka nästa pjäs
                     }
-                    // OM NÅGON ÄR UR BOET LÅT DEN GÅ Såvida inte går utanför corase
+                    // OM NÅGON ÄR UR BOET LÅT DEN GÅ Såvida inte går utanför corase TODO (och inte går över en spärr)
                     else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0 && pwn.Steps + _dice.DiceNumber < globalCoarse.Length + 2)
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
@@ -317,7 +317,7 @@ namespace FIA_Grupp2
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
-                    // OM NÅGON PÅ BORDET LÅT DEN GÅ Såvida inte går utanför corase
+                    // OM NÅGON PÅ BORDET LÅT DEN GÅ Såvida inte går utanför corase TODO (och inte går över en spärr)
                     else if (pwn.Steps + _dice.DiceNumber < globalCoarse.Length + 2)
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
@@ -345,7 +345,7 @@ namespace FIA_Grupp2
                 {
                     if (pwn.PawnCanvas.IsHitTestVisible)
                     {
-                        return true; 
+                        return true;
                     }
                 }
                 return false;
@@ -372,25 +372,15 @@ namespace FIA_Grupp2
         public void NextTeamsTurn()
         {
             diceButton.IsEnabled = true;
-            // int aprioTeam = currentTeam;
             Debug.WriteLine("");
-            // Note to embeed actuall functionality in a Debug.Write cant be good practice.
             CheckOtherTeamsPositions(teams[currentTeam]);
 
-            //IsThereAPawnOnThisPosition(new Position(6, 10));
-
             currentTeam++;
-            if (currentTeam > nrOfPlayers - 1)
-            {
-                currentTeam = 0;
-            }
+            if (currentTeam > nrOfPlayers - 1) { currentTeam = 0; }
             DebugTextUpdateModifier();
 
             ChangeActiveTeamIcon(teams[currentTeam].Name);
-            if (isTurnTimerEnabled)
-            {
-                ResetTurnTimer();
-            }
+            if (isTurnTimerEnabled) { ResetTurnTimer(); }
         }
 
         private string ConvertNameToJPG(string teamName)
@@ -449,7 +439,6 @@ namespace FIA_Grupp2
             turnTimer.Start();
         }
 
-
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             Debug.Write("BAM MainPage Loaded");
@@ -459,7 +448,7 @@ namespace FIA_Grupp2
 
             gameGrid.CalculateActualPositions();
             gameGrid.CalculateOrigoY();
-            gameGrid.SetEllipsesPositions();
+            gameGrid.SetEllipsesPositions(true,false,true);
             //gameGrid.SetEllipsesPositions(true,showInd: true);
 
             CreatePawns();
@@ -467,8 +456,8 @@ namespace FIA_Grupp2
             // Add the elements to the canvas
             foreach (Team team in teams)
             {
-                foreach(Pawn pawn in team.Pawns)
-                layoutRoot.Children.Add(pawn.PawnCanvas);
+                foreach (Pawn pawn in team.Pawns)
+                    layoutRoot.Children.Add(pawn.PawnCanvas);
             }
 
             _dice = new Dice(this);
@@ -503,7 +492,7 @@ namespace FIA_Grupp2
             if (isPigs)
             {
                 teams[index] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
-                index++;
+                // index++;
             }
 
             _dice = new Dice(this);
@@ -544,31 +533,31 @@ namespace FIA_Grupp2
 
         private new void PointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
-            // Get the delta value to determine whether the wheel scrolls up or down
-            var delta = e.GetCurrentPoint(layoutRoot).Properties.MouseWheelDelta;
+            //// Get the delta value to determine whether the wheel scrolls up or down
+            //var delta = e.GetCurrentPoint(layoutRoot).Properties.MouseWheelDelta;
 
-            if (delta > 0)
-            {
-                gameGrid.Squish--;
-            }
-            else if (delta < 0)
-            {
-                gameGrid.Squish++;
-            }
+            //if (delta > 0)
+            //{
+            //    gameGrid.Squish--;
+            //}
+            //else if (delta < 0)
+            //{
+            //    gameGrid.Squish++;
+            //}
 
-            gameGrid.CalculateColumnDist();
-            gameCanvas.Children.Clear();
+            //gameGrid.CalculateColumnDist();
+            //gameCanvas.Children.Clear();
 
-            gameGrid.CreateArrayOfPoints();
-            gameGrid.CreateArrayOfDots();
+            //gameGrid.CreateArrayOfPoints();
+            //gameGrid.CreateArrayOfDots();
 
-            gameGrid.CalculateOrigoY();
-            gameGrid.CalculateActualPositions();
-            gameGrid.SetEllipsesPositions();
+            //gameGrid.CalculateOrigoY();
+            //gameGrid.CalculateActualPositions();
+            //gameGrid.SetEllipsesPositions();
 
-            DebugTextUpdateModifier();
+            //DebugTextUpdateModifier();
 
-            //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
+            ////Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
 
         private void GameTimerTick(object sender, object e)
@@ -600,6 +589,8 @@ namespace FIA_Grupp2
                 }
             }
         }
+
+        // CheckSelfTeamsPosition()
 
         private Team CheckOtherTeamsPositions(Team currentActiveTeam)
         {
