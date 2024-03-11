@@ -66,7 +66,7 @@ namespace FIA_Grupp2
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             gameAudio = new Playlist();
-            //StartMusic();
+            StartMusic();
 
             LoadGameSessionOptions();
             LoadLobbyOptions();
