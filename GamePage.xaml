@@ -101,7 +101,7 @@
             <TextBlock x:Name="volumeSliderValueText" Text="100%" Canvas.Left="122" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22"/>
         </Canvas>
 
-        <Canvas x:Name="rulesPage" Canvas.ZIndex="98" Visibility="Visible" IsHitTestVisible="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Canvas x:Name="rulesPage" Canvas.ZIndex="98" Visibility="Collapsed" IsHitTestVisible="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <!--<Image Source="ms-appx:///Assets/Backgrounds/hay.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>-->
             <Border Width="1500" Height="1000" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Border.Background>
