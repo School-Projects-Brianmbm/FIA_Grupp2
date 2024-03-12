@@ -71,7 +71,7 @@ namespace FIA_Grupp2
                 // Print each position
                 foreach (Position position in boardgrid.Latches)
                 {
-                    Debug.Write($"Latch At {position}"); // Calls the overridden ToString() method
+                    Debug.Write($"Latch At {position}   "); // Calls the overridden ToString() method
                 }
 
                 // Calling for the next teams turn
@@ -197,18 +197,20 @@ namespace FIA_Grupp2
                         else if (direction == 1 && coarse[Steps + 1].Y < coarse[Steps].Y) { TurnImageRight(); }
                         else if (direction == 1 && coarse[Steps + 1].Y > coarse[Steps].Y) { TurnImageLeft(); }
                     }
-                    // If move onto homie add latch
-                    if (boardgrid.IsPositionLatched(coarse[Steps]))
+                    // If move out of latch
+                    Debug.WriteLine($"Current position = {coarse[Steps]}");
+                    if (Steps - 1 >= 0 && boardgrid.IsPositionLatched(coarse[Steps - 1]))
                     {
-                        boardgrid.Latches.Remove(coarse[Steps]);
-                        Debug.WriteLine("BAM Latch removed");
+                        boardgrid.Latches.Remove(coarse[Steps - 1]);
+                        Debug.WriteLine($"moved from {coarse[Steps - 1]} BAM Latch removed");
                         PositionAt(coarse[Steps]);
                     }
+                    // If move onto homie add latch
                     // FIXME Debug why it fails to remove when latch is left.
                     else if (team.ComparePositions(localIndex, coarse[Steps]))
                     {
                         boardgrid.Latches.Add(coarse[Steps]);
-                        Debug.WriteLine("BAM Latch added");
+                        Debug.WriteLine($"moved into {coarse[Steps]} BAM Latch added");
                         PositionAt(coarse[Steps],true);
                     }
                     else
