@@ -26,5 +26,16 @@ namespace FIA_Grupp2
         {
             this.InitializeComponent();
         }
+        private Playlist introAudio;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            introAudio = e.Parameter as Playlist;
+        }
+
+        private void Back_button_click_event(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(MainPage), introAudio);
+        }
     }
 }
