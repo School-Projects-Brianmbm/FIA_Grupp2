@@ -122,6 +122,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RulesPage.xaml.cs">
+      <DependentUpon>RulesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Playlist.cs" />
     <Compile Include="LobbyOptions.cs" />
     <Compile Include="Dice.cs" />
@@ -224,6 +227,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RulesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
