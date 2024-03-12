@@ -163,7 +163,6 @@ namespace FIA_Grupp2
                 Canvas.SetLeft(PawnImage, newX + 8);
                 Canvas.SetTop(PawnImage, newY - 10);
             }
-
         }
         internal virtual void Step()
         {
@@ -197,18 +196,22 @@ namespace FIA_Grupp2
                         else if (direction == 1 && coarse[Steps + 1].Y < coarse[Steps].Y) { TurnImageRight(); }
                         else if (direction == 1 && coarse[Steps + 1].Y > coarse[Steps].Y) { TurnImageLeft(); }
                     }
-                    // If move out of latch
+
                     Debug.WriteLine($"Current position = {coarse[Steps]}");
+
+                    // If move out of latch
                     if (Steps - 1 >= 0 && boardgrid.IsPositionLatched(coarse[Steps - 1]))
                     {
+                        Canvas.SetZIndex(pawnCanvas, 0);
                         boardgrid.Latches.Remove(coarse[Steps - 1]);
                         Debug.WriteLine($"moved from {coarse[Steps - 1]} BAM Latch removed");
                         PositionAt(coarse[Steps]);
                     }
                     // If move onto homie add latch
                     // FIXME Debug why it fails to remove when latch is left.
-                    else if (team.ComparePositions(localIndex, coarse[Steps]))
+                    if (team.ComparePositions(localIndex, coarse[Steps]))
                     {
+                        Canvas.SetZIndex(pawnCanvas, 1);
                         boardgrid.Latches.Add(coarse[Steps]);
                         Debug.WriteLine($"moved into {coarse[Steps]} BAM Latch added");
                         PositionAt(coarse[Steps],true);
@@ -226,6 +229,17 @@ namespace FIA_Grupp2
                 }
             }
         }
+
+        public Position GetCurrentPosition()
+        {
+            return coarse[Steps];
+        }
+
+        public Position GetPositionAhead(int dice)
+        {
+            return coarse[Steps + dice];
+        }
+
         internal virtual bool IsSameDirection()
         {
             if (direction == 3 || direction == 1)
@@ -284,7 +298,7 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
-            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS} {Canvas.GetZIndex(pawnCanvas)}\n");
 
 
         }
@@ -310,7 +324,7 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
-            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}  {Canvas.GetZIndex(pawnCanvas)}\n");
         }
         internal override void ResetDirection() { direction = 2; }
     }
@@ -334,7 +348,7 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
-            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}  {Canvas.GetZIndex(pawnCanvas)}\n");
         }
         internal override void ResetDirection() { direction = 1; }
 
@@ -359,7 +373,7 @@ namespace FIA_Grupp2
             pawnImage = pawnImages[direction];
             pawnCanvas.Children.Add(pawnImage);
             PositionAtNest();
-            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}\n");
+            Debug.Write($"{Name} {localIndex} has ben created. For Team {Team.NUMBER_OF_TEAMS}  {Canvas.GetZIndex(pawnCanvas)}\n");
         }
         internal override void ResetDirection() { direction = 0; }
     }
