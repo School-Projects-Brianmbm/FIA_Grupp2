@@ -41,7 +41,7 @@ namespace FIA_Grupp2
         };
 
         Team[] teams = new Team[nrOfPlayers];
-        // Team cows, hens, sheeps, pigs;
+
         public Playlist gameAudio;
 
         private Dice _dice;
@@ -293,8 +293,9 @@ namespace FIA_Grupp2
                         pwn.PawnCanvas.IsHitTestVisible = false;
                         continue;  // Hoppa direkt till att undersöka nästa pjäs
                     }
-                    // OM NÅGON ÄR UR BOET LÅT DEN GÅ Såvida inte går utanför corase TODO (och inte går över en spärr)
-                    else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0 && pwn.Steps + _dice.DiceNumber < globalCoarse.Length + 2)
+                    // OM NÅGON ÄR UR BOET LÅT DEN GÅ Såvida inte går utanför corase
+                    else if (teams[currentTeam].GetPawnsOnTheBoard().Length > 0
+                        && pwn.Steps + _dice.DiceNumber < globalCoarse.Length + 2)
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
@@ -309,15 +310,12 @@ namespace FIA_Grupp2
                 else if (_dice.DiceNumber == 1 || _dice.DiceNumber == 6)
                 {
                     // OCH INGEN PÅ BORDET MEN NÅGON I BOET
-                    if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
-                        teams[currentTeam].GetPawnsInTheNest().Length >= 0)
+                    if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0
+                        && teams[currentTeam].GetPawnsInTheNest().Length >= 0)
                     {
-                        //Debug.WriteLine("There is still pawns in the nest, and i can move one out");
-                        // FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
                     }
-                    // OM NÅGON PÅ BORDET LÅT DEN GÅ Såvida inte går utanför corase TODO (och inte går över en spärr)
                     else if (pwn.Steps + _dice.DiceNumber < globalCoarse.Length + 2)
                     {
                         pwn.TurnStepsLeft = _dice.DiceNumber;
@@ -329,6 +327,15 @@ namespace FIA_Grupp2
                         pwn.PawnCanvas.IsHitTestVisible = false;
                     }
                     // TODO KOLLA OM NÅGON ÄR I VÄGEN
+                }
+                //Debug.WriteLine("Current" + pwn.GetCurrentPosition());
+                //Debug.WriteLine("Ahead" + pwn.GetPositionAhead(_dice.DiceNumber));
+
+                // if (Team.IsPositionLatch(pwn.GetPositionAhead(_dice.DiceNumber)))
+                if (Team.IsPositionLatch(pwn.GetCurrentPosition()))
+                {
+                    Debug.Write("DÄR STÅR REDAN TVÅ PJÄSER");
+                    pwn.PawnCanvas.IsHitTestVisible = false;
                 }
             }
 
@@ -448,7 +455,7 @@ namespace FIA_Grupp2
 
             gameGrid.CalculateActualPositions();
             gameGrid.CalculateOrigoY();
-            gameGrid.SetEllipsesPositions(true,false,true);
+            gameGrid.SetEllipsesPositions(true, false, true);
             //gameGrid.SetEllipsesPositions(true,showInd: true);
 
             CreatePawns();
