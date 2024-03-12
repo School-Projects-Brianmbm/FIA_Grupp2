@@ -55,7 +55,7 @@ namespace FIA_Grupp2
             {
                 StorageFile file = _playList[index];
                 _mediaPlayer.Source = MediaSource.CreateFromStorageFile(file);
-                //_mediaPlayer.Play();
+                _mediaPlayer.Play();
             }
 
         }

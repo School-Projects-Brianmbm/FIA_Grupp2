@@ -16,14 +16,13 @@ namespace FIA_Grupp2
 
         protected static Position nestIndex;
         public Position[] coarse;
-        internal static GameBoardGrid boardgrid;
+        protected GameBoardGrid boardgrid;
 
         internal Pawn pawn;
         internal Pawn Pawn { get => pawn; set => pawn = value; }
 
         internal Pawn[] pawns;
         internal Pawn[] Pawns { get => pawns; set => pawns = value; }
-        // internal GameBoardGrid Boardgrid { get => boardgrid; set => boardgrid = value; }
 
         public Team(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
         {
@@ -49,21 +48,6 @@ namespace FIA_Grupp2
             }
             return false;
         }
-
-        public static bool IsPositionLatch(Position position)
-        {
-            if (boardgrid.Latches.Contains(position))
-            {
-                Debug.WriteLine($"Latches Contain{position}");
-                return true;
-            }
-            return false;
-        }
-
-        //public bool latchOfOtherTeamIsBlocking()
-        //{
-        //    return false;
-        //}
 
         public virtual Pawn[] GetPawns()
         {
