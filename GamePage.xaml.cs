@@ -728,6 +728,20 @@ namespace FIA_Grupp2
             this.Frame.Navigate(typeof(StartPage));
         }
 
+        private void IngameRulesButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SetIngameMenuVisible(true);
+
+            rulesPage.Visibility = Visibility.Visible;
+        }
+
+        private void RulesPageBackButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SetIngameMenuVisible(true);
+
+            rulesPage.Visibility = Visibility.Collapsed;
+        }
+
         private void VolumeSliderValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
             _musicVolume = volumeSlider.Value;
