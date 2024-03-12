@@ -22,12 +22,12 @@
                 </Rectangle.Fill>
             </Rectangle>
             <StackPanel Margin="0,0,0,0" Width="350" Height="425">
-                <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="0,30,0,5" Click="StartButton_Click"/>
-                <Button Content="Continue" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
-                <Button Content="High-Scores" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
-                <Button Content="Settings" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
-                <Button Content="About" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
-                <Button Content="Exit" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" Click="ExitButtonClick"/>
+                <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" FontSize="22" Foreground="White" Margin="0,30,0,5" Click="StartButton_Click"/>
+                <Button Content="Continue" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" FontSize="22" Foreground="White"/>
+                <Button Content="High-Scores" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" FontSize="22" Foreground="White"/>
+                <Button Content="Settings" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" FontSize="22" Foreground="White"/>
+                <Button Content="About" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" FontSize="22" Foreground="White"/>
+                <Button Content="Exit" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" Click="ExitButtonClick" FontSize="22" Foreground="White"/>
 
 
             </StackPanel>
