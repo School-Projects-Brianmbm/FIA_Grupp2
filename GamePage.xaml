@@ -7,6 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    MaxWidth="1500"
+    MaxHeight="1000"
     RequestedTheme="Light">
 
     <Grid x:Name="layoutRoot" PointerWheelChanged="PointerWheelChanged" PointerReleased="PointerReleased">
@@ -136,7 +138,7 @@
                     </TextBlock>
                 </ScrollViewer>
             </Grid>
-            <Button Width="325" Height="114" Content="Back" Background="#FF606C38" FontSize="48" Foreground="White" CornerRadius="10" Click="RulesPageBackButtonClicked" Canvas.Top="852" Canvas.Left="32"/>
+            <Button Width="325" Height="114" Content="Back" Background="#FF606C38" FontSize="48" Foreground="White" CornerRadius="10" Click="RulesPageBackButtonClicked" Canvas.Top="828" Canvas.Left="588" VerticalAlignment="Top"/>
         </Canvas>
 
     </Grid>

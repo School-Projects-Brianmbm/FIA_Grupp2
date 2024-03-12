@@ -32,7 +32,7 @@
                         </LinearGradientBrush>
                     </Rectangle.Fill>
                 </Rectangle>
-                <Button Content="OnlineButton" Background="#FF606C38" Width="200" Height="50" CornerRadius="10" Margin="75,50,0,0"/>
+                <Button Content="OnlineButton" Background="#FF606C38" Width="200" Height="50" CornerRadius="10" Margin="75,50,0,0" IsEnabled="False"/>
             </Canvas>
         </StackPanel>
     </Grid>
