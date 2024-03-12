@@ -28,6 +28,12 @@ namespace FIA_Grupp2
         static int currentTeam = 0;
         static GameBoardGrid gameGrid;
 
+        private bool toggleIngameMenu = false;
+        private bool toggleVolumeButton = true;
+
+        private double _musicVolume = 100;
+        private double _musicSavedValue = 100;
+
         Position goalPosition = new Position(5, 5);
 
         static Position[] globalCoarse = new Position[44]
@@ -59,11 +65,14 @@ namespace FIA_Grupp2
         private string slot1Username, slot2Username, slot3Username, slot4Username;
         private string slot1Team, slot2Team, slot3Team, slot4Team;
 
+        public double MusicVolume { get => _musicVolume; set => _musicVolume = value; }
+
         public GamePage()
         {
             InitializeComponent();
             Instance = this;
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
+            Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             gameAudio = new Playlist();
             StartMusic();
@@ -77,6 +86,7 @@ namespace FIA_Grupp2
             InitiateTurnTimer();
 
             Loaded += MainPage_Loaded;
+
         }
 
         private void LoadLobbyOptions()
@@ -264,6 +274,7 @@ namespace FIA_Grupp2
         private async void StartMusic()
         {
             await gameAudio.InitializePlaylist("Assets\\Sound\\InGame");
+            gameAudio.SetVolume(_musicVolume / 100.0);
             gameAudio.StartPlayback();
         }
 
@@ -640,6 +651,129 @@ namespace FIA_Grupp2
         private void UpdateTurnTimerText()
         {
             turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
+        }
+
+        private void SetIngameMenuVisible(bool value)
+        {
+            toggleIngameMenu = value;
+            if(value == true)
+            {
+                ingame_menu.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ingame_menu.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs args)
+        {
+            if (args.VirtualKey == Windows.System.VirtualKey.Escape)
+            {
+                SetIngameMenuVisible(!toggleIngameMenu);
+            }
+        }
+
+        private void InGameMenuContinue(object sender, RoutedEventArgs e)
+        {
+            SetIngameMenuVisible(false);
+        }
+
+        private void GameVolumeButtonClicked(object sender, RoutedEventArgs e)
+        {
+            //TODO: get the actual volume status from the volume segment
+            string path = $"ms-appx:///Assets/InGameIcons/";
+
+            toggleVolumeButton = !toggleVolumeButton;
+
+            if (toggleVolumeButton)
+            {
+                path += "volume.png";
+                _musicVolume = _musicSavedValue;
+                
+            }
+            else
+            {
+                path += "volume-off.png";
+                _musicSavedValue = _musicVolume;
+                _musicVolume = 0;
+            }
+            
+            BitmapImage newVolumeIconImage = new BitmapImage(new Uri(path));
+
+            volumeButtonIcon.Source = newVolumeIconImage;
+
+            volumeSlider.Value = _musicVolume;
+
+            /*if (volumeSliderValueText != null)
+            {
+                volumeSliderValueText.Text = $"{_musicVolume}%";
+            }
+
+            if (gameAudio != null)
+            {
+                gameAudio.StopPlayback();
+                StartMusic();
+            }*/
+        }
+
+        private void OpenMainMenuButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SetIngameMenuVisible(true);
+        }
+
+        private void ReturnToMainMenuButtonClicked(object sender, RoutedEventArgs e)
+        {
+            gameAudio.StopPlayback();
+            this.Frame.Navigate(typeof(StartPage));
+        }
+
+        private void IngameRulesButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SetIngameMenuVisible(true);
+
+            rulesPage.Visibility = Visibility.Visible;
+        }
+
+        private void RulesPageBackButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SetIngameMenuVisible(true);
+
+            rulesPage.Visibility = Visibility.Collapsed;
+        }
+
+        private void VolumeSliderValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+        {
+            _musicVolume = volumeSlider.Value;
+
+            string path = $"ms-appx:///Assets/InGameIcons/";
+            if (_musicVolume > 0)
+            {
+
+                toggleVolumeButton = true;
+                path += "volume.png";
+            }
+            else if(_musicVolume <= 0)
+            {
+                toggleVolumeButton = false;
+                path += "volume-off.png";
+            }
+
+            BitmapImage newVolumeIconImage = new BitmapImage(new Uri(path));
+
+            volumeButtonIcon.Source = newVolumeIconImage;
+
+            if (volumeSliderValueText != null)
+            {
+                volumeSliderValueText.Text = $"{_musicVolume}%";
+            }
+
+            if(gameAudio != null)
+            {
+                gameAudio.StopPlayback();
+                StartMusic();
+            }
+            
         }
     }
 }
