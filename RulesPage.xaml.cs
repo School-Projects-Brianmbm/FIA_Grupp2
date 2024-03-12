@@ -38,10 +38,5 @@ namespace FIA_Grupp2
 		{
 			this.Frame.Navigate(typeof(MainPage), introAudio);
 		}
-
-		private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
-		{
-
-		}
 	}
 }
