@@ -81,7 +81,7 @@ namespace FIA_Grupp2
 
 						button.Content = "AI";
 						slot1_username.Text = "AI";
-						slot1_button_teamicon.IsEnabled = true;
+						//slot1_button_teamicon.IsEnabled = true;
 						slot1_username.IsEnabled = true;
 						slot1_rectangle.Opacity = 1;
 						lobbyOptionsData.slot1Usertype = "AI";
@@ -91,7 +91,7 @@ namespace FIA_Grupp2
 
 						button.Content = "None";
 						slot1_username.Text = "---";
-						slot1_button_teamicon.IsEnabled = false;
+						//slot1_button_teamicon.IsEnabled = false;
 						slot1_username.IsEnabled = false;
 						slot1_rectangle.Opacity = 0.5;
 						lobbyOptionsData.slot1Usertype = "None";
@@ -101,7 +101,7 @@ namespace FIA_Grupp2
 
 						button.Content = "Player";
 						slot1_username.Text = "Player1";
-						slot1_button_teamicon.IsEnabled = true;
+						//slot1_button_teamicon.IsEnabled = true;
 						slot1_username.IsEnabled = true;
 						slot1_rectangle.Opacity = 1;
 						lobbyOptionsData.slot1Usertype = "Player";
@@ -126,7 +126,7 @@ namespace FIA_Grupp2
 
 						button.Content = "AI";
 						slot2_username.Text = "AI";
-						slot2_button_teamicon.IsEnabled = true;
+						//slot2_button_teamicon.IsEnabled = true;
 						slot2_username.IsEnabled = true;
 						slot2_rectangle.Opacity = 1;
 						lobbyOptionsData.slot2Usertype = "AI";
@@ -136,7 +136,7 @@ namespace FIA_Grupp2
 
 						button.Content = "None";
 						slot2_username.Text = "---";
-						slot2_button_teamicon.IsEnabled = false;
+						//slot2_button_teamicon.IsEnabled = false;
 						slot2_username.IsEnabled = false;
 						slot2_rectangle.Opacity = 0.5;
 						lobbyOptionsData.slot2Usertype = "None";
@@ -146,7 +146,7 @@ namespace FIA_Grupp2
 
 						button.Content = "Player";
 						slot2_username.Text = "Player2";
-						slot2_button_teamicon.IsEnabled = true;
+						//slot2_button_teamicon.IsEnabled = true;
 						slot2_username.IsEnabled = true;
 						slot2_rectangle.Opacity = 1;
 						lobbyOptionsData.slot2Usertype = "Player";
@@ -171,7 +171,7 @@ namespace FIA_Grupp2
 
 						button.Content = "AI";
 						slot3_username.Text = "AI";
-						slot3_button_teamicon.IsEnabled = true;
+						//slot3_button_teamicon.IsEnabled = true;
 						slot3_username.IsEnabled = true;
 						slot3_rectangle.Opacity = 1;
 						lobbyOptionsData.slot3Usertype = "AI";
@@ -181,7 +181,7 @@ namespace FIA_Grupp2
 
 						button.Content = "None";
 						slot3_username.Text = "---";
-						slot3_button_teamicon.IsEnabled = false;
+						//slot3_button_teamicon.IsEnabled = false;
 						slot3_username.IsEnabled = false;
 						slot3_rectangle.Opacity = 0.5;
 						lobbyOptionsData.slot3Usertype = "None";
@@ -191,7 +191,7 @@ namespace FIA_Grupp2
 
 						button.Content = "Player";
 						slot3_username.Text = "Player3";
-						slot3_button_teamicon.IsEnabled = true;
+						//slot3_button_teamicon.IsEnabled = true;
 						slot3_username.IsEnabled = true;
 						slot3_rectangle.Opacity = 1;
 						lobbyOptionsData.slot3Usertype = "Player";
@@ -217,7 +217,7 @@ namespace FIA_Grupp2
 
 						button.Content = "AI";
 						slot4_username.Text = "AI";
-						slot4_button_teamicon.IsEnabled = true;
+						//slot4_button_teamicon.IsEnabled = true;
 						slot4_username.IsEnabled = true;
 						slot4_rectangle.Opacity = 1;
 						lobbyOptionsData.slot4Usertype = "AI";
@@ -227,7 +227,7 @@ namespace FIA_Grupp2
 
 						button.Content = "None";
 						slot4_username.Text = "---";
-						slot4_button_teamicon.IsEnabled = false;
+						//slot4_button_teamicon.IsEnabled = false;
 						slot4_username.IsEnabled = false;
 						slot4_rectangle.Opacity = 0.5;
 						lobbyOptionsData.slot4Usertype = "None";
@@ -237,7 +237,7 @@ namespace FIA_Grupp2
 
 						button.Content = "Player";
 						slot4_username.Text = "Player4";
-						slot4_button_teamicon.IsEnabled = true;
+						//slot4_button_teamicon.IsEnabled = true;
 						slot4_username.IsEnabled = true;
 						slot4_rectangle.Opacity = 1;
 						lobbyOptionsData.slot4Usertype = "Player";
