@@ -88,8 +88,9 @@ namespace FIA_Grupp2
         private int GetRandomDiceNumber()
         {
             Random r = new Random();
-            return r.Next(1, 7);
-            //return r.Next(1, 7);
+            return 1;
+            // return r.Next(1, 3);
+            // return r.Next(1, 7);
         }
 
         private void PlayRandomSequence(float seconds)

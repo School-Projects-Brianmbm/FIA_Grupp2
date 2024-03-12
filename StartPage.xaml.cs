@@ -31,8 +31,9 @@ namespace FIA_Grupp2
         public StartPage()
         {
             this.InitializeComponent();
+            ApplicationView.ClearAllPersistedState();
             ApplicationView.PreferredLaunchViewSize = new Size(1500, 1000);
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+            //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             startStoryBoard.Begin();
             introAudio = new Playlist();
             StartMusic();
