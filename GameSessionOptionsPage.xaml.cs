@@ -42,7 +42,8 @@ namespace FIA_Grupp2
 				GameTimeMinutes.Text = int.Parse(gameTimeMinutes) < 10 ? "0" + gameTimeMinutes.ToString() : gameTimeMinutes.ToString();
 				GameTimeSeconds.Text = int.Parse(gameTimeSeconds) < 10 ? "0" + gameTimeSeconds.ToString() : gameTimeSeconds.ToString();
 
-				string turnTimeHours = sessionOptionsData.TurnTimeHours.ToString();
+				string turnTimeHours = "00";
+				//string turnTimeHours = sessionOptionsData.TurnTimeHours.ToString();
 				string turnTimeMinutes = sessionOptionsData.TurnTimeMinutes.ToString();
 				string turnTimeSeconds = sessionOptionsData.TurnTimeSeconds.ToString();
 				TurnTimeHours.Text = int.Parse(turnTimeHours) < 10 ? "0" + turnTimeHours.ToString() : turnTimeHours.ToString();
@@ -92,8 +93,15 @@ namespace FIA_Grupp2
 
 		private void GameTurnMinutes_LostFocus(object sender, RoutedEventArgs args)
 		{
+			if (int.Parse(TurnTimeMinutes.Text) > 15)
+			{
+				TurnTimeMinutes.Text = "15";
+			}
+			else if (int.Parse(TurnTimeMinutes.Text) < 10)
+			{
+				TurnTimeMinutes.Text = "0" + TurnTimeMinutes.Text;
+			}
 
-			
 		}
 
         private Playlist introAudio;
