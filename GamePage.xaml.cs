@@ -85,6 +85,7 @@ namespace FIA_Grupp2
             if (!string.IsNullOrEmpty(lobbyData))
             {
                 LobbyOptions lobbyOptionsData = JsonConvert.DeserializeObject<LobbyOptions>(lobbyData);
+                // TODO Här kan den vara AI
                 slot1Usertype = lobbyOptionsData.slot1Usertype;
                 slot2Usertype = lobbyOptionsData.slot2Usertype;
                 slot3Usertype = lobbyOptionsData.slot3Usertype;
@@ -143,8 +144,6 @@ namespace FIA_Grupp2
 
         private void SetAvailableTeams()
         {
-
-
             if (slot1Usertype != "None")
             {
                 if (slot1Team == "cow")
@@ -226,6 +225,7 @@ namespace FIA_Grupp2
                 }
             }
         }
+        // TODO Set available AIs
 
         private void InitiateGameTimer()
         {
