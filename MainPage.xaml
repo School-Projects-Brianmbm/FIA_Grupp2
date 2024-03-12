@@ -23,7 +23,7 @@
             </Rectangle>
             <StackPanel Margin="0,0,0,0" Width="350" Height="425">
                 <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="0,30,0,5" Click="StartButton_Click"/>
-                <Button Content="Continue" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
+                <Button Content="Rules" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" Click="RulesButton_Click"/>
                 <Button Content="High-Scores" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
                 <Button Content="Settings" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
                 <Button Content="About" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>

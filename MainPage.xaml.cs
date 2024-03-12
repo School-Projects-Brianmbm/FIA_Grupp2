@@ -49,5 +49,10 @@ namespace FIA_Grupp2
         {
             Application.Current.Exit();
         }
+
+		private void RulesButton_Click(object sender, RoutedEventArgs e)
+		{
+			this.Frame.Navigate(typeof(RulesPage), introAudio);
+		}
     }
 }
