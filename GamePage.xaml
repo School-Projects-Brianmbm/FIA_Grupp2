@@ -56,7 +56,7 @@
         <Border x:Name="activeTeamIconBorder"  Background="#FF606C38" Width="144" Height="140" CornerRadius="10" Margin="0,0,58,212" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
         <Border x:Name="activeDiceBorder"  Background="#FF606C31" Width="196" Height="196" CornerRadius="10" Margin="0,0,32,27" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
-        <Button x:Name="diceButton" Margin="0,0,32,31" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="192" Width="192" Background="Transparent" Click="DiceClicked">
+        <Button x:Name="diceButton" Margin="0,0,32,31" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="192" Width="192" Background="Transparent" Click="DiceClicked" CornerRadius="10">
             <Image Source="ms-appx:///Assets/Dice_images/white_dice.png" Width="180" Height="180" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Button>
         <Canvas x:Name="diceCross" Margin="0,0,32,31" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="192" Width="192" Background="Transparent" Visibility="Collapsed" IsHitTestVisible="False">
@@ -73,22 +73,30 @@
         </Canvas>
         <Image x:Name="activeTeamIcon" Source="ms-appx:///Assets/TeamIcons/cow.jpg" Width="112" Height="112" Margin="0,0,74,228" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
-        <Canvas x:Name="ingame_menu" FocusVisualMargin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
+
+        <Border Background="#606C38" Width="140" Height="140" CornerRadius="10" Margin="29,829,1331,31" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Button x:Name="volumeButton" Margin="32,0,0,32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="140" Width="140" Background="Transparent" Click="GameVolumeButtonClicked" CornerRadius="10">
+            <Image x:Name="volumeButtonIcon" Source="ms-appx:///Assets/InGameIcons/volume.png" Width="120" Height="120" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+
+        <Border Background="#606C38" Width="140" Height="140" CornerRadius="10" Margin="32,32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Button x:Name="openMainMenuButton" Margin="32,32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="140" Width="140" Background="Transparent" Click="OpenMainMenuButtonClicked" CornerRadius="10">
+            <Image x:Name="openMainMenuIcon" Source="ms-appx:///Assets/InGameIcons/dots-vertical.png" Width="120" Height="120" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+
+        <Canvas x:Name="ingame_menu" Canvas.ZIndex="99" FocusVisualMargin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
             <Border Width="3000" Height="1500" CornerRadius="10" Canvas.Left="-1498" Canvas.Top="-735" IsHitTestVisible="True">
                 <Border.Background>
                     <SolidColorBrush Color="#99000000"/>
                 </Border.Background>
             </Border>
             <Border Background="#CCD5AE" Width="450" Height="425" CornerRadius="10" Canvas.Left="-220" Canvas.Top="-238"/>
-            <Button Background="#606C38" Width="350" Height="80" CornerRadius="10"  Canvas.Left="-170" Canvas.Top="-178" VerticalAlignment="Top" Content="Continue" Foreground="White" FontSize="22"/>
+            <Button Background="#606C38" Width="350" Height="80" CornerRadius="10"  Canvas.Left="-170" Canvas.Top="-178" VerticalAlignment="Top" Content="Continue" Foreground="White" FontSize="22" Click="InGameMenuContinue"/>
             <Button Background="#606C38" Width="350" Height="80" CornerRadius="10"  Canvas.Left="-170" Canvas.Top="-88" VerticalAlignment="Top" Content="Rules" Foreground="White" FontSize="22"/>
-            <Slider Width="220" Height="30" Canvas.Left="-108" Value="0" Minimum="0" Maximum="100" TickFrequency="1" TickPlacement="BottomRight" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Button Background="#606C38" Width="350" Height="80" CornerRadius="10"  Canvas.Left="-170" Canvas.Top="42" VerticalAlignment="Top" Content="Return to Main Menu" Foreground="White" FontSize="22"/>
+            <Slider x:Name="volumeSlider" Width="220" Height="30" Canvas.Left="-108" Value="100" Minimum="0" Maximum="100" TickFrequency="1" TickPlacement="BottomRight" HorizontalAlignment="Left" VerticalAlignment="Center" ValueChanged="VolumeSliderValueChanged"/>
+            <Button Background="#606C38" Width="350" Height="80" CornerRadius="10"  Canvas.Left="-170" Canvas.Top="42" VerticalAlignment="Top" Content="Return to Main Menu" Foreground="White" FontSize="22" Click="ReturnToMainMenuButtonClicked"/>
             <Image Source="ms-appx:///Assets/InGameIcons/volume.png" Height="32" Canvas.Left="-154" Canvas.Top="-1" Width="32"/>
-            <TextBlock Text="100%" Canvas.Left="122" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22"/>
+            <TextBlock x:Name="volumeSliderValueText" Text="100%" Canvas.Left="122" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22"/>
         </Canvas>
-
-
-
     </Grid>
 </Page>

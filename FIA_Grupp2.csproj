@@ -169,6 +169,8 @@
     <Content Include="Assets\Dice_images\dice_two.png" />
     <Content Include="Assets\Dice_images\random_spin_1.gif" />
     <Content Include="Assets\Dice_images\white_dice.png" />
+    <Content Include="Assets\InGameIcons\dots-vertical.png" />
+    <Content Include="Assets\InGameIcons\volume-off.png" />
     <Content Include="Assets\InGameIcons\volume.png" />
     <Content Include="Assets\initial_splash.jpg" />
     <Content Include="Assets\main_menu.jpg" />

@@ -81,6 +81,14 @@ namespace FIA_Grupp2
         {
             _mediaPlayer.Source = null;
         }
+
+        public void SetVolume(double volume)
+        {
+            if (volume >= 0.0 && volume <= 1.0)
+            {
+                _mediaPlayer.Volume = volume;
+            }
+        }
     }
 
 }
