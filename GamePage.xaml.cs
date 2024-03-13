@@ -14,6 +14,7 @@ using Windows.Devices.Pwm;
 using Windows.UI.Xaml.Media;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -32,7 +33,6 @@ namespace FIA_Grupp2
         private bool toggleVolumeButton = true;
 
         private double _musicVolume = 100;
-        private double _musicSavedValue = 100;
 
         Position goalPosition = new Position(5, 5);
 
@@ -65,7 +65,18 @@ namespace FIA_Grupp2
         private string slot1Username, slot2Username, slot3Username, slot4Username;
         private string slot1Team, slot2Team, slot3Team, slot4Team;
 
-        public double MusicVolume { get => _musicVolume; set => _musicVolume = value; }
+        public double MusicVolume
+        {
+            get => _musicVolume;
+            set
+            {
+                if (_musicVolume != value)
+                {
+                    _musicVolume = value;
+                }
+            }
+        }
+
 
         public GamePage()
         {
@@ -84,6 +95,7 @@ namespace FIA_Grupp2
             teams = new Team[nrOfPlayers];
             InitiateGameTimer();
             InitiateTurnTimer();
+            
 
             Loaded += MainPage_Loaded;
 
@@ -689,14 +701,16 @@ namespace FIA_Grupp2
             if (toggleVolumeButton)
             {
                 path += "volume.png";
-                _musicVolume = _musicSavedValue;
+                //_musicVolume = _musicSavedValue;
+                gameAudio.SetVolume(_musicVolume / 100.0);
                 
             }
             else
             {
                 path += "volume-off.png";
-                _musicSavedValue = _musicVolume;
-                _musicVolume = 0;
+                //_musicSavedValue = _musicVolume;
+                //_musicVolume = 0;
+                gameAudio.SetVolume(0.0);
             }
             
             BitmapImage newVolumeIconImage = new BitmapImage(new Uri(path));
@@ -742,9 +756,11 @@ namespace FIA_Grupp2
             rulesPage.Visibility = Visibility.Collapsed;
         }
 
+
         private void VolumeSliderValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
             _musicVolume = volumeSlider.Value;
+            
 
             string path = $"ms-appx:///Assets/InGameIcons/";
             if (_musicVolume > 0)
@@ -770,10 +786,10 @@ namespace FIA_Grupp2
 
             if(gameAudio != null)
             {
-                gameAudio.StopPlayback();
-                StartMusic();
+                gameAudio.SetVolume(0);
+                gameAudio.SetVolume(_musicVolume / 100.0);
             }
-            
+
         }
     }
 }

@@ -19,6 +19,8 @@ namespace FIA_Grupp2
         private MediaPlayer _mediaPlayer;
         private int _currentIndex = 0;
         private IReadOnlyList<StorageFile> _playList;
+        private MediaPlaybackState _previousState;
+
 
         /// <summary>
         /// Initializes a new instance of the Playlist class.
@@ -67,12 +69,15 @@ namespace FIA_Grupp2
         {
             Thread.Sleep(500);
 
-            if (sender.PlaybackState == MediaPlaybackState.Paused)
+            if (sender.PlaybackState == MediaPlaybackState.Paused && _previousState == MediaPlaybackState.Playing)
             {
+                // Save the current index before pausing
                 _currentIndex = (_currentIndex + 1) % _playList.Count;
-                PlayTrack(_currentIndex);
             }
+
+            _previousState = sender.PlaybackState;
         }
+
 
         /// <summary>
         /// Stops playback of the playlist.
