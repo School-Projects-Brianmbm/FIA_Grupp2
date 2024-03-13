@@ -54,5 +54,10 @@ namespace FIA_Grupp2
 		{
 			this.Frame.Navigate(typeof(RulesPage), introAudio);
 		}
+
+        private void AboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(AboutPage), introAudio);
+        }
     }
 }

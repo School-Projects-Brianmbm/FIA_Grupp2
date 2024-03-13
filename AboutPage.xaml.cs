@@ -18,11 +18,11 @@ using Windows.UI.Xaml.Navigation;
 namespace FIA_Grupp2
 {
     /// <summary>
-    /// Page to choos online or offline mode. Online is currently not supported.
+    /// Page used to display information about the game and credits.
     /// </summary>
-    public sealed partial class ModePage : Page
+    public sealed partial class AboutPage : Page
     {
-        public ModePage()
+        public AboutPage()
         {
             this.InitializeComponent();
         }
@@ -33,9 +33,9 @@ namespace FIA_Grupp2
             introAudio = e.Parameter as Playlist;
         }
 
-        private void OfflineButton_Click(object sender, RoutedEventArgs e)
+        private void Back_button_click_event(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(LobbyPage), introAudio);
+            this.Frame.Navigate(typeof(MainPage), introAudio);
         }
     }
 }

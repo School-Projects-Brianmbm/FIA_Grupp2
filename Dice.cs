@@ -7,6 +7,9 @@ namespace FIA_Grupp2
 {
     public class Dice
     {
+        /// <summary>
+        /// Represents a dice that can be rolled to generate random numbers.
+        /// </summary>
         private DispatcherTimer _diceTimer = new DispatcherTimer();
         private int _amountOfSpinsLeft = 0;
         private int _realDiceNumber;
@@ -15,6 +18,10 @@ namespace FIA_Grupp2
 
         private double _diceSpinTickRate = 100.0;   //How fast will each tick be, in milliseconds, i.e. after 100 milliseconds a tick event is called.
 
+
+        /// <summary>
+        /// Event triggered when the dice finishes spinning.
+        /// </summary>
         public event EventHandler DiceFinished;
 
         /// <summary>
@@ -25,6 +32,11 @@ namespace FIA_Grupp2
             get { return _realDiceNumber; }
         }
 
+
+        /// <summary>
+        /// Initializes a new instance of the Dice class.
+        /// </summary>
+        /// <param name="gamePage">The game page where the dice is used.</param>
         public Dice(GamePage gamePage)
         {
             _diceTimer = new DispatcherTimer();
@@ -33,7 +45,9 @@ namespace FIA_Grupp2
 
             this.DiceFinished += gamePage.DiceFinishedSpinning;  //Subscribe a function from gamepage
         }
-
+        /// <summary>
+        /// Initiates the dice spinning animation.
+        /// </summary>
         public void SpinDice(object sender, RoutedEventArgs e)
         {
             _sender = sender;
@@ -59,11 +73,19 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Event invocation when the dice finishes spinning.
+        /// </summary>
         private void OnDiceFinished()
         {
             DiceFinished?.Invoke(null, EventArgs.Empty);    //Invoke the functions that's the been subscribed, when the dice has finished spinning.
         }
 
+        /// <summary>
+        /// Gets the image path corresponding to the dice number.
+        /// </summary>
+        /// <param name="number">The dice number.</param>
+        /// <returns>The image path.</returns>
         private string GetImageFromDiceNumber(int number)
         {
             switch (number)
@@ -85,6 +107,10 @@ namespace FIA_Grupp2
             return null;
         }
 
+        /// <summary>
+        /// Generates a random dice number.
+        /// </summary>
+        /// <returns>A random dice number.</returns>
         private int GetRandomDiceNumber()
         {
             Random r = new Random();
@@ -92,6 +118,9 @@ namespace FIA_Grupp2
             //return r.Next(1, 7);
         }
 
+        /// <summary>
+        /// Initiates a random sequence of dice spinning animations.
+        /// </summary>
         private void PlayRandomSequence(float seconds)
         {
             _amountOfSpinsLeft = (int)(seconds / ((float)(_diceTimer.Interval.Milliseconds) / 250f));
@@ -99,6 +128,10 @@ namespace FIA_Grupp2
             ChangeDiceIcon($"ms-appx:///Assets/Dice_images/random_spin_1.gif");
         }
 
+        /// <summary>
+        /// Changes the dice icon to the specified image path.
+        /// </summary>
+        /// <param name="path">The image path.</param>
         private void ChangeDiceIcon(string path)
         {
             try

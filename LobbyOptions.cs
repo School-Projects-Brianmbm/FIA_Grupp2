@@ -6,14 +6,20 @@ using System.Threading.Tasks;
 
 namespace FIA_Grupp2
 {
-	public enum SlotUserType
+    /// <summary>
+    /// Represents the type of user occupying a slot.
+    /// </summary>
+    public enum SlotUserType
 	{
 		Player,
 		AI,
 		None
 	}
 
-	public enum Teams
+    /// <summary>
+    /// Represents the teams available in the game.
+    /// </summary>
+    public enum Teams
 	{
 		Cow,
 		Pig,
@@ -21,7 +27,10 @@ namespace FIA_Grupp2
 		Chicken
 	}
 
-	internal class LobbyOptions
+    /// <summary>
+    /// Represents the options for configuring the lobby.
+    /// </summary>
+    internal class LobbyOptions
 	{
 		public string slot1Usertype, slot2Usertype, slot3Usertype, slot4Usertype;
 		public string slot1Username, slot2Username, slot3Username, slot4Username;	

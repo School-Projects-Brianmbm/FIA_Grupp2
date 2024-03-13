@@ -1,7 +1,7 @@
 ﻿namespace FIA_Grupp2
 {
     /// <summary>
-    /// Just a point used by GameBoardGrid
+    /// Point used by GameBoardGrid
     /// </summary>
     internal struct Point
     {
@@ -17,7 +17,9 @@
             return "Point: " + X + " " + Y;
         }
     }
-
+    /// <summary>
+    /// Position used by other classes for calculations on the board.
+    /// </summary>
     internal struct Position
     {
         public int X;

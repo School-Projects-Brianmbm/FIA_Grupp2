@@ -26,9 +26,9 @@
     </Page.Resources>
 
     <Grid Width="1500" Height="1000">
-        <Image Source="Assets/Backgrounds/hay.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>
+        <Image Source="Assets/main_menu.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>
 
-        <Grid Background="#FFE9EDC9" Width="1064" Height="710" Margin="218,74,218,216">
+        <Grid Background="#FFE9EDC9" Width="1064" Height="710" Margin="218,74,218,216" CornerRadius="20">
             <TextBlock TextWrapping="Wrap" Text="Rules" FontSize="48" Margin="476,24,472,622"/>
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" Width="1050" Margin="7,85,7,29">
@@ -61,7 +61,7 @@
 
         </Grid>
 
-        <Button Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Back_button_click_event"/>
+        <Button CornerRadius="10" Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Back_button_click_event"/>
 
     </Grid>
 </Page>
