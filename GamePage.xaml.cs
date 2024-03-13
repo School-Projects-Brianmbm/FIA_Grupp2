@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Media;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Windows.UI.Xaml.Media.Animation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -136,10 +137,16 @@ namespace FIA_Grupp2
             gameGrid.CalculateActualPositions();
             gameGrid.CalculateOrigoY();
 
-            await StartGameDelay(1000);
+            await StartGameDelay(0);
             gameGrid.SetEllipsesPositions();
 
+            // Get the reference to your Storyboard (assuming you've named it "StartGameStoryboard")
+            Storyboard myStoryboard = this.Resources["StartGameStoryboard"] as Storyboard;
 
+            // Start the Storyboard
+            myStoryboard.Begin();
+
+            await StartGameDelay(2600);
             CreatePawns();
 
             // Add the elements to the canvas

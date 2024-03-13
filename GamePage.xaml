@@ -10,12 +10,45 @@
     MaxWidth="1500"
     MaxHeight="1000"
     RequestedTheme="Light">
+    <Page.Resources>
+        <Storyboard x:Name="StartGameStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="canvas" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.LocalOffsetY)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1000">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="1000">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:02.5000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="gameCanvas" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.LocalOffsetY)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-1000"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="-1000"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:02.5000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
 
     <Grid x:Name="layoutRoot" PointerWheelChanged="PointerWheelChanged" PointerReleased="PointerReleased">
         <Grid.Background>
             <ImageBrush ImageSource="/Assets/Textures/grass-texture-background.jpg"/>
         </Grid.Background>
         <Canvas x:Name="canvas" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <Canvas.Projection>
+                <PlaneProjection/>
+            </Canvas.Projection>
             <Canvas.RenderTransform>
                 <CompositeTransform/>
             </Canvas.RenderTransform>
@@ -49,6 +82,9 @@
         </Canvas>
 
         <Canvas x:Name="gameCanvas" FocusVisualMargin="2,2,2,2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Canvas.Projection>
+                <PlaneProjection/>
+            </Canvas.Projection>
             <!-- A Container for uor board tiles-->
         </Canvas>
 
@@ -60,10 +96,10 @@
         <Border x:Name="activeTeamIconBorder"  Background="#FF606C38" Width="144" Height="140" CornerRadius="20" Margin="0,0,58,212" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
         <Border x:Name="activeDiceBorder"  Background="#FF606C31" Width="196" Height="196" CornerRadius="20" Margin="0,0,32,27" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-            
-        <Button x:Name="diceButton" VerticalAlignment="Center" HorizontalAlignment="Center" Height="192" Width="192" Background="Transparent" Click="DiceClicked" CornerRadius="10">
+
+            <Button x:Name="diceButton" VerticalAlignment="Center" HorizontalAlignment="Center" Height="192" Width="192" Background="Transparent" Click="DiceClicked" CornerRadius="10">
                 <Image Source="ms-appx:///Assets/Dice_images/white_dice.png" Width="196" Height="196" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        </Button>
+            </Button>
         </Border>
         <Canvas x:Name="diceCross" Margin="0,0,32,31" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="192" Width="192" Background="Transparent" Visibility="Collapsed" IsHitTestVisible="False">
             <Rectangle Width="10" Height="176" Fill="#99000000" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="93" RenderTransformOrigin="0.5,0.5"  >
