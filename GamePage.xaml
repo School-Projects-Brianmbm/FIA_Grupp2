@@ -52,7 +52,7 @@
             <!-- A Container for uor board tiles-->
         </Canvas>
 
-        <TextBlock x:Name="debugtext" Canvas.Left="40" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="40"/>
+        <TextBlock x:Name="debugtext" Canvas.Left="40" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="40" Visibility="Collapsed"/>
         <Rectangle Margin="1329,83,60,831" Fill="#99FFFFFF" RadiusX="20" RadiusY="20"/>
         <TextBlock x:Name="gameTimerText" TextWrapping="Wrap" Text="00:00:00" Width="100" Height="40" Margin="1340,83,60,877" FontSize="24"/>
         <TextBlock x:Name="turnTimerText" TextWrapping="Wrap" Text="00:00:00" Width="100" Height="40" Margin="1340,133,60,827" FontSize="24"/>
