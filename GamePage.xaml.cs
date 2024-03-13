@@ -20,11 +20,16 @@ using System.ComponentModel;
 
 namespace FIA_Grupp2
 {
+    /// <summary>
+    /// Represents the main in-game page with the board.
+    /// </summary>
     public sealed partial class GamePage : Page
     {
         public static GamePage Instance;
 
+        // Coordinates of the mouse pointer
         int MouseX, MouseY;
+        // Delay for AI actions
         int aiDelay = 500;
         static int nrOfPlayers = 4;
         static int currentTeam = 0;
@@ -53,6 +58,7 @@ namespace FIA_Grupp2
 
         private Dice _dice;
 
+        // Game timers and durations
         private bool isTurnTimerEnabled = false;
         private bool isGameTimerEnabled = false;
         private DispatcherTimer gameTimer;
@@ -61,12 +67,15 @@ namespace FIA_Grupp2
         private TimeSpan remainingTurnTime;
         private int gameHours, gameMinutes, gameSeconds;
         private int turnHours, turnMinutes, turnSeconds;
+
         private bool isCows = false, isHens = false, isSheeps = false, isPigs = false;
         private bool isCowsAi = false, isHensAi = false, isSheepsAi = false, isPigsAi = false;
+
+        // User and team data for lobby slots
         private string slot1Usertype, slot2Usertype, slot3Usertype, slot4Usertype;
         private string slot1Username, slot2Username, slot3Username, slot4Username;
         private string slot1Team, slot2Team, slot3Team, slot4Team;
-
+        private double _musicSavedValue = 100;
         public double MusicVolume
         {
             get => _musicVolume;
@@ -103,6 +112,9 @@ namespace FIA_Grupp2
 
         }
 
+        /// <summary>
+        /// Loads lobby options from local saved settings.
+        /// </summary>
         private void LoadLobbyOptions()
         {
             string lobbyData = (string)ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"];
@@ -126,6 +138,9 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Event handler for when the main page is loaded.
+        /// </summary>
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             Debug.Write("BAM MainPage Loaded");
@@ -153,7 +168,7 @@ namespace FIA_Grupp2
         }
 
         /// <summary>
-        /// Create the Teams of different types (species)
+        /// Creates pawns for each team based on selected player types.
         /// </summary>
         private void CreatePawns()
         {
@@ -220,6 +235,9 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Calculates the total number of players based on selected team types.
+        /// </summary>
         private int GetPlayerCount()
         {
             int playerCount = 0;
@@ -244,6 +262,9 @@ namespace FIA_Grupp2
             return playerCount;
         }
 
+        /// <summary>
+        /// Loads game session options from local settings.
+        /// </summary>
         private void LoadGameSessionOptions()
         {
             string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
@@ -259,6 +280,9 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Sets available teams based on lobby slot data.
+        /// </summary>
         private void SetAvailableTeams()
         {
             if (slot1Usertype != "None")
@@ -303,6 +327,10 @@ namespace FIA_Grupp2
             }
         }
 
+
+        /// <summary>
+        /// Initializes the game timer.
+        /// </summary>
         private void InitiateGameTimer()
         {
             remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
@@ -320,6 +348,10 @@ namespace FIA_Grupp2
             }
         }
 
+
+        /// <summary>
+        /// Initializes the turn timer.
+        /// </summary>
         private void InitiateTurnTimer()
         {
             remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
@@ -337,6 +369,10 @@ namespace FIA_Grupp2
             }
         }
 
+
+        /// <summary>
+        /// Starts playing the game music.
+        /// </summary>
         private async void StartMusic()
         {
             await gameAudio.InitializePlaylist("Assets\\Sound\\InGame");
@@ -351,6 +387,9 @@ namespace FIA_Grupp2
             _dice.SpinDice(sender, e);
         }
 
+        /// <summary>
+        /// Event handler for the dice button click.
+        /// </summary>
         public void DiceFinishedSpinning(object sender, EventArgs e)
         {
             diceButton.IsEnabled = false;
@@ -391,7 +430,6 @@ namespace FIA_Grupp2
                     if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
                         teams[currentTeam].GetPawnsInTheNest().Length >= 0)
                     {
-                        //Debug.WriteLine("There is still pawns in the nest, and i can move one out");
                         // FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
@@ -407,11 +445,8 @@ namespace FIA_Grupp2
                         Debug.Write("FÖR MÅNGA STEG FÖR ATT GÅ JÄMNT I MÅL 2");
                         pwn.PawnCanvas.IsHitTestVisible = false;
                     }
-                    // TODO KOLLA OM NÅGON ÄR I VÄGEN
                 }
             }
-
-            // TODO OM INGEN ÄR HIT TEST VISIBLE
 
             if (!AnyHitTestVisible())
             {
@@ -546,7 +581,9 @@ namespace FIA_Grupp2
             return string.Empty;
         }
 
-        //TODO: Maybe there is a color property somewhere, and this method is useless.
+        /// <summary>
+        /// Sets icon background color based on team name
+        /// </summary>
         private Color GetColorFromTeamName(string teamName)
         {
             switch (teamName)
@@ -563,6 +600,9 @@ namespace FIA_Grupp2
             return Colors.Black;
         }
 
+        /// <summary>
+        /// Changes the active team icon
+        /// </summary>
         private void ChangeActiveTeamIcon(string teamName)
         {
             BitmapImage newActiveTeamIcon = new BitmapImage(new Uri($"ms-appx:///Assets/TeamIcons/{ConvertNameToJPG(teamName)}.jpg"));
@@ -574,6 +614,9 @@ namespace FIA_Grupp2
             _dice.NewTurn();
         }
 
+        /// <summary>
+        /// Resets the turn timer
+        /// </summary>
         private void ResetTurnTimer()
         {
             turnTimer.Stop();
@@ -593,6 +636,9 @@ namespace FIA_Grupp2
             DebugTextUpdate(args);
         }
 
+        /// <summary>
+        /// Method for debugging purposes, updates the debug text with the mouse position
+        /// </summary>
         private void DebugTextUpdate(PointerEventArgs args)
         {
             // Get the mouse pointer position relative to your app window
@@ -618,6 +664,9 @@ namespace FIA_Grupp2
             // NextTeamsTurn();
         }
 
+        /// <summary>
+        /// Event handler for when the mouse wheel is scrolled
+        /// </summary>
         private new void PointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
             // Get the delta value to determine whether the wheel scrolls up or down
@@ -647,6 +696,9 @@ namespace FIA_Grupp2
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
 
+        /// <summary>
+        /// Handles the tick event of the game timer.
+        /// </summary>
         private void GameTimerTick(object sender, object e)
         {
             if (remainingGameTime.TotalSeconds > 0)
@@ -661,6 +713,9 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Handles the tick event of the turn timer.
+        /// </summary>
         private void TurnTimerTick(object sender, object e)
         {
             if (remainingTurnTime.TotalSeconds > 0)
@@ -677,6 +732,9 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Checks if any other teams have a pawn in the same position as the current active team.
+        /// </summary>
         private Team CheckOtherTeamsPositions(Team currentActiveTeam)
         {
             foreach (Team team in teams)
@@ -709,15 +767,26 @@ namespace FIA_Grupp2
 
             return null;
         }
+
+        /// <summary>
+        /// Updates the UI to display remaining game time.
+        /// </summary>
         private void UpdateGameTimerText()
         {
             gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
         }
+
+        /// <summary>
+        /// Updates the UI to display remaining turn time.
+        /// </summary>
         private void UpdateTurnTimerText()
         {
             turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
         }
 
+        /// <summary>
+        /// Toggle the ingame menu visibility
+        /// </summary>
         private void SetIngameMenuVisible(bool value)
         {
             toggleIngameMenu = value;
@@ -746,6 +815,9 @@ namespace FIA_Grupp2
             SetIngameMenuVisible(false);
         }
 
+        /// <summary>
+        /// Toggle the sound on and off
+        /// </summary>
         private void GameVolumeButtonClicked(object sender, RoutedEventArgs e)
         {
             SoundEffect.PlayTrack(SoundEffect.ClickPath);
@@ -757,13 +829,15 @@ namespace FIA_Grupp2
             if (toggleVolumeButton)
             {
                 path += "volume.png";
-                //_musicVolume = _musicSavedValue;
+                _musicVolume = _musicSavedValue;
                 gameAudio.SetVolume(_musicVolume / 100.0);
                 
             }
             else
             {
                 path += "volume-off.png";
+                _musicSavedValue = _musicVolume;
+                _musicVolume = 0.0;
                 gameAudio.SetVolume(0.0);
             }
 
@@ -806,7 +880,9 @@ namespace FIA_Grupp2
             rulesPage.Visibility = Visibility.Collapsed;
         }
 
-
+        /// <summary>
+        /// ´Change volume with slide in ingame menu
+        /// </summary>
         private void VolumeSliderValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
             _musicVolume = volumeSlider.Value;
