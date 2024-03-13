@@ -404,6 +404,16 @@ namespace FIA_Grupp2
 
             //IsThereAPawnOnThisPosition(new Position(6, 10));
 
+            bool allPawnsInGoal = true;
+
+            foreach (Pawn pawn in teams[currentTeam].Pawns)
+            {
+                if (!pawn.IsInGoal)
+                {
+                    allPawnsInGoal = false;
+                }
+            }
+
             currentTeam++;
             if (currentTeam > nrOfPlayers - 1)
             {
@@ -415,16 +425,6 @@ namespace FIA_Grupp2
             if (isTurnTimerEnabled)
             {
                 ResetTurnTimer();
-            }
-            
-            bool allPawnsInGoal = true;
-
-            foreach (Pawn pawn in teams[currentTeam].Pawns)
-            {
-                if (!pawn.IsInGoal)
-                {
-                    allPawnsInGoal = false;
-                }
             }
 
             if(!allPawnsInGoal)
