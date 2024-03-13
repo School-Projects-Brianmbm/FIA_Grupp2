@@ -61,6 +61,7 @@ namespace FIA_Grupp2
         private int gameHours, gameMinutes, gameSeconds;
         private int turnHours, turnMinutes, turnSeconds;
         private bool isCows = false, isHens = false, isSheeps = false, isPigs = false;
+        private bool isCowsAi = false, isHensAi = false, isSheepsAi = false, isPigsAi = false;
         private string slot1Usertype, slot2Usertype, slot3Usertype, slot4Usertype;
         private string slot1Username, slot2Username, slot3Username, slot4Username;
         private string slot1Team, slot2Team, slot3Team, slot4Team;
@@ -112,6 +113,34 @@ namespace FIA_Grupp2
             }
         }
 
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            Debug.Write("BAM MainPage Loaded");
+            gameGrid = new GameBoardGrid(gameCanvas);
+            gameGrid.CreateArrayOfPoints();
+            gameGrid.CreateArrayOfDots();
+
+            gameGrid.CalculateActualPositions();
+            gameGrid.CalculateOrigoY();
+            gameGrid.SetEllipsesPositions();
+            //gameGrid.SetEllipsesPositions(true,showInd: true);
+
+            CreatePawns();
+
+            // Add the elements to the canvas
+            foreach (Team team in teams)
+            {
+                foreach (Pawn pawn in team.Pawns)
+                    layoutRoot.Children.Add(pawn.PawnCanvas);
+            }
+
+            _dice = new Dice(this);
+            Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
+            //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
+        }
+
+
+
         private int GetPlayerCount()
         {
             int playerCount = 0;
@@ -153,26 +182,28 @@ namespace FIA_Grupp2
 
         private void SetAvailableTeams()
         {
-
-
             if (slot1Usertype != "None")
             {
                 if (slot1Team == "cow")
                 {
                     isCows = true;
+                    if (slot1Usertype == "AI") { isCowsAi = true; }
                 }
                 else if (slot1Team == "pig")
                 {
                     isPigs = true;
+                    if (slot1Usertype == "AI") { isPigsAi = true; }
                 }
                 else if (slot1Team == "chicken")
                 {
                     isHens = true;
+                    if (slot1Usertype == "AI") { isHensAi = true; }
                 }
 
                 else if (slot1Team == "sheep")
                 {
                     isSheeps = true;
+                    if (slot1Usertype == "AI") { isSheepsAi = true; }
                 }
             }
             if (slot2Usertype != "None")
@@ -180,19 +211,26 @@ namespace FIA_Grupp2
                 if (slot2Team == "cow")
                 {
                     isCows = true;
+                    if (slot1Usertype == "AI") { isCowsAi = true; }
+
                 }
                 else if (slot2Team == "pig")
                 {
                     isPigs = true;
+                    if (slot1Usertype == "AI") { isPigsAi = true; }
+
                 }
                 else if (slot2Team == "chicken")
                 {
                     isHens = true;
+                    if (slot1Usertype == "AI") { isHensAi = true; }
                 }
 
                 else if (slot2Team == "sheep")
                 {
                     isSheeps = true;
+                    if (slot1Usertype == "AI") { isSheepsAi = true; }
+
                 }
             }
             if (slot3Usertype != "None")
@@ -214,7 +252,13 @@ namespace FIA_Grupp2
                 {
                     isSheeps = true;
                 }
-            }
+            }                /*
+                    if (slot1Usertype == "AI") { isCowsAi = true; }
+                    if (slot1Usertype == "AI") { isPigsAi = true; }
+                    if (slot1Usertype == "AI") { isHensAi = true; }
+                    if (slot1Usertype == "AI") { isSheepsAi = true; }
+                 */
+
             if (slot4Usertype != "None")
             {
                 if (slot4Team == "cow")
@@ -460,32 +504,6 @@ namespace FIA_Grupp2
             turnTimer.Start();
         }
 
-
-        private void MainPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            Debug.Write("BAM MainPage Loaded");
-            gameGrid = new GameBoardGrid(gameCanvas);
-            gameGrid.CreateArrayOfPoints();
-            gameGrid.CreateArrayOfDots();
-
-            gameGrid.CalculateActualPositions();
-            gameGrid.CalculateOrigoY();
-            gameGrid.SetEllipsesPositions();
-            //gameGrid.SetEllipsesPositions(true,showInd: true);
-
-            CreatePawns();
-
-            // Add the elements to the canvas
-            foreach (Team team in teams)
-            {
-                foreach(Pawn pawn in team.Pawns)
-                layoutRoot.Children.Add(pawn.PawnCanvas);
-            }
-
-            _dice = new Dice(this);
-            Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
-            //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
-        }
 
         /// <summary>
         /// Create the Teams of different types (species)

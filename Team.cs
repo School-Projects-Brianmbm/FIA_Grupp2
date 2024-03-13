@@ -12,6 +12,7 @@ namespace FIA_Grupp2
     {
         public static int NUMBER_OF_TEAMS = 0;
         string name = "Team";
+        bool isAI;
         public string Name { get => name; set => name = value; }
 
         protected static Position nestIndex;
@@ -24,11 +25,12 @@ namespace FIA_Grupp2
         internal Pawn[] pawns;
         internal Pawn[] Pawns { get => pawns; set => pawns = value; }
 
-        public Team(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
+        public Team(GameBoardGrid gbg, Position[] coarse, Position start, Position goal, bool artificial = false)
         {
             NUMBER_OF_TEAMS++;
             nestIndex = start;
             boardgrid = gbg;
+            isAI = artificial;
         }
 
         public virtual Pawn[] GetPawns()
