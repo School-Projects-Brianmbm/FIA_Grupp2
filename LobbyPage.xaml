@@ -28,7 +28,7 @@
     <Grid Width="1500" Height="1000">
         <Image Source="Assets/Backgrounds/hay.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>
 
-        <TextBlock  TextWrapping="Wrap" Text="Couch mode" Margin="594,102,613,845" FontSize="48" TextAlignment="Center"/>
+        <TextBlock  TextWrapping="Wrap" Text="Lobby" HorizontalAlignment="Center" Margin="0,72,0,845" FontSize="48" TextAlignment="Center"/>
 
 
         <Button x:Name="slot1_user_button" Content="Player" Margin="111,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" CornerRadius="7" FontSize="36" Foreground="White" Click="Slot1_user_selection_button_click_event">

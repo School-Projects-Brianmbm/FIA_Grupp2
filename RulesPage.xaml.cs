@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 namespace FIA_Grupp2
 {
 	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// Page to show the rules of the game.
 	/// </summary>
 	public sealed partial class RulesPage : Page
 	{

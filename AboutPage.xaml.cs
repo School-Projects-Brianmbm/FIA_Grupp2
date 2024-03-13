@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 namespace FIA_Grupp2
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Page used to display information about the game and credits.
     /// </summary>
     public sealed partial class AboutPage : Page
     {

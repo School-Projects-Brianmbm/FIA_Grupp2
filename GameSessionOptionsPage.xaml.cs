@@ -16,16 +16,17 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace FIA_Grupp2
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
+    /// <summary>
+    /// Page to show game session options, including game time and turn time.
+    /// </summary>
 	public sealed partial class GameSessionOptionsPage : Page
 	{
-		public GameSessionOptionsPage()
+        /// <summary>
+        /// Initializes a new instance of the GameSessionOptionsPage class.
+        /// </summary>
+        public GameSessionOptionsPage()
 		{
 			this.InitializeComponent();
 
@@ -52,12 +53,19 @@ namespace FIA_Grupp2
 			}
 		}
 
-		private void Back_button_click_event(object sender, RoutedEventArgs e)
+
+        /// <summary>
+        /// Event handler for the back button click event.
+        /// </summary>
+        private void Back_button_click_event(object sender, RoutedEventArgs e)
 		{
 			this.Frame.Navigate(typeof(LobbyPage), introAudio);
 		}
 
-		private void Save_button_click_event(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Event handler for the save button click event. Saves chosen game session options later accessed in GamePage.
+        /// </summary>
+        private void Save_button_click_event(object sender, RoutedEventArgs e)
 		{
 			GameSessionOptions sessionOptionsData = new GameSessionOptions();
 			sessionOptionsData.GameTimeHours = int.Parse(GameTimeHours.Text);
@@ -73,12 +81,18 @@ namespace FIA_Grupp2
 			this.Frame.Navigate(typeof(LobbyPage), introAudio);
 		}
 
-		private void TextBox_OnBeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
+        /// <summary>
+        /// Event handler for changing the text in the TextBox.
+        /// </summary>
+        private void TextBox_OnBeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
 		{
 			args.Cancel = args.NewText.Any(c => !char.IsDigit(c));
 		}
 
-		private void GameTimeHours_LostFocus(object sender, RoutedEventArgs args)
+        /// <summary>
+        /// Event handler to set the maximum value of the game time hours.
+        /// </summary>
+        private void GameTimeHours_LostFocus(object sender, RoutedEventArgs args)
 		{	
 
 			if (int.Parse(GameTimeHours.Text) >= 10) 
@@ -91,7 +105,10 @@ namespace FIA_Grupp2
 			}
         }
 
-		private void GameTurnMinutes_LostFocus(object sender, RoutedEventArgs args)
+        /// <summary>
+        /// Event handler to set the maximum value of the game time minutes.
+        /// </summary>
+        private void GameTurnMinutes_LostFocus(object sender, RoutedEventArgs args)
 		{
 			if (int.Parse(TurnTimeMinutes.Text) > 15)
 			{
@@ -104,6 +121,7 @@ namespace FIA_Grupp2
 
 		}
 
+
         private Playlist introAudio;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -111,6 +129,9 @@ namespace FIA_Grupp2
             introAudio = e.Parameter as Playlist;
         }
 
+        /// <summary>
+        /// Event handler to set the maximum value of the turn time minutes and seconds.
+        /// </summary>
         private void GameTimeMinutesSecondsAndTurnTimeSeconds_LostFocus(object sender, RoutedEventArgs args)
 		{
 			TextBox textbox = sender as TextBox;

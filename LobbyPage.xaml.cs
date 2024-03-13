@@ -11,8 +11,11 @@ namespace FIA_Grupp2
 
 	public sealed partial class LobbyPage : Page
 	{
-		//Used to store lobby options
-		LobbyOptions lobbyOptionsData;
+        /// <summary>
+        /// Represents the lobby page where you choose amount of players, team, and name.
+        /// </summary>
+        //Used to store lobby options
+        LobbyOptions lobbyOptionsData;
 
 		//Used to store choosable teamicons
 		private BitmapImage[] teamicons;
@@ -28,7 +31,10 @@ namespace FIA_Grupp2
 		private bool isIconIndex2Available = true;
 		private bool isIconIndex3Available = true;
 
-		public LobbyPage()
+        /// <summary>
+        /// Initializes a new instance of the LobbyPage class.
+        /// </summary>
+        public LobbyPage()
 		{
 			this.InitializeComponent();
 
@@ -68,7 +74,10 @@ namespace FIA_Grupp2
 
 		}
 
-		private void Slot1_user_selection_button_click_event(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Default setting for slots when page is loaded and event handlers for change. Change of icon functionality i disabled.
+        /// </summary>
+        private void Slot1_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
 			Button button = sender as Button;
 			if (button != null && button.Content != null)
@@ -269,7 +278,10 @@ namespace FIA_Grupp2
 			lobbyOptionsData.slot4Username = slot4_username.Text;
 		}
 
-		private void Slot1_button_teamicon_click_event(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Event handler for choosing team icons, function currently disabled in game.
+        /// </summary>
+        private void Slot1_button_teamicon_click_event(object sender, RoutedEventArgs e)
 		{
 			Button button = sender as Button;
 			if (button != null)
@@ -391,7 +403,10 @@ namespace FIA_Grupp2
 			this.Frame.Navigate(typeof(GameSessionOptionsPage), introAudio);
 		}
 
-		private void Choose_level_button_click_event(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Event handler for to save lobby options and start game.
+        /// </summary>
+        private void Choose_level_button_click_event(object sender, RoutedEventArgs e)
 		{	
 			//Save the lobby options:
 			//LobbyOptions lobbyOptionsData = new LobbyOptions();
