@@ -36,7 +36,6 @@ namespace FIA_Grupp2
             startStoryBoard.Begin();
             introAudio = new Playlist();
             StartMusic();
-            
         }
 
         private async void StartMusic()

@@ -416,6 +416,35 @@ namespace FIA_Grupp2
             {
                 ResetTurnTimer();
             }
+            
+            bool allPawnsInGoal = true;
+
+            foreach (Pawn pawn in teams[currentTeam].Pawns)
+            {
+                if (!pawn.IsInGoal)
+                {
+                    allPawnsInGoal = false;
+                }
+            }
+
+            if(!allPawnsInGoal)
+            {
+                switch (teams[currentTeam].Name)
+                {
+                    case "Cows":
+                        SoundEffect.PlayTrack(SoundEffect.CowPath);
+                        break;
+                    case "Hens":
+                        SoundEffect.PlayTrack(SoundEffect.ChickenPath);
+                        break;
+                    case "Sheeps":
+                        SoundEffect.PlayTrack(SoundEffect.SheepPath);
+                        break;
+                    case "Pigs":
+                        SoundEffect.PlayTrack(SoundEffect.PigPath);
+                        break;
+                }
+            }
         }
 
         private string ConvertNameToJPG(string teamName)

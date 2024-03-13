@@ -18,6 +18,13 @@ namespace FIA_Grupp2
         public static string ClickPath = "Assets\\Sound\\SoundEffects\\select-sound-121244.mp3";
         public static string DicePath = "Assets\\Sound\\SoundEffects\\gamemisc_dice-roll-on-wood_jaku5-37414.mp3";
 
+        public static string CowPath = "Assets\\Sound\\SoundEffects\\mooing-cow-122255.mp3";
+        public static string ChickenPath = "Assets\\Sound\\SoundEffects\\chicken-sound.mp3";
+        public static string PigPath = "Assets\\Sound\\SoundEffects\\pig-grunt-100272.mp3";
+        public static string SheepPath = "Assets\\Sound\\SoundEffects\\sheep-122256.mp3";
+
+        public static string VictoriusPath = "Assets\\Sound\\SoundEffects\\game-victorius-144751.mp3";
+
         public static async void PlayTrack(string trackPath)
         {
             /*
