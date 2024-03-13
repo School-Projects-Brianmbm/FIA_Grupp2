@@ -17,27 +17,26 @@ using Windows.UI.Xaml.Navigation;
 
 namespace FIA_Grupp2
 {
-	/// <summary>
-	/// Page to show the rules of the game.
-	/// </summary>
-	public sealed partial class RulesPage : Page
-	{
-		public RulesPage()
-		{
-			this.InitializeComponent();
-		}
+    /// <summary>
+    /// Page used to display information about the game and credits.
+    /// </summary>
+    public sealed partial class AboutPage : Page
+    {
+        public AboutPage()
+        {
+            this.InitializeComponent();
+        }
+        private Playlist introAudio;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            introAudio = e.Parameter as Playlist;
+        }
 
-		private Playlist introAudio;
-		protected override void OnNavigatedTo(NavigationEventArgs e)
-		{
-			base.OnNavigatedTo(e);
-			introAudio = e.Parameter as Playlist;
-		}
-
-		private void Back_button_click_event(object sender, RoutedEventArgs e)
-		{
+        private void Back_button_click_event(object sender, RoutedEventArgs e)
+        {
             SoundEffect.PlayTrack(SoundEffect.ClickPath);
             this.Frame.Navigate(typeof(MainPage), introAudio);
-		}
-	}
+        }
+    }
 }

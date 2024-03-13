@@ -116,6 +116,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -145,6 +148,7 @@
     <Compile Include="Pawn.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SoundEffect.cs" />
     <Compile Include="StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
@@ -205,6 +209,13 @@
     <Content Include="Assets\Sound\InGame\3.it39s_all_country_Caffeine_Creek_Band.mp3" />
     <Content Include="Assets\Sound\Menu\1.fried_taters_bluegrass_Caffeine_Creek_Band.mp3" />
     <Content Include="Assets\Sound\Menu\2.more_country_Caffeine_Creek_Band.mp3" />
+    <Content Include="Assets\Sound\SoundEffects\chicken-sound.mp3" />
+    <Content Include="Assets\Sound\SoundEffects\game-victorius-144751.mp3" />
+    <Content Include="Assets\Sound\SoundEffects\gamemisc_dice-roll-on-wood_jaku5-37414.mp3" />
+    <Content Include="Assets\Sound\SoundEffects\mooing-cow-122255.mp3" />
+    <Content Include="Assets\Sound\SoundEffects\pig-grunt-100272.mp3" />
+    <Content Include="Assets\Sound\SoundEffects\select-sound-121244.mp3" />
+    <Content Include="Assets\Sound\SoundEffects\sheep-122256.mp3" />
     <Content Include="Assets\TeamIcons\all_icons.jpg" />
     <Content Include="Assets\TeamIcons\chicken.jpg" />
     <Content Include="Assets\TeamIcons\cow.jpg" />
@@ -226,6 +237,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RulesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

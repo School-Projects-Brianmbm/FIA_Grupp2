@@ -50,7 +50,7 @@ namespace FIA_Grupp2
             { 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0 }
         };//                    x
 
-        
+
 
         readonly TextBlock[][] textArray = new TextBlock[_numberOfRows][];
 
@@ -92,7 +92,7 @@ namespace FIA_Grupp2
             int N = 1;
             foreach (int n in _pathArray)
             {
-                if ((n == 1) || (n == 2)) {  N++; }
+                if ((n == 1) || (n == 2)) { N++; }
             }
             return N;
         }

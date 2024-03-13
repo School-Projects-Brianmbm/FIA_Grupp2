@@ -12,8 +12,8 @@
     <Grid Width="1500" Height="1000">
         <Image VerticalAlignment="Top" Source="Assets/main_menu.jpg" HorizontalAlignment="Center" Stretch="Fill"/>
         <Image Height="auto"  Width="600" Source="Assets/main_title2.png" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,100,0,0"/>
-        <Canvas HorizontalAlignment="Center" Width="350" Margin="0,250,0,0">
-            <Rectangle Height="425" Stroke="Black" Width="350" RadiusX="25" RadiusY="25" StrokeThickness="0">
+        <Canvas HorizontalAlignment="Center" Width="350" Margin="0,400,0,0">
+            <Rectangle Height="300" Stroke="Black" Width="350" RadiusX="25" RadiusY="25" StrokeThickness="0">
                 <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FFCCD5AE" Offset="1"/>
@@ -21,13 +21,11 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
-            <StackPanel Margin="0,0,0,0" Width="350" Height="425">
-                <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="0,30,0,5" Click="StartButton_Click"/>
-                <Button Content="Rules" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" Click="RulesButton_Click"/>
-                <Button Content="High-Scores" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
-                <Button Content="Settings" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
-                <Button Content="About" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5"/>
-                <Button Content="Exit" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" Click="ExitButtonClick"/>
+            <StackPanel Margin="0,0,0,0" Width="350" Height="300">
+                <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" FontSize="22" Foreground="White" Margin="0,30,0,5" Click="StartButton_Click"/>
+                <Button Content="Rules"  HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" FontSize="22" Foreground="White" Click="RulesButton_Click"/>
+                <Button Content="About" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" FontSize="22" Foreground="White" Click="AboutButton_Click"/>
+                <Button Content="Exit" HorizontalAlignment="Center" Background="#FF606C38" Width="200" Height="51" CornerRadius="10" Margin="5" Click="ExitButtonClick" FontSize="22" Foreground="White"/>
 
 
             </StackPanel>
