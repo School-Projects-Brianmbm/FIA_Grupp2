@@ -76,14 +76,14 @@
         <Image x:Name="activeTeamIcon" Source="ms-appx:///Assets/TeamIcons/cow.jpg" Width="112" Height="112" Margin="0,0,74,228" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
 
-        <Border Background="#606C38" Width="140" Height="140" CornerRadius="10" Margin="29,829,1331,31" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
-        <Button x:Name="volumeButton" Margin="32,0,0,32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="140" Width="140" Background="Transparent" Click="GameVolumeButtonClicked" CornerRadius="10">
-            <Image x:Name="volumeButtonIcon" Source="ms-appx:///Assets/InGameIcons/volume.png" Width="120" Height="120" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Border Background="#99606C38" Width="100" Height="100" CornerRadius="10" Margin="29,829,1331,31" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Button x:Name="volumeButton" Margin="32,0,0,32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="100" Width="100" Background="Transparent" Click="GameVolumeButtonClicked" CornerRadius="10">
+            <Image x:Name="volumeButtonIcon" Source="ms-appx:///Assets/InGameIcons/volume.png" Width="80" Height="80" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Button>
 
-        <Border Background="#606C38" Width="140" Height="140" CornerRadius="10" Margin="32,32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <Button x:Name="openMainMenuButton" Margin="32,32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="140" Width="140" Background="Transparent" Click="OpenMainMenuButtonClicked" CornerRadius="10">
-            <Image x:Name="openMainMenuIcon" Source="ms-appx:///Assets/InGameIcons/dots-vertical.png" Width="120" Height="120" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Border Background="#99606C38" Width="100" Height="100" CornerRadius="10" Margin="32,32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Button x:Name="openMainMenuButton" Margin="32,32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="100" Width="100" Background="Transparent" Click="OpenMainMenuButtonClicked" CornerRadius="10">
+            <Image x:Name="openMainMenuIcon" Source="ms-appx:///Assets/InGameIcons/dots-vertical.png" Width="80" Height="80" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Button>
 
         <Canvas x:Name="ingame_menu" Canvas.ZIndex="98" FocusVisualMargin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
