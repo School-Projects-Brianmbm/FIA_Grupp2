@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Media;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Windows.UI.Xaml.Media.Animation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -25,12 +26,13 @@ namespace FIA_Grupp2
     /// </summary>
     public sealed partial class GamePage : Page
     {
+        bool gameIsOver = false;
         public static GamePage Instance;
 
         // Coordinates of the mouse pointer
         int MouseX, MouseY;
         // Delay for AI actions
-        int aiDelay = 500;
+        int aiDelay = 100;
         static int nrOfPlayers = 4;
         static int currentTeam = 0;
         static GameBoardGrid gameGrid;
@@ -53,7 +55,6 @@ namespace FIA_Grupp2
         };
 
         Team[] teams = new Team[nrOfPlayers];
-        // Team cows, hens, sheeps, pigs;
         public Playlist gameAudio;
 
         private Dice _dice;
@@ -150,9 +151,17 @@ namespace FIA_Grupp2
 
             gameGrid.CalculateActualPositions();
             gameGrid.CalculateOrigoY();
-            gameGrid.SetEllipsesPositions();
-            //gameGrid.SetEllipsesPositions(true,showInd: true);
 
+            await StartGameDelay(0);
+            gameGrid.SetEllipsesPositions();
+
+            // Get the reference to your Storyboard (assuming you've named it "StartGameStoryboard")
+            Storyboard myStoryboard = this.Resources["StartGameStoryboard"] as Storyboard;
+
+            // Start the Storyboard
+            myStoryboard.Begin();
+
+            await StartGameDelay(2600);
             CreatePawns();
 
             // Add the elements to the canvas
@@ -164,7 +173,6 @@ namespace FIA_Grupp2
 
             _dice = new Dice(this,diceButton);
             Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
-            //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
         }
 
         /// <summary>
@@ -222,14 +230,13 @@ namespace FIA_Grupp2
                 {
                     teams[index] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
                 }
-                // index++;
             }
 
             _dice = new Dice(this,diceButton);
 
             ChangeActiveTeamIcon(teams[currentTeam].Name);
             Debug.Write("Number of teams is: " + Team.NUMBER_OF_TEAMS);
-            if (teams[currentTeam].IsAI)
+            if (teams[currentTeam].IsAI && !gameIsOver)
             {
                 _dice.SpinDice();
             }
@@ -472,7 +479,7 @@ namespace FIA_Grupp2
                 NextTeamsTurnDelay();
             }
 
-            if (teams[currentTeam].IsAI)
+            if (teams[currentTeam].IsAI && !gameIsOver)
             {
                 AiChoosePawn();
             }
@@ -490,6 +497,9 @@ namespace FIA_Grupp2
                 }
             }
         }
+
+        public async Task StartGameDelay(int ms = 2000)
+        { await Task.Delay(ms); }
 
         public async void NextTeamsTurnDelay(int ms = 500)
         {
@@ -518,6 +528,11 @@ namespace FIA_Grupp2
                 {
                     allPawnsInGoal = false;
                 }
+            }
+
+            if (allPawnsInGoal)
+            {
+                gameIsOver = true;
             }
 
             currentTeam++;
@@ -633,7 +648,7 @@ namespace FIA_Grupp2
 
         private void CoreWindow_PointerMoved(CoreWindow sender, PointerEventArgs args)
         {
-            DebugTextUpdate(args);
+            // DebugTextUpdate(args);
         }
 
         /// <summary>
@@ -669,6 +684,7 @@ namespace FIA_Grupp2
         /// </summary>
         private new void PointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
+            /*
             // Get the delta value to determine whether the wheel scrolls up or down
             var delta = e.GetCurrentPoint(layoutRoot).Properties.MouseWheelDelta;
 
@@ -694,6 +710,7 @@ namespace FIA_Grupp2
             DebugTextUpdateModifier();
 
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
+            */
         }
 
         /// <summary>
@@ -857,7 +874,7 @@ namespace FIA_Grupp2
         private void ReturnToMainMenuButtonClicked(object sender, RoutedEventArgs e)
         {
             SoundEffect.PlayTrack(SoundEffect.ClickPath);
-
+            gameIsOver = true;
             gameAudio.StopPlayback();
             this.Frame.Navigate(typeof(StartPage));
         }
