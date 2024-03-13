@@ -292,6 +292,8 @@ namespace FIA_Grupp2
 
         private void DiceClicked(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.DicePath);
+
             _dice.SpinDice(sender, e);
         }
 
@@ -688,12 +690,15 @@ namespace FIA_Grupp2
 
         private void InGameMenuContinue(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             SetIngameMenuVisible(false);
         }
 
         private void GameVolumeButtonClicked(object sender, RoutedEventArgs e)
         {
-            //TODO: get the actual volume status from the volume segment
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             string path = $"ms-appx:///Assets/InGameIcons/";
 
             toggleVolumeButton = !toggleVolumeButton;
@@ -701,15 +706,12 @@ namespace FIA_Grupp2
             if (toggleVolumeButton)
             {
                 path += "volume.png";
-                //_musicVolume = _musicSavedValue;
                 gameAudio.SetVolume(_musicVolume / 100.0);
                 
             }
             else
             {
                 path += "volume-off.png";
-                //_musicSavedValue = _musicVolume;
-                //_musicVolume = 0;
                 gameAudio.SetVolume(0.0);
             }
             
@@ -718,32 +720,26 @@ namespace FIA_Grupp2
             volumeButtonIcon.Source = newVolumeIconImage;
 
             volumeSlider.Value = _musicVolume;
-
-            /*if (volumeSliderValueText != null)
-            {
-                volumeSliderValueText.Text = $"{_musicVolume}%";
-            }
-
-            if (gameAudio != null)
-            {
-                gameAudio.StopPlayback();
-                StartMusic();
-            }*/
         }
 
         private void OpenMainMenuButtonClicked(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
             SetIngameMenuVisible(true);
         }
 
         private void ReturnToMainMenuButtonClicked(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             gameAudio.StopPlayback();
             this.Frame.Navigate(typeof(StartPage));
         }
 
         private void IngameRulesButtonClicked(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             SetIngameMenuVisible(true);
 
             rulesPage.Visibility = Visibility.Visible;
@@ -751,6 +747,8 @@ namespace FIA_Grupp2
 
         private void RulesPageBackButtonClicked(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             SetIngameMenuVisible(true);
 
             rulesPage.Visibility = Visibility.Collapsed;

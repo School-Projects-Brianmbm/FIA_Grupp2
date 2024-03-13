@@ -79,7 +79,8 @@ namespace FIA_Grupp2
         /// </summary>
         private void Slot1_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
-			Button button = sender as Button;
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+            Button button = sender as Button;
 			if (button != null && button.Content != null)
 			{
 				string selectedChoice = button.Content.ToString();
@@ -124,7 +125,9 @@ namespace FIA_Grupp2
 
 		private void Slot2_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
-			Button button = sender as Button;
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            Button button = sender as Button;
 			if (button != null && button.Content != null)
 			{
 				string selectedChoice = button.Content.ToString();
@@ -169,7 +172,9 @@ namespace FIA_Grupp2
 
 		private void Slot3_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
-			Button button = sender as Button;
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            Button button = sender as Button;
 			if (button != null && button.Content != null)
 			{
 				string selectedChoice = button.Content.ToString();
@@ -214,8 +219,9 @@ namespace FIA_Grupp2
 
 		private void Slot4_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
 
-			Button button = sender as Button;
+            Button button = sender as Button;
 			if (button != null && button.Content != null)
 			{
 				string selectedChoice = button.Content.ToString();
@@ -395,27 +401,32 @@ namespace FIA_Grupp2
 
         private void Back_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(MainPage), introAudio);
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            this.Frame.Navigate(typeof(MainPage), introAudio);
 		}
 
 		private void Options_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(GameSessionOptionsPage), introAudio);
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            this.Frame.Navigate(typeof(GameSessionOptionsPage), introAudio);
 		}
 
         /// <summary>
         /// Event handler for to save lobby options and start game.
         /// </summary>
         private void Choose_level_button_click_event(object sender, RoutedEventArgs e)
-		{	
-			//Save the lobby options:
-			//LobbyOptions lobbyOptionsData = new LobbyOptions();
+		{
 
-			//lobbyOptionsData.slot1Usertype = slot1_user_button.Content.ToString();
-			//lobbyOptionsData.slot1Username = slot1_username.Text.ToString();
-			//lobbyOptionsData.slot1Team = slot1_user_button.Content.ToString();
+            //Save the lobby options:
+            //LobbyOptions lobbyOptionsData = new LobbyOptions();
 
-			ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"] = JsonConvert.SerializeObject(lobbyOptionsData);
+            //lobbyOptionsData.slot1Usertype = slot1_user_button.Content.ToString();
+            //lobbyOptionsData.slot1Username = slot1_username.Text.ToString();
+            //lobbyOptionsData.slot1Team = slot1_user_button.Content.ToString();
+
+            ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"] = JsonConvert.SerializeObject(lobbyOptionsData);
 			introAudio.StopPlayback();
 			this.Frame.Navigate(typeof(GamePage));
 		}

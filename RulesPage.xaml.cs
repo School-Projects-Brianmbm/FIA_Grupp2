@@ -36,7 +36,8 @@ namespace FIA_Grupp2
 
 		private void Back_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(MainPage), introAudio);
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+            this.Frame.Navigate(typeof(MainPage), introAudio);
 		}
 	}
 }

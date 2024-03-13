@@ -35,6 +35,7 @@ namespace FIA_Grupp2
 
         private void OfflineButton_Click(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
             this.Frame.Navigate(typeof(LobbyPage), introAudio);
         }
     }

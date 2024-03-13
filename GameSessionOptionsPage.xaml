@@ -28,8 +28,8 @@
     <Grid Width="1500" Height="1000">
         <Image Source="Assets/Backgrounds/hay.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>
 
-        <Grid Background="#FFE9EDC9" Width="1064" Height="710" Margin="218,74,218,216">
-            <Grid Background="#FF606C38" Width="915" Height="117" Margin="75,66,74,527">
+        <Grid Background="#FFE9EDC9" Width="1064" Height="710" Margin="218,74,218,216" CornerRadius="10">
+            <Grid Background="#FF606C38" Width="915" Height="117" Margin="75,66,74,527" CornerRadius="10">
                 <TextBlock HorizontalAlignment="Left" Margin="78,0,0,0" TextWrapping="Wrap" Text="Game time" VerticalAlignment="Center" Foreground="White" FontSize="48"/>
                 <Grid Background="#FFFFFF" Height="72" Margin="540,21,95,24" Width="280">
                     <TextBox x:Name="GameTimeHours" LostFocus="GameTimeHours_LostFocus" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="0,0,197,0" BorderBrush="#FFFFFF"/>
@@ -41,7 +41,7 @@
               
             </Grid>
 
-            <Grid Background="#FF606C38" Width="915" Height="117" Margin="75,216,74,377">
+            <Grid Background="#FF606C38" Width="915" Height="117" Margin="75,216,74,377" CornerRadius="10">
                 <TextBlock HorizontalAlignment="Left" Margin="78,0,0,0" TextWrapping="Wrap" Text="Turn time" VerticalAlignment="Center" Foreground="White" FontSize="48"/>
                 <Grid Background="#FFFFFF" Height="72" Margin="540,21,95,24" Width="280">
                     <TextBox x:Name="TurnTimeHours" BeforeTextChanging="TextBox_OnBeforeTextChanging" Background="White" TextWrapping="Wrap" Text="00" FontSize="48" Margin="0,0,197,0" BorderBrush="#FFFFFF" IsEnabled="False"/>
@@ -57,9 +57,9 @@
 
         </Grid>
 
-        <Button Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Back_button_click_event"/>
+        <Button Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Back_button_click_event" CornerRadius="10"/>
 
-        <Button Width="325" Height="114" Content="Save" Margin="1067,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Save_button_click_event"/>
+        <Button Width="325" Height="114" Content="Save" Margin="1067,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Save_button_click_event" CornerRadius="10"/>
 
 
 
