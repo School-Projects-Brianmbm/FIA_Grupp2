@@ -135,8 +135,8 @@ namespace FIA_Grupp2
 
             gameGrid.CalculateActualPositions();
             gameGrid.CalculateOrigoY();
-            await StartGameDelay();
 
+            await StartGameDelay(1000);
             gameGrid.SetEllipsesPositions();
 
 
