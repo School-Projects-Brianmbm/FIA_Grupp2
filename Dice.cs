@@ -25,21 +25,25 @@ namespace FIA_Grupp2
             get { return _realDiceNumber; }
         }
 
-        public Dice(GamePage gamePage)
+        public Dice(GamePage gamePage, Button diceButton)
         {
             _diceTimer = new DispatcherTimer();
             _diceTimer.Tick += Timer_Tick;
             _diceTimer.Interval = TimeSpan.FromMilliseconds(_diceSpinTickRate);
-
+            _sender = diceButton;
             this.DiceFinished += gamePage.DiceFinishedSpinning;  //Subscribe a function from gamepage
         }
 
         public void SpinDice(object sender, RoutedEventArgs e)
         {
             _sender = sender;
-
             PlayRandomSequence(0.5f);
+        }
 
+        public void SpinDice()
+        {
+            // _sender = sender;
+            PlayRandomSequence(0.5f);
         }
 
         private void Timer_Tick(object sender, object e)
@@ -108,6 +112,7 @@ namespace FIA_Grupp2
                 if (_sender != null)
                 {
                     // Find the Image control inside the Button that has been pressed.
+                    //Image imageControl = diceButton;
                     Image imageControl = (Image)((Button)_sender).Content;
 
                     // Update the Source property of the Button image control 
