@@ -12,7 +12,7 @@ namespace FIA_Grupp2
     {
         public static int NUMBER_OF_TEAMS = 0;
         string name = "Team";
-        bool isAI;
+        private bool isAI;
         public string Name { get => name; set => name = value; }
 
         protected static Position nestIndex;
@@ -24,13 +24,14 @@ namespace FIA_Grupp2
 
         internal Pawn[] pawns;
         internal Pawn[] Pawns { get => pawns; set => pawns = value; }
+        public bool IsAI { get => isAI; set => isAI = value; }
 
         public Team(GameBoardGrid gbg, Position[] coarse, Position start, Position goal, bool artificial = false)
         {
             NUMBER_OF_TEAMS++;
             nestIndex = start;
             boardgrid = gbg;
-            isAI = artificial;
+            IsAI = artificial;
         }
 
         public virtual Pawn[] GetPawns()
@@ -74,10 +75,11 @@ namespace FIA_Grupp2
     }
     internal class Cows : Team
     {
-        public Cows(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
-        : base(gbg, coarse, start, goal)
+        public Cows(GameBoardGrid gbg, Position[] coarse, Position start, Position goal, bool artificial = false)
+        : base(gbg, coarse, start, goal, artificial)
         {
             Name = "Cows";
+            IsAI = artificial;
             Position[] firstpart = new Position[40];
             Position[] lastpart = new Position[4]
             {
@@ -108,10 +110,11 @@ namespace FIA_Grupp2
     }
     internal class Hens : Team
     {
-        public Hens(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
-        : base(gbg, coarse, start, goal)
+        public Hens(GameBoardGrid gbg, Position[] coarse, Position start, Position goal , bool artificial = false)
+        : base(gbg, coarse, start, goal, artificial)
         {
             Name = "Hens";
+            IsAI = artificial;
             Position[] firstpart = new Position[10];
             Position[] secondpart = new Position[30];
             Position[] lastpart = new Position[4]
@@ -148,10 +151,11 @@ namespace FIA_Grupp2
     }
     internal class Sheeps : Team
     {
-        public Sheeps(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
-        : base(gbg, coarse, start, goal)
+        public Sheeps(GameBoardGrid gbg, Position[] coarse, Position start, Position goal, bool artificial = false)
+        : base(gbg, coarse, start, goal, artificial)
         {
             Name = "Sheeps";
+            IsAI = artificial;
             Position[] firstpart = new Position[20];
             Position[] secondpart = new Position[20];
             Position[] lpart = new Position[4];
@@ -190,10 +194,11 @@ namespace FIA_Grupp2
     }
     internal class Pigs : Team
     {
-        public Pigs(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
-        : base(gbg, coarse, start, goal)
+        public Pigs(GameBoardGrid gbg, Position[] coarse, Position start, Position goal, bool artificial = false)
+        : base(gbg, coarse, start, goal, artificial)
         {
             Name = "Pigs";
+            IsAI = artificial;
             Position[] firstpart = new Position[30];
             Position[] secondpart = new Position[10];
             Position[] lpart = new Position[4];
