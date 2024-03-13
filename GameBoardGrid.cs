@@ -50,7 +50,7 @@ namespace FIA_Grupp2
             { 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0 }
         };//                    x
 
-        
+
 
         readonly TextBlock[][] textArray = new TextBlock[_numberOfRows][];
 
@@ -92,7 +92,7 @@ namespace FIA_Grupp2
             int N = 1;
             foreach (int n in _pathArray)
             {
-                if ((n == 1) || (n == 2)) {  N++; }
+                if ((n == 1) || (n == 2)) { N++; }
             }
             return N;
         }
@@ -149,7 +149,36 @@ namespace FIA_Grupp2
                     // Create walkable "bricks"
                     else if (_pathArray[row, col] == 1)
                     {
-                        _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.Gray), Width = _brickSize, Height = _brickSize };
+                        SolidColorBrush strokeBrush = new SolidColorBrush(Colors.WhiteSmoke);
+                        int strokeWeight = 2;
+                        if (row == 10 && col == 6)
+                        {
+                            strokeBrush = new SolidColorBrush(Colors.LightGreen);
+                            strokeWeight = 4;
+                        }
+                        else if (row == 4 && col == 10)
+                        {
+                            strokeBrush = new SolidColorBrush(Colors.Yellow);
+                            strokeWeight = 4;
+                        }
+                        else if (row == 0 && col == 4)
+                        {
+                            strokeBrush = new SolidColorBrush(Colors.LightBlue);
+                            strokeWeight = 4;
+                        }
+                        else if (row == 6 && col == 0)
+                        {
+                            strokeBrush = new SolidColorBrush(Colors.LightPink);
+                            strokeWeight = 4;
+                        }
+                        _dotsArray[row][col] = new Ellipse
+                        {
+                            Fill = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
+                            Stroke = strokeBrush, // Border color (you can adjust this)
+                            StrokeThickness = strokeWeight,
+                            Width = _brickSize,
+                            Height = _brickSize
+                        };
                     }
                     // Create reserved bricks
                     else if (_pathArray[row, col] > 1 && _pathArray[row, col] < 6)
@@ -157,16 +186,16 @@ namespace FIA_Grupp2
                         switch (_pathArray[row, col])
                         {
                             case 2:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.PaleVioletRed), Width = _brickSize, Height = _brickSize };
+                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 219, 112, 147)), Width = _brickSize, Height = _brickSize };
                                 break;
                             case 3:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.LightGreen), Width = _brickSize, Height = _brickSize };
+                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 144, 238, 144)), Width = _brickSize, Height = _brickSize };
                                 break;
                             case 4:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.Yellow), Width = _brickSize, Height = _brickSize };
+                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 255, 255, 0)), Width = _brickSize, Height = _brickSize };
                                 break;
                             case 5:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.LightBlue), Width = _brickSize, Height = _brickSize };
+                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 173, 216, 230)), Width = _brickSize, Height = _brickSize };
                                 break;
                             default:
                                 break;
@@ -180,16 +209,16 @@ namespace FIA_Grupp2
                         switch (_pathArray[row, col])
                         {
                             case 6:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.PaleVioletRed), Width = _nestSize, Height = _nestSize };
+                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 219, 112, 147)), Width = _nestSize, Height = _nestSize };
                                 break;
                             case 7:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.LightGreen), Width = _nestSize, Height = _nestSize };
+                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 144, 238, 144)), Width = _nestSize, Height = _nestSize };
                                 break;
                             case 8:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.Yellow), Width = _nestSize, Height = _nestSize };
+                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 255, 255, 0)), Width = _nestSize, Height = _nestSize };
                                 break;
                             case 9:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.LightBlue), Width = _nestSize, Height = _nestSize };
+                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 173, 216, 230)), Width = _nestSize, Height = _nestSize };
                                 break;
                             default:
                                 break;
