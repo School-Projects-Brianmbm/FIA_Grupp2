@@ -59,7 +59,9 @@ namespace FIA_Grupp2
         /// </summary>
         private void Back_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(LobbyPage), introAudio);
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            this.Frame.Navigate(typeof(LobbyPage), introAudio);
 		}
 
         /// <summary>
@@ -78,7 +80,9 @@ namespace FIA_Grupp2
 
 			ApplicationData.Current.LocalSettings.Values["SessionOptionsData"] = JsonConvert.SerializeObject(sessionOptionsData);
 
-			this.Frame.Navigate(typeof(LobbyPage), introAudio);
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            this.Frame.Navigate(typeof(LobbyPage), introAudio);
 		}
 
         /// <summary>

@@ -36,6 +36,7 @@ namespace FIA_Grupp2
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
             var winnerParameters = e.Parameter as Tuple<string, Playlist>;
             name = winnerParameters.Item1;
             gameAudio = winnerParameters.Item2;
@@ -49,6 +50,9 @@ namespace FIA_Grupp2
         private void SetBackgroundImage()
         {
             Debug.Write($" Set Background Winner: {name}");
+
+            SoundEffect.PlayTrack(SoundEffect.VictoriusPath);
+
             switch (name.ToLower())
             {
                 case "pigs":
@@ -71,12 +75,16 @@ namespace FIA_Grupp2
 
         private void MenuButtonClick(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             gameAudio.StopPlayback();
             this.Frame.Navigate(typeof(StartPage));
         }
 
         private void ExitButtonClick(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             Application.Current.Exit();
         }
     }

@@ -292,6 +292,8 @@ namespace FIA_Grupp2
 
         private void DiceClicked(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.DicePath);
+
             _dice.SpinDice(sender, e);
         }
 
@@ -402,6 +404,16 @@ namespace FIA_Grupp2
 
             //IsThereAPawnOnThisPosition(new Position(6, 10));
 
+            bool allPawnsInGoal = true;
+
+            foreach (Pawn pawn in teams[currentTeam].Pawns)
+            {
+                if (!pawn.IsInGoal)
+                {
+                    allPawnsInGoal = false;
+                }
+            }
+
             currentTeam++;
             if (currentTeam > nrOfPlayers - 1)
             {
@@ -413,6 +425,25 @@ namespace FIA_Grupp2
             if (isTurnTimerEnabled)
             {
                 ResetTurnTimer();
+            }
+
+            if(!allPawnsInGoal)
+            {
+                switch (teams[currentTeam].Name)
+                {
+                    case "Cows":
+                        SoundEffect.PlayTrack(SoundEffect.CowPath);
+                        break;
+                    case "Hens":
+                        SoundEffect.PlayTrack(SoundEffect.ChickenPath);
+                        break;
+                    case "Sheeps":
+                        SoundEffect.PlayTrack(SoundEffect.SheepPath);
+                        break;
+                    case "Pigs":
+                        SoundEffect.PlayTrack(SoundEffect.PigPath);
+                        break;
+                }
             }
         }
 
@@ -688,12 +719,15 @@ namespace FIA_Grupp2
 
         private void InGameMenuContinue(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             SetIngameMenuVisible(false);
         }
 
         private void GameVolumeButtonClicked(object sender, RoutedEventArgs e)
         {
-            //TODO: get the actual volume status from the volume segment
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             string path = $"ms-appx:///Assets/InGameIcons/";
 
             toggleVolumeButton = !toggleVolumeButton;
@@ -701,15 +735,12 @@ namespace FIA_Grupp2
             if (toggleVolumeButton)
             {
                 path += "volume.png";
-                //_musicVolume = _musicSavedValue;
                 gameAudio.SetVolume(_musicVolume / 100.0);
                 
             }
             else
             {
                 path += "volume-off.png";
-                //_musicSavedValue = _musicVolume;
-                //_musicVolume = 0;
                 gameAudio.SetVolume(0.0);
             }
             
@@ -718,32 +749,26 @@ namespace FIA_Grupp2
             volumeButtonIcon.Source = newVolumeIconImage;
 
             volumeSlider.Value = _musicVolume;
-
-            /*if (volumeSliderValueText != null)
-            {
-                volumeSliderValueText.Text = $"{_musicVolume}%";
-            }
-
-            if (gameAudio != null)
-            {
-                gameAudio.StopPlayback();
-                StartMusic();
-            }*/
         }
 
         private void OpenMainMenuButtonClicked(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
             SetIngameMenuVisible(true);
         }
 
         private void ReturnToMainMenuButtonClicked(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             gameAudio.StopPlayback();
             this.Frame.Navigate(typeof(StartPage));
         }
 
         private void IngameRulesButtonClicked(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             SetIngameMenuVisible(true);
 
             rulesPage.Visibility = Visibility.Visible;
@@ -751,6 +776,8 @@ namespace FIA_Grupp2
 
         private void RulesPageBackButtonClicked(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
             SetIngameMenuVisible(true);
 
             rulesPage.Visibility = Visibility.Collapsed;
