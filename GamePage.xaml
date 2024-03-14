@@ -7,13 +7,48 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    MaxWidth="1500"
+    MaxHeight="1000"
     RequestedTheme="Light">
+    <Page.Resources>
+        <Storyboard x:Name="StartGameStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="canvas" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.LocalOffsetY)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1000">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="1000">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:02.5000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="gameCanvas" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.LocalOffsetY)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-1000"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="-1000"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:02.5000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
 
     <Grid x:Name="layoutRoot" PointerWheelChanged="PointerWheelChanged" PointerReleased="PointerReleased">
         <Grid.Background>
             <ImageBrush ImageSource="/Assets/Textures/grass-texture-background.jpg"/>
         </Grid.Background>
         <Canvas x:Name="canvas" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <Canvas.Projection>
+                <PlaneProjection/>
+            </Canvas.Projection>
             <Canvas.RenderTransform>
                 <CompositeTransform/>
             </Canvas.RenderTransform>
@@ -46,32 +81,105 @@
             </Path>
         </Canvas>
 
-
         <Canvas x:Name="gameCanvas" FocusVisualMargin="2,2,2,2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Canvas.Projection>
+                <PlaneProjection/>
+            </Canvas.Projection>
             <!-- A Container for uor board tiles-->
         </Canvas>
 
-        <TextBlock x:Name="debugtext" Canvas.Left="40" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="40"/>
+        <TextBlock x:Name="debugtext" Canvas.Left="40" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="40" Visibility="Collapsed"/>
+        <Rectangle Margin="1329,83,60,831" Fill="#99FFFFFF" RadiusX="20" RadiusY="20"/>
         <TextBlock x:Name="gameTimerText" TextWrapping="Wrap" Text="00:00:00" Width="100" Height="40" Margin="1340,83,60,877" FontSize="24"/>
         <TextBlock x:Name="turnTimerText" TextWrapping="Wrap" Text="00:00:00" Width="100" Height="40" Margin="1340,133,60,827" FontSize="24"/>
-        <Border x:Name="activeTeamIconBorder"  Background="#FF606C38" Width="144" Height="140" CornerRadius="10" Margin="0,0,58,212" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-        <Border x:Name="activeDiceBorder"  Background="#FF606C31" Width="196" Height="196" CornerRadius="10" Margin="0,0,32,27" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
-        <Button x:Name="diceButton" Margin="0,0,32,31" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="192" Width="192" Background="Transparent" Click="DiceClicked">
-            <Image Source="ms-appx:///Assets/Dice_images/white_dice.png" Width="180" Height="180" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        </Button>
+        <Border x:Name="activeTeamIconBorder"  Background="#FF606C38" Width="144" Height="140" CornerRadius="20" Margin="0,0,58,212" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+
+        <Border x:Name="activeDiceBorder"  Background="#FF606C31" Width="196" Height="196" CornerRadius="20" Margin="0,0,32,27" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+
+            <Button x:Name="diceButton" VerticalAlignment="Center" HorizontalAlignment="Center" Height="192" Width="192" Background="Transparent" Click="DiceClicked" CornerRadius="10">
+                <Image Source="ms-appx:///Assets/Dice_images/white_dice.png" Width="196" Height="196" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Button>
+        </Border>
         <Canvas x:Name="diceCross" Margin="0,0,32,31" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="192" Width="192" Background="Transparent" Visibility="Collapsed" IsHitTestVisible="False">
-            <Rectangle Width="10" Height="176" Fill="Black" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="93" RenderTransformOrigin="0.5,0.5"  >
+            <Rectangle Width="10" Height="176" Fill="#99000000" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="93" RenderTransformOrigin="0.5,0.5"  >
                 <Rectangle.RenderTransform>
                     <CompositeTransform Rotation="-50.753"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle Width="10" Height="176" Fill="Black" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="93" RenderTransformOrigin="0.5,0.5"  >
+            <Rectangle Width="10" Height="176" Fill="#99000000" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="93" RenderTransformOrigin="0.5,0.5"  >
                 <Rectangle.RenderTransform>
                     <CompositeTransform Rotation="53.102"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
         </Canvas>
         <Image x:Name="activeTeamIcon" Source="ms-appx:///Assets/TeamIcons/cow.jpg" Width="112" Height="112" Margin="0,0,74,228" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+
+        <Border Background="#B2606C38" Width="100" Height="100" CornerRadius="20" Margin="29,829,1331,31" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Button x:Name="volumeButton" Margin="32,0,0,32" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="100" Width="100" Background="Transparent" Click="GameVolumeButtonClicked" CornerRadius="10">
+            <Image x:Name="volumeButtonIcon" Source="ms-appx:///Assets/InGameIcons/volume.png" Width="90" Height="90" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+
+        <Border Background="#B2606C38" Width="100" Height="100" CornerRadius="20" Margin="32,32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Button x:Name="openMainMenuButton" Margin="32,32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="100" Width="100" Background="Transparent" Click="OpenMainMenuButtonClicked" CornerRadius="10">
+            <Image x:Name="openMainMenuIcon" Source="ms-appx:///Assets/InGameIcons/dots-vertical.png" Width="90" Height="90" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+        </Button>
+
+        <Canvas x:Name="ingame_menu" Canvas.ZIndex="98" FocusVisualMargin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+            <Border Width="3000" Height="1500" CornerRadius="10" Canvas.Left="-1498" Canvas.Top="-735" IsHitTestVisible="True">
+                <Border.Background>
+                    <SolidColorBrush Color="#99000000"/>
+                </Border.Background>
+            </Border>
+            <Border Background="#CCD5AE" Width="450" Height="425" CornerRadius="10" Canvas.Left="-220" Canvas.Top="-238"/>
+            <Button Background="#606C38" Width="350" Height="80" CornerRadius="10"  Canvas.Left="-170" Canvas.Top="-178" VerticalAlignment="Top" Content="Continue" Foreground="White" FontSize="22" Click="InGameMenuContinue"/>
+            <Button Background="#606C38" Width="350" Height="80" CornerRadius="10"  Canvas.Left="-170" Canvas.Top="-88" VerticalAlignment="Top" Content="Rules" Foreground="White" FontSize="22" Click="IngameRulesButtonClicked"/>
+            <Slider x:Name="volumeSlider" Width="220" Height="30" Canvas.Left="-108" Value="100" Minimum="0" Maximum="100" TickFrequency="1" TickPlacement="BottomRight" HorizontalAlignment="Left" VerticalAlignment="Center" ValueChanged="VolumeSliderValueChanged"/>
+            <Button Background="#606C38" Width="350" Height="80" CornerRadius="10"  Canvas.Left="-170" Canvas.Top="42" VerticalAlignment="Top" Content="Return to Main Menu" Foreground="White" FontSize="22" Click="ReturnToMainMenuButtonClicked"/>
+            <Image Source="ms-appx:///Assets/InGameIcons/volume.png" Height="32" Canvas.Left="-154" Canvas.Top="-1" Width="32"/>
+            <TextBlock x:Name="volumeSliderValueText" Text="100%" Canvas.Left="122" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22"/>
+        </Canvas>
+
+        <Canvas x:Name="rulesPage" Canvas.ZIndex="98" Visibility="Collapsed" IsHitTestVisible="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <!--<Image Source="ms-appx:///Assets/Backgrounds/hay.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>-->
+            <Border Width="1500" Height="1000" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Border.Background>
+                    <SolidColorBrush Color="#99000000"/>
+                </Border.Background>
+            </Border>
+
+
+            <Border Background="#CCD5AE" Width="1064" Height="710" CornerRadius="10" Canvas.Left="218" Canvas.Top="74"/>
+            <Grid Background="Transparent" Width="1064" Height="710" Canvas.Left="218" Canvas.Top="74">
+                <TextBlock TextWrapping="Wrap" Text="Rules" FontSize="48" Margin="419,10,117,636"/>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Width="1050" Margin="7,85,7,29" Grid.ColumnSpan="3">
+                    <TextBlock TextWrapping="Wrap" FontSize="24" Margin="56,20,56,47">
+                        <Bold>How to play parcheesi:</Bold>
+                        <LineBreak/><LineBreak/>
+            
+                        <Bold>Objective:</Bold> <LineBreak/>Move all of your pawns from the starting area onto the board, around the board, and into the goal in the center to win the game.
+                        <LineBreak/><LineBreak/>
+            
+                        <Bold>Setup:</Bold><LineBreak/>
+                            1. Each player selects a team in the lobby.<LineBreak/>
+                            2. When the game starts each player has 4 pawns in the respective starting areas at the corners of the board.
+
+                        <LineBreak/><LineBreak/>
+            
+                        <Bold>Gameplay:</Bold><LineBreak/>
+                        1. Players take turns rolling the dice to determine how many spaces to move a pawn.<LineBreak/>
+                        2. A roll of 1 or 6 allows a player to enter a pawn onto the board from the starting area.<LineBreak/>
+                        3. Pawns move clockwise around the board.<LineBreak/>
+                        4. Capturing: Landing on a position occupied by an opponent's pawn sends that pawn back to its starting area.<LineBreak/>
+                        5. Blockades: A blockade is made when two pawns of the same team land on the same position. The blockades prevent any other pawn from passing.<LineBreak/>
+                        6. Reaching the goal: Pawns must enter the goal with an exact roll. The first player to move all pawns into the goal wins the game!<LineBreak/>
+                    </TextBlock>
+                </ScrollViewer>
+            </Grid>
+            <Button Width="325" Height="114" Content="Back" Background="#FF606C38" FontSize="48" Foreground="White" CornerRadius="10" Click="RulesPageBackButtonClicked" Canvas.Top="828" Canvas.Left="588" VerticalAlignment="Top"/>
+        </Canvas>
+
     </Grid>
 </Page>

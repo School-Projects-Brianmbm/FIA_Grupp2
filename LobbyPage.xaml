@@ -28,48 +28,48 @@
     <Grid Width="1500" Height="1000">
         <Image Source="Assets/Backgrounds/hay.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>
 
-        <TextBlock  TextWrapping="Wrap" Text="Couch mode" Margin="594,102,613,845" FontSize="48" TextAlignment="Center"/>
+        <TextBlock  TextWrapping="Wrap" Text="Lobby" HorizontalAlignment="Center" Margin="0,72,0,845" FontSize="48" TextAlignment="Center"/>
 
 
-        <Button x:Name="slot1_user_button" Content="Player" Margin="111,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" Click="Slot1_user_selection_button_click_event">
+        <Button x:Name="slot1_user_button" Content="Player" Margin="111,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" CornerRadius="7" FontSize="36" Foreground="White" Click="Slot1_user_selection_button_click_event">
             
         </Button>
-        
-        <Grid  x:Name="slot1_rectangle" Background="#FFE9EDC9" Width="223" Height="485" Margin="89,258,1188,257">
-            <Button x:Name="slot1_button_teamicon" Width="146" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="Slot1_button_teamicon_click_event">
+
+        <Grid  x:Name="slot1_rectangle" Background="#FFE9EDC9" Width="223" Height="485" Margin="89,258,1188,257" CornerRadius="5">
+            <Button x:Name="slot1_button_teamicon" Width="146" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="Slot1_button_teamicon_click_event" IsEnabled="False" CornerRadius="5">
                 <Image  x:Name="slot1_teamicon" Source="/Assets/TeamIcons/cow.jpg" Height="130" Width="130"/>
             </Button>
             <TextBox x:Name="slot1_username" LostFocus="Slot1_username_LostFocus" TextWrapping="Wrap" Text="Player1" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
         </Grid>
 
-        <Button Content="Player" Margin="471,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" Click="Slot2_user_selection_button_click_event"/>
+        <Button Content="Player" Margin="471,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" Click="Slot2_user_selection_button_click_event" CornerRadius="5"/>
         <Grid x:Name="slot2_rectangle" Background="#FFE9EDC9" Width="223" Height="485" Margin="449,258,828,257">
-            <Button x:Name="slot2_button_teamicon"  Width="146" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="Slot2_button_teamicon_click_event">
+            <Button x:Name="slot2_button_teamicon"  Width="146" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="Slot2_button_teamicon_click_event" IsEnabled="False" CornerRadius="5">
                 <Image x:Name="slot2_teamicon" Source="/Assets/TeamIcons/pig.jpg" Height="130" Width="130"/>
             </Button>
             <TextBox x:Name="slot2_username" LostFocus="Slot2_username_LostFocus" TextWrapping="Wrap" Text="Player2" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
         </Grid>
 
-        <Button Content="None" Margin="831,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" Click="Slot3_user_selection_button_click_event"/>
-        <Grid x:Name="slot3_rectangle" Background="#FFE9EDC9" Width="223" Height="485" Margin="809,258,468,257" Opacity="0.5">
-            <Button x:Name="slot3_button_teamicon" Width="146" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="Slot3_button_teamicon_click_event" IsEnabled="False">
+        <Button Content="None" Margin="831,171,0,0" VerticalAlignment="Top" Width="185" Height="64" CornerRadius="7" Background="#FF606C38" FontSize="36" Foreground="White" Click="Slot3_user_selection_button_click_event"/>
+        <Grid x:Name="slot3_rectangle" Background="#FFE9EDC9" Width="223" Height="485" Margin="809,258,468,257" Opacity="0.5" CornerRadius="5">
+            <Button x:Name="slot3_button_teamicon" Width="146" CornerRadius="5" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="Slot3_button_teamicon_click_event" IsEnabled="False">
                 <Image x:Name="slot3_teamicon" Source="/Assets/TeamIcons/chicken.jpg" Height="130" Width="130"/>
             </Button>
             <TextBox x:Name="slot3_username" LostFocus="Slot3_username_LostFocus" TextWrapping="Wrap" Text="---" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
             
         </Grid>
 
-        <Button Content="None" Margin="1191,171,0,0" VerticalAlignment="Top" Width="185" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" Click="Slot4_user_selection_button_click_event"/>
-        <Grid x:Name="slot4_rectangle" Background="#FFE9EDC9" Width="223" Height="485" Margin="1169,258,108,257" Opacity="0.5">
-            <Button x:Name="slot4_button_teamicon" Width="146" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="Slot4_button_teamicon_click_event" IsEnabled="False">
+        <Button Content="None" Margin="1191,171,0,0" VerticalAlignment="Top" Width="185" CornerRadius="7" Height="64" Background="#FF606C38" FontSize="36" Foreground="White" Click="Slot4_user_selection_button_click_event"/>
+        <Grid x:Name="slot4_rectangle" Background="#FFE9EDC9" Width="223" Height="485" Margin="1169,258,108,257" Opacity="0.5" CornerRadius="5">
+            <Button x:Name="slot4_button_teamicon" Width="146" CornerRadius="5" Height="146" VerticalAlignment="Top" Background="#FF606C38" HorizontalAlignment="Center" Margin="0,293,0,0" Click="Slot4_button_teamicon_click_event" IsEnabled="False">
                 <Image x:Name="slot4_teamicon" Source="/Assets/TeamIcons/sheep.jpg" Height="130" Width="130"/>
             </Button>
             <TextBox x:Name="slot4_username" LostFocus="Slot4_username_LostFocus" TextWrapping="Wrap" Text="---" FontSize="36" TextAlignment="Center" Margin="0,86,0,341"/>
         </Grid>
 
-        <Button Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Back_button_click_event"/>
-        <Button Width="325" Height="114" Content="Options" Margin="573,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Options_button_click_event"/>
-        <Button Width="325" Height="114" Content="Choose level" Margin="1067,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Choose_level_button_click_event"/>
+        <Button Width="325" Height="114" CornerRadius="10" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Back_button_click_event"/>
+        <Button Width="325" Height="114" Content="Options" CornerRadius="10" Margin="573,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Options_button_click_event"/>
+        <Button Width="325" Height="114" Content="Start" CornerRadius="10" Margin="1067,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Choose_level_button_click_event"/>
         
 
 

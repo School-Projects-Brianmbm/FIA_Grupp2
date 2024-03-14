@@ -1,0 +1,68 @@
+﻿<Page
+    x:Class="FIA_Grupp2.RulesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FIA_Grupp2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    RequestedTheme="Light">
+
+    <!-- Hover and click -->
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF283618"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF283618"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Width="1500" Height="1000">
+        <Image Source="Assets/main_menu.jpg" Width="1500" Height="1000" Stretch="UniformToFill"/>
+
+        <Grid Background="#FFE9EDC9" Width="1064" Height="710" Margin="218,74,218,216" CornerRadius="20">
+            <TextBlock TextWrapping="Wrap" Text="Rules" FontSize="48" Margin="476,24,472,622"/>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Width="1050" Margin="7,85,7,29">
+                <TextBlock TextWrapping="Wrap" FontSize="24" Margin="56,20,56,47">
+                    <Bold>How to play parcheesi:</Bold>
+                    <LineBreak/><LineBreak/>
+                    
+                    <Bold>Objective:</Bold> <LineBreak/>Move all of your pawns from the starting area onto the board, around the board, and into the goal in the center to win the game.
+                    <LineBreak/><LineBreak/>
+                    
+                    <Bold>Setup:</Bold><LineBreak/>
+                        1. Each player selects a team in the lobby.<LineBreak/>
+                        2. When the game starts each player has 4 pawns in the respective starting areas at the corners of the board.
+
+                    <LineBreak/><LineBreak/>
+                    
+                    <Bold>Gameplay:</Bold><LineBreak/>
+                    1. Players take turns rolling the dice to determine how many spaces to move a pawn.<LineBreak/>
+                    2. A roll of 1 or 6 allows a player to enter a pawn onto the board from the starting area.<LineBreak/>
+                    3. Pawns move clockwise around the board.<LineBreak/>
+                    4. Capturing: Landing on a position occupied by an opponent's pawn sends that pawn back to its starting area.<LineBreak/>
+                    5. Blockades: A blockade is made when two pawns of the same team land on the same position. The blockades prevent any other pawn from passing.<LineBreak/>
+                    6. Reaching the goal: Pawns must enter the goal with an exact roll. The first player to move all pawns into the goal wins the game!<LineBreak/>        
+
+                </TextBlock>
+            </ScrollViewer>
+
+
+
+
+        </Grid>
+
+        <Button CornerRadius="10" Width="325" Height="114" Content="Back" Margin="89,813,0,0" VerticalAlignment="Top" Background="#FF606C38" FontSize="48" Foreground="White" Click="Back_button_click_event"/>
+
+    </Grid>
+</Page>
+

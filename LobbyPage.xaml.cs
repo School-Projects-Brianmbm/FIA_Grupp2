@@ -11,8 +11,11 @@ namespace FIA_Grupp2
 
 	public sealed partial class LobbyPage : Page
 	{
-		//Used to store lobby options
-		LobbyOptions lobbyOptionsData;
+        /// <summary>
+        /// Represents the lobby page where you choose amount of players, team, and name.
+        /// </summary>
+        //Used to store lobby options
+        LobbyOptions lobbyOptionsData;
 
 		//Used to store choosable teamicons
 		private BitmapImage[] teamicons;
@@ -28,7 +31,10 @@ namespace FIA_Grupp2
 		private bool isIconIndex2Available = true;
 		private bool isIconIndex3Available = true;
 
-		public LobbyPage()
+        /// <summary>
+        /// Initializes a new instance of the LobbyPage class.
+        /// </summary>
+        public LobbyPage()
 		{
 			this.InitializeComponent();
 
@@ -68,9 +74,13 @@ namespace FIA_Grupp2
 
 		}
 
-		private void Slot1_user_selection_button_click_event(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Default setting for slots when page is loaded and event handlers for change. Change of icon functionality i disabled.
+        /// </summary>
+        private void Slot1_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
-			Button button = sender as Button;
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+            Button button = sender as Button;
 			if (button != null && button.Content != null)
 			{
 				string selectedChoice = button.Content.ToString();
@@ -81,7 +91,7 @@ namespace FIA_Grupp2
 
 						button.Content = "AI";
 						slot1_username.Text = "AI";
-						slot1_button_teamicon.IsEnabled = true;
+						//slot1_button_teamicon.IsEnabled = true;
 						slot1_username.IsEnabled = true;
 						slot1_rectangle.Opacity = 1;
 						lobbyOptionsData.slot1Usertype = "AI";
@@ -91,7 +101,7 @@ namespace FIA_Grupp2
 
 						button.Content = "None";
 						slot1_username.Text = "---";
-						slot1_button_teamicon.IsEnabled = false;
+						//slot1_button_teamicon.IsEnabled = false;
 						slot1_username.IsEnabled = false;
 						slot1_rectangle.Opacity = 0.5;
 						lobbyOptionsData.slot1Usertype = "None";
@@ -101,7 +111,7 @@ namespace FIA_Grupp2
 
 						button.Content = "Player";
 						slot1_username.Text = "Player1";
-						slot1_button_teamicon.IsEnabled = true;
+						//slot1_button_teamicon.IsEnabled = true;
 						slot1_username.IsEnabled = true;
 						slot1_rectangle.Opacity = 1;
 						lobbyOptionsData.slot1Usertype = "Player";
@@ -115,7 +125,9 @@ namespace FIA_Grupp2
 
 		private void Slot2_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
-			Button button = sender as Button;
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            Button button = sender as Button;
 			if (button != null && button.Content != null)
 			{
 				string selectedChoice = button.Content.ToString();
@@ -126,7 +138,7 @@ namespace FIA_Grupp2
 
 						button.Content = "AI";
 						slot2_username.Text = "AI";
-						slot2_button_teamicon.IsEnabled = true;
+						//slot2_button_teamicon.IsEnabled = true;
 						slot2_username.IsEnabled = true;
 						slot2_rectangle.Opacity = 1;
 						lobbyOptionsData.slot2Usertype = "AI";
@@ -136,7 +148,7 @@ namespace FIA_Grupp2
 
 						button.Content = "None";
 						slot2_username.Text = "---";
-						slot2_button_teamicon.IsEnabled = false;
+						//slot2_button_teamicon.IsEnabled = false;
 						slot2_username.IsEnabled = false;
 						slot2_rectangle.Opacity = 0.5;
 						lobbyOptionsData.slot2Usertype = "None";
@@ -146,7 +158,7 @@ namespace FIA_Grupp2
 
 						button.Content = "Player";
 						slot2_username.Text = "Player2";
-						slot2_button_teamicon.IsEnabled = true;
+						//slot2_button_teamicon.IsEnabled = true;
 						slot2_username.IsEnabled = true;
 						slot2_rectangle.Opacity = 1;
 						lobbyOptionsData.slot2Usertype = "Player";
@@ -160,7 +172,9 @@ namespace FIA_Grupp2
 
 		private void Slot3_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
-			Button button = sender as Button;
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            Button button = sender as Button;
 			if (button != null && button.Content != null)
 			{
 				string selectedChoice = button.Content.ToString();
@@ -171,7 +185,7 @@ namespace FIA_Grupp2
 
 						button.Content = "AI";
 						slot3_username.Text = "AI";
-						slot3_button_teamicon.IsEnabled = true;
+						//slot3_button_teamicon.IsEnabled = true;
 						slot3_username.IsEnabled = true;
 						slot3_rectangle.Opacity = 1;
 						lobbyOptionsData.slot3Usertype = "AI";
@@ -181,7 +195,7 @@ namespace FIA_Grupp2
 
 						button.Content = "None";
 						slot3_username.Text = "---";
-						slot3_button_teamicon.IsEnabled = false;
+						//slot3_button_teamicon.IsEnabled = false;
 						slot3_username.IsEnabled = false;
 						slot3_rectangle.Opacity = 0.5;
 						lobbyOptionsData.slot3Usertype = "None";
@@ -191,7 +205,7 @@ namespace FIA_Grupp2
 
 						button.Content = "Player";
 						slot3_username.Text = "Player3";
-						slot3_button_teamicon.IsEnabled = true;
+						//slot3_button_teamicon.IsEnabled = true;
 						slot3_username.IsEnabled = true;
 						slot3_rectangle.Opacity = 1;
 						lobbyOptionsData.slot3Usertype = "Player";
@@ -205,8 +219,9 @@ namespace FIA_Grupp2
 
 		private void Slot4_user_selection_button_click_event(object sender, RoutedEventArgs e)
 		{
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
 
-			Button button = sender as Button;
+            Button button = sender as Button;
 			if (button != null && button.Content != null)
 			{
 				string selectedChoice = button.Content.ToString();
@@ -217,7 +232,7 @@ namespace FIA_Grupp2
 
 						button.Content = "AI";
 						slot4_username.Text = "AI";
-						slot4_button_teamicon.IsEnabled = true;
+						//slot4_button_teamicon.IsEnabled = true;
 						slot4_username.IsEnabled = true;
 						slot4_rectangle.Opacity = 1;
 						lobbyOptionsData.slot4Usertype = "AI";
@@ -227,7 +242,7 @@ namespace FIA_Grupp2
 
 						button.Content = "None";
 						slot4_username.Text = "---";
-						slot4_button_teamicon.IsEnabled = false;
+						//slot4_button_teamicon.IsEnabled = false;
 						slot4_username.IsEnabled = false;
 						slot4_rectangle.Opacity = 0.5;
 						lobbyOptionsData.slot4Usertype = "None";
@@ -237,7 +252,7 @@ namespace FIA_Grupp2
 
 						button.Content = "Player";
 						slot4_username.Text = "Player4";
-						slot4_button_teamicon.IsEnabled = true;
+						//slot4_button_teamicon.IsEnabled = true;
 						slot4_username.IsEnabled = true;
 						slot4_rectangle.Opacity = 1;
 						lobbyOptionsData.slot4Usertype = "Player";
@@ -269,7 +284,10 @@ namespace FIA_Grupp2
 			lobbyOptionsData.slot4Username = slot4_username.Text;
 		}
 
-		private void Slot1_button_teamicon_click_event(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Event handler for choosing team icons, function currently disabled in game.
+        /// </summary>
+        private void Slot1_button_teamicon_click_event(object sender, RoutedEventArgs e)
 		{
 			Button button = sender as Button;
 			if (button != null)
@@ -383,24 +401,32 @@ namespace FIA_Grupp2
 
         private void Back_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(MainPage), introAudio);
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            this.Frame.Navigate(typeof(MainPage), introAudio);
 		}
 
 		private void Options_button_click_event(object sender, RoutedEventArgs e)
 		{
-			this.Frame.Navigate(typeof(GameSessionOptionsPage), introAudio);
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            this.Frame.Navigate(typeof(GameSessionOptionsPage), introAudio);
 		}
 
-		private void Choose_level_button_click_event(object sender, RoutedEventArgs e)
-		{	
-			//Save the lobby options:
-			//LobbyOptions lobbyOptionsData = new LobbyOptions();
+        /// <summary>
+        /// Event handler for to save lobby options and start game.
+        /// </summary>
+        private void Choose_level_button_click_event(object sender, RoutedEventArgs e)
+		{
 
-			//lobbyOptionsData.slot1Usertype = slot1_user_button.Content.ToString();
-			//lobbyOptionsData.slot1Username = slot1_username.Text.ToString();
-			//lobbyOptionsData.slot1Team = slot1_user_button.Content.ToString();
+            //Save the lobby options:
+            //LobbyOptions lobbyOptionsData = new LobbyOptions();
 
-			ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"] = JsonConvert.SerializeObject(lobbyOptionsData);
+            //lobbyOptionsData.slot1Usertype = slot1_user_button.Content.ToString();
+            //lobbyOptionsData.slot1Username = slot1_username.Text.ToString();
+            //lobbyOptionsData.slot1Team = slot1_user_button.Content.ToString();
+
+            ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"] = JsonConvert.SerializeObject(lobbyOptionsData);
 			introAudio.StopPlayback();
 			this.Frame.Navigate(typeof(GamePage));
 		}

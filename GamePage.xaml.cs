@@ -14,19 +14,33 @@ using Windows.Devices.Pwm;
 using Windows.UI.Xaml.Media;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Windows.UI.Xaml.Media.Animation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace FIA_Grupp2
 {
+    /// <summary>
+    /// Represents the main in-game page with the board.
+    /// </summary>
     public sealed partial class GamePage : Page
     {
+        bool gameIsOver = false;
         public static GamePage Instance;
 
+        // Coordinates of the mouse pointer
         int MouseX, MouseY;
+        // Delay for AI actions
+        int aiDelay = 100;
         static int nrOfPlayers = 4;
         static int currentTeam = 0;
         static GameBoardGrid gameGrid;
+
+        private bool toggleIngameMenu = false;
+        private bool toggleVolumeButton = true;
+
+        private double _musicVolume = 100;
 
         Position goalPosition = new Position(5, 5);
 
@@ -41,11 +55,11 @@ namespace FIA_Grupp2
         };
 
         Team[] teams = new Team[nrOfPlayers];
-        // Team cows, hens, sheeps, pigs;
         public Playlist gameAudio;
 
         private Dice _dice;
 
+        // Game timers and durations
         private bool isTurnTimerEnabled = false;
         private bool isGameTimerEnabled = false;
         private DispatcherTimer gameTimer;
@@ -54,16 +68,34 @@ namespace FIA_Grupp2
         private TimeSpan remainingTurnTime;
         private int gameHours, gameMinutes, gameSeconds;
         private int turnHours, turnMinutes, turnSeconds;
+
         private bool isCows = false, isHens = false, isSheeps = false, isPigs = false;
+        private bool isCowsAi = false, isHensAi = false, isSheepsAi = false, isPigsAi = false;
+
+        // User and team data for lobby slots
         private string slot1Usertype, slot2Usertype, slot3Usertype, slot4Usertype;
         private string slot1Username, slot2Username, slot3Username, slot4Username;
         private string slot1Team, slot2Team, slot3Team, slot4Team;
+        private double _musicSavedValue = 100;
+        public double MusicVolume
+        {
+            get => _musicVolume;
+            set
+            {
+                if (_musicVolume != value)
+                {
+                    _musicVolume = value;
+                }
+            }
+        }
+
 
         public GamePage()
         {
             InitializeComponent();
             Instance = this;
             Window.Current.CoreWindow.PointerMoved += CoreWindow_PointerMoved;
+            Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
             layoutRoot.PointerWheelChanged += new PointerEventHandler(PointerWheelChanged);
             gameAudio = new Playlist();
             StartMusic();
@@ -75,10 +107,15 @@ namespace FIA_Grupp2
             teams = new Team[nrOfPlayers];
             InitiateGameTimer();
             InitiateTurnTimer();
+            
 
             Loaded += MainPage_Loaded;
+
         }
 
+        /// <summary>
+        /// Loads lobby options from local saved settings.
+        /// </summary>
         private void LoadLobbyOptions()
         {
             string lobbyData = (string)ApplicationData.Current.LocalSettings.Values["LobbyOptionsData"];
@@ -102,6 +139,112 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Event handler for when the main page is loaded.
+        /// </summary>
+        private async void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            Debug.Write("BAM MainPage Loaded");
+            gameGrid = new GameBoardGrid(gameCanvas);
+            gameGrid.CreateArrayOfPoints();
+            gameGrid.CreateArrayOfDots();
+
+            gameGrid.CalculateActualPositions();
+            gameGrid.CalculateOrigoY();
+
+            await StartGameDelay(0);
+            gameGrid.SetEllipsesPositions();
+
+            // Get the reference to your Storyboard (assuming you've named it "StartGameStoryboard")
+            Storyboard myStoryboard = this.Resources["StartGameStoryboard"] as Storyboard;
+
+            // Start the Storyboard
+            myStoryboard.Begin();
+
+            await StartGameDelay(2600);
+            CreatePawns();
+
+            // Add the elements to the canvas
+            foreach (Team team in teams)
+            {
+                foreach (Pawn pawn in team.Pawns)
+                    layoutRoot.Children.Add(pawn.PawnCanvas);
+            }
+
+            _dice = new Dice(this,diceButton);
+            Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
+        }
+
+        /// <summary>
+        /// Creates pawns for each team based on selected player types.
+        /// </summary>
+        private void CreatePawns()
+        {
+            int index = 0;
+            if (isCows)
+            {
+                if (isCowsAi)
+                {
+                    teams[index] = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition, true);
+                }
+                else
+                {
+                    teams[index] = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
+                }
+                index++;
+            }
+
+            if (isHens)
+            {
+                if (isHensAi)
+                {
+                    teams[index] = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition, true);
+                }
+                else
+                {
+                    teams[index] = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition);
+                }
+                index++;
+            }
+
+            if (isSheeps)
+            {
+                if (isSheepsAi)
+                {
+                    teams[index] = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition, true);
+                }
+                else
+                {
+                    teams[index] = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
+                }
+                index++;
+            }
+
+            if (isPigs)
+            {
+                if (isPigsAi)
+                {
+                    teams[index] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition, true);
+                }
+                else
+                {
+                    teams[index] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
+                }
+            }
+
+            _dice = new Dice(this,diceButton);
+
+            ChangeActiveTeamIcon(teams[currentTeam].Name);
+            Debug.Write("Number of teams is: " + Team.NUMBER_OF_TEAMS);
+            if (teams[currentTeam].IsAI && !gameIsOver)
+            {
+                _dice.SpinDice();
+            }
+        }
+
+        /// <summary>
+        /// Calculates the total number of players based on selected team types.
+        /// </summary>
         private int GetPlayerCount()
         {
             int playerCount = 0;
@@ -126,6 +269,9 @@ namespace FIA_Grupp2
             return playerCount;
         }
 
+        /// <summary>
+        /// Loads game session options from local settings.
+        /// </summary>
         private void LoadGameSessionOptions()
         {
             string gameSessionOptionsData = (string)ApplicationData.Current.LocalSettings.Values["SessionOptionsData"];
@@ -141,92 +287,57 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Sets available teams based on lobby slot data.
+        /// </summary>
         private void SetAvailableTeams()
         {
-
-
             if (slot1Usertype != "None")
             {
                 if (slot1Team == "cow")
                 {
                     isCows = true;
-                }
-                else if (slot1Team == "pig")
-                {
-                    isPigs = true;
-                }
-                else if (slot1Team == "chicken")
-                {
-                    isHens = true;
+                    if (slot1Usertype == "AI") { isCowsAi = true; }
                 }
 
-                else if (slot1Team == "sheep")
-                {
-                    isSheeps = true;
-                }
             }
             if (slot2Usertype != "None")
             {
-                if (slot2Team == "cow")
-                {
-                    isCows = true;
-                }
-                else if (slot2Team == "pig")
+
+                if (slot2Team == "pig")
                 {
                     isPigs = true;
-                }
-                else if (slot2Team == "chicken")
-                {
-                    isHens = true;
+                    if (slot2Usertype == "AI") { isPigsAi = true; }
+
                 }
 
-                else if (slot2Team == "sheep")
-                {
-                    isSheeps = true;
-                }
             }
             if (slot3Usertype != "None")
             {
-                if (slot3Team == "cow")
-                {
-                    isCows = true;
-                }
-                else if (slot3Team == "pig")
-                {
-                    isPigs = true;
-                }
-                else if (slot3Team == "chicken")
+
+                if (slot3Team == "chicken")
                 {
                     isHens = true;
+                    if (slot3Usertype == "AI") { isHensAi = true; }
                 }
 
-                else if (slot3Team == "sheep")
-                {
-                    isSheeps = true;
-                }
             }
+
             if (slot4Usertype != "None")
             {
-                if (slot4Team == "cow")
-                {
-                    isCows = true;
-                }
-                else if (slot4Team == "pig")
-                {
-                    isPigs = true;
-                }
-                else if (slot4Team == "chicken")
-                {
-                    isHens = true;
-                }
 
-                else if (slot4Team == "sheep")
+                if (slot4Team == "sheep")
                 {
                     isSheeps = true;
+                    if (slot4Usertype == "AI") { isSheepsAi = true; }
                 }
             }
         }
 
+
+        /// <summary>
+        /// Initializes the game timer.
+        /// </summary>
         private void InitiateGameTimer()
         {
             remainingGameTime = new TimeSpan(gameHours, gameMinutes, gameSeconds);
@@ -244,6 +355,10 @@ namespace FIA_Grupp2
             }
         }
 
+
+        /// <summary>
+        /// Initializes the turn timer.
+        /// </summary>
         private void InitiateTurnTimer()
         {
             remainingTurnTime = new TimeSpan(turnHours, turnMinutes, turnSeconds);
@@ -261,17 +376,27 @@ namespace FIA_Grupp2
             }
         }
 
+
+        /// <summary>
+        /// Starts playing the game music.
+        /// </summary>
         private async void StartMusic()
         {
             await gameAudio.InitializePlaylist("Assets\\Sound\\InGame");
+            gameAudio.SetVolume(_musicVolume / 100.0);
             gameAudio.StartPlayback();
         }
 
         private void DiceClicked(object sender, RoutedEventArgs e)
         {
+            SoundEffect.PlayTrack(SoundEffect.DicePath);
+
             _dice.SpinDice(sender, e);
         }
 
+        /// <summary>
+        /// Event handler for the dice button click.
+        /// </summary>
         public void DiceFinishedSpinning(object sender, EventArgs e)
         {
             diceButton.IsEnabled = false;
@@ -312,7 +437,6 @@ namespace FIA_Grupp2
                     if (teams[currentTeam].GetPawnsOnTheBoard().Length <= 0 &&
                         teams[currentTeam].GetPawnsInTheNest().Length >= 0)
                     {
-                        //Debug.WriteLine("There is still pawns in the nest, and i can move one out");
                         // FIXME : Maybe we want to allow only one step if we get a 6 from the dice.
                         pwn.TurnStepsLeft = _dice.DiceNumber;
                         pwn.PawnCanvas.IsHitTestVisible = true;
@@ -328,11 +452,8 @@ namespace FIA_Grupp2
                         Debug.Write("FÖR MÅNGA STEG FÖR ATT GÅ JÄMNT I MÅL 2");
                         pwn.PawnCanvas.IsHitTestVisible = false;
                     }
-                    // TODO KOLLA OM NÅGON ÄR I VÄGEN
                 }
             }
-
-            // TODO OM INGEN ÄR HIT TEST VISIBLE
 
             if (!AnyHitTestVisible())
             {
@@ -345,7 +466,7 @@ namespace FIA_Grupp2
                 {
                     if (pwn.PawnCanvas.IsHitTestVisible)
                     {
-                        return true; 
+                        return true;
                     }
                 }
                 return false;
@@ -358,7 +479,27 @@ namespace FIA_Grupp2
                 NextTeamsTurnDelay();
             }
 
+            if (teams[currentTeam].IsAI && !gameIsOver)
+            {
+                AiChoosePawn();
+            }
+
+            async void AiChoosePawn()
+            {
+                await Task.Delay(aiDelay); // Delay for 1 second
+                foreach (Pawn pwn in teams[currentTeam].pawns)
+                {
+                    if (pwn.PawnCanvas.IsHitTestVisible == true)
+                    {
+                        pwn.AI_MadeItsChoise();
+                        break;
+                    }
+                }
+            }
         }
+
+        public async Task StartGameDelay(int ms = 2000)
+        { await Task.Delay(ms); }
 
         public async void NextTeamsTurnDelay(int ms = 500)
         {
@@ -379,6 +520,21 @@ namespace FIA_Grupp2
 
             //IsThereAPawnOnThisPosition(new Position(6, 10));
 
+            bool allPawnsInGoal = true;
+
+            foreach (Pawn pawn in teams[currentTeam].Pawns)
+            {
+                if (!pawn.IsInGoal)
+                {
+                    allPawnsInGoal = false;
+                }
+            }
+
+            if (allPawnsInGoal)
+            {
+                gameIsOver = true;
+            }
+
             currentTeam++;
             if (currentTeam > nrOfPlayers - 1)
             {
@@ -390,6 +546,36 @@ namespace FIA_Grupp2
             if (isTurnTimerEnabled)
             {
                 ResetTurnTimer();
+            }
+
+            if(!allPawnsInGoal)
+            {
+                switch (teams[currentTeam].Name)
+                {
+                    case "Cows":
+                        SoundEffect.PlayTrack(SoundEffect.CowPath);
+                        break;
+                    case "Hens":
+                        SoundEffect.PlayTrack(SoundEffect.ChickenPath);
+                        break;
+                    case "Sheeps":
+                        SoundEffect.PlayTrack(SoundEffect.SheepPath);
+                        break;
+                    case "Pigs":
+                        SoundEffect.PlayTrack(SoundEffect.PigPath);
+                        break;
+                }
+            }
+            
+            if (teams[currentTeam].IsAI)
+            {
+                AiSpinDiceDelay();
+            }
+
+            async void AiSpinDiceDelay()
+            {
+                await Task.Delay(aiDelay);
+                _dice.SpinDice();
             }
         }
 
@@ -410,7 +596,9 @@ namespace FIA_Grupp2
             return string.Empty;
         }
 
-        //TODO: Maybe there is a color property somewhere, and this method is useless.
+        /// <summary>
+        /// Sets icon background color based on team name
+        /// </summary>
         private Color GetColorFromTeamName(string teamName)
         {
             switch (teamName)
@@ -427,6 +615,9 @@ namespace FIA_Grupp2
             return Colors.Black;
         }
 
+        /// <summary>
+        /// Changes the active team icon
+        /// </summary>
         private void ChangeActiveTeamIcon(string teamName)
         {
             BitmapImage newActiveTeamIcon = new BitmapImage(new Uri($"ms-appx:///Assets/TeamIcons/{ConvertNameToJPG(teamName)}.jpg"));
@@ -438,6 +629,9 @@ namespace FIA_Grupp2
             _dice.NewTurn();
         }
 
+        /// <summary>
+        /// Resets the turn timer
+        /// </summary>
         private void ResetTurnTimer()
         {
             turnTimer.Stop();
@@ -450,73 +644,16 @@ namespace FIA_Grupp2
         }
 
 
-        private void MainPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            Debug.Write("BAM MainPage Loaded");
-            gameGrid = new GameBoardGrid(gameCanvas);
-            gameGrid.CreateArrayOfPoints();
-            gameGrid.CreateArrayOfDots();
 
-            gameGrid.CalculateActualPositions();
-            gameGrid.CalculateOrigoY();
-            gameGrid.SetEllipsesPositions();
-            //gameGrid.SetEllipsesPositions(true,showInd: true);
-
-            CreatePawns();
-
-            // Add the elements to the canvas
-            foreach (Team team in teams)
-            {
-                foreach(Pawn pawn in team.Pawns)
-                layoutRoot.Children.Add(pawn.PawnCanvas);
-            }
-
-            _dice = new Dice(this);
-            Debug.Write("Length of coarse is: " + gameGrid.CountCourseLength());
-            //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
-        }
-
-        /// <summary>
-        /// Create the Teams of different types (species)
-        /// </summary>
-        private void CreatePawns()
-        {
-            int index = 0;
-            if (isCows)
-            {
-                teams[index] = new Cows(gameGrid, globalCoarse, new Position(9, 9), goalPosition);
-                index++;
-            }
-
-            if (isHens)
-            {
-                teams[index] = new Hens(gameGrid, globalCoarse, new Position(9, 1), goalPosition);
-                index++;
-            }
-
-            if (isSheeps)
-            {
-                teams[index] = new Sheeps(gameGrid, globalCoarse, new Position(1, 1), goalPosition);
-                index++;
-            }
-
-            if (isPigs)
-            {
-                teams[index] = new Pigs(gameGrid, globalCoarse, new Position(1, 9), goalPosition);
-                index++;
-            }
-
-            _dice = new Dice(this);
-
-            ChangeActiveTeamIcon(teams[currentTeam].Name);
-            Debug.Write("Number of teams is: " + Team.NUMBER_OF_TEAMS);
-        }
 
         private void CoreWindow_PointerMoved(CoreWindow sender, PointerEventArgs args)
         {
-            DebugTextUpdate(args);
+            // DebugTextUpdate(args);
         }
 
+        /// <summary>
+        /// Method for debugging purposes, updates the debug text with the mouse position
+        /// </summary>
         private void DebugTextUpdate(PointerEventArgs args)
         {
             // Get the mouse pointer position relative to your app window
@@ -542,8 +679,12 @@ namespace FIA_Grupp2
             // NextTeamsTurn();
         }
 
+        /// <summary>
+        /// Event handler for when the mouse wheel is scrolled
+        /// </summary>
         private new void PointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
+            /*
             // Get the delta value to determine whether the wheel scrolls up or down
             var delta = e.GetCurrentPoint(layoutRoot).Properties.MouseWheelDelta;
 
@@ -569,8 +710,12 @@ namespace FIA_Grupp2
             DebugTextUpdateModifier();
 
             //Debug.Write(gameGrid.GetActualPositionOf(10, 10) + "\n");
+            */
         }
 
+        /// <summary>
+        /// Handles the tick event of the game timer.
+        /// </summary>
         private void GameTimerTick(object sender, object e)
         {
             if (remainingGameTime.TotalSeconds > 0)
@@ -585,6 +730,9 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Handles the tick event of the turn timer.
+        /// </summary>
         private void TurnTimerTick(object sender, object e)
         {
             if (remainingTurnTime.TotalSeconds > 0)
@@ -601,6 +749,9 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Checks if any other teams have a pawn in the same position as the current active team.
+        /// </summary>
         private Team CheckOtherTeamsPositions(Team currentActiveTeam)
         {
             foreach (Team team in teams)
@@ -633,13 +784,154 @@ namespace FIA_Grupp2
 
             return null;
         }
+
+        /// <summary>
+        /// Updates the UI to display remaining game time.
+        /// </summary>
         private void UpdateGameTimerText()
         {
             gameTimerText.Text = $"{remainingGameTime.Hours:D2}:{remainingGameTime.Minutes:D2}:{remainingGameTime.Seconds:D2}";
         }
+
+        /// <summary>
+        /// Updates the UI to display remaining turn time.
+        /// </summary>
         private void UpdateTurnTimerText()
         {
             turnTimerText.Text = $"{remainingTurnTime.Hours:D2}:{remainingTurnTime.Minutes:D2}:{remainingTurnTime.Seconds:D2}";
+        }
+
+        /// <summary>
+        /// Toggle the ingame menu visibility
+        /// </summary>
+        private void SetIngameMenuVisible(bool value)
+        {
+            toggleIngameMenu = value;
+            if (value == true)
+            {
+                ingame_menu.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ingame_menu.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs args)
+        {
+            if (args.VirtualKey == Windows.System.VirtualKey.Escape)
+            {
+                SetIngameMenuVisible(!toggleIngameMenu);
+            }
+        }
+
+        private void InGameMenuContinue(object sender, RoutedEventArgs e)
+        {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            SetIngameMenuVisible(false);
+        }
+
+        /// <summary>
+        /// Toggle the sound on and off
+        /// </summary>
+        private void GameVolumeButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            string path = $"ms-appx:///Assets/InGameIcons/";
+
+            toggleVolumeButton = !toggleVolumeButton;
+
+            if (toggleVolumeButton)
+            {
+                path += "volume.png";
+                _musicVolume = _musicSavedValue;
+                gameAudio.SetVolume(_musicVolume / 100.0);
+                
+            }
+            else
+            {
+                path += "volume-off.png";
+                _musicSavedValue = _musicVolume;
+                _musicVolume = 0.0;
+                gameAudio.SetVolume(0.0);
+            }
+
+            BitmapImage newVolumeIconImage = new BitmapImage(new Uri(path));
+
+            volumeButtonIcon.Source = newVolumeIconImage;
+
+            volumeSlider.Value = _musicVolume;
+        }
+
+        private void OpenMainMenuButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+            SetIngameMenuVisible(true);
+        }
+
+        private void ReturnToMainMenuButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+            gameIsOver = true;
+            gameAudio.StopPlayback();
+            this.Frame.Navigate(typeof(StartPage));
+        }
+
+        private void IngameRulesButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            SetIngameMenuVisible(true);
+
+            rulesPage.Visibility = Visibility.Visible;
+        }
+
+        private void RulesPageBackButtonClicked(object sender, RoutedEventArgs e)
+        {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
+
+            SetIngameMenuVisible(true);
+
+            rulesPage.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// ´Change volume with slide in ingame menu
+        /// </summary>
+        private void VolumeSliderValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+        {
+            _musicVolume = volumeSlider.Value;
+            
+
+            string path = $"ms-appx:///Assets/InGameIcons/";
+            if (_musicVolume > 0)
+            {
+
+                toggleVolumeButton = true;
+                path += "volume.png";
+            }
+            else if (_musicVolume <= 0)
+            {
+                toggleVolumeButton = false;
+                path += "volume-off.png";
+            }
+
+            BitmapImage newVolumeIconImage = new BitmapImage(new Uri(path));
+
+            volumeButtonIcon.Source = newVolumeIconImage;
+
+            if (volumeSliderValueText != null)
+            {
+                volumeSliderValueText.Text = $"{_musicVolume}%";
+            }
+
+            if (gameAudio != null)
+            {
+                gameAudio.SetVolume(0);
+                gameAudio.SetVolume(_musicVolume / 100.0);
+            }
         }
     }
 }

@@ -8,10 +8,14 @@ using System.Xml.Linq;
 
 namespace FIA_Grupp2
 {
+    /// <summary>
+    /// Represents a team in the game.
+    /// </summary>
     internal class Team
     {
         public static int NUMBER_OF_TEAMS = 0;
         string name = "Team";
+        private bool isAI;
         public string Name { get => name; set => name = value; }
 
         protected static Position nestIndex;
@@ -23,19 +27,37 @@ namespace FIA_Grupp2
 
         internal Pawn[] pawns;
         internal Pawn[] Pawns { get => pawns; set => pawns = value; }
-
-        public Team(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
+        public bool IsAI { get => isAI; set => isAI = value; }
+        /// <summary>
+        /// Initializes a new instance of the Team class.
+        /// </summary>
+        /// <param name="gbg">The game board grid.</param>
+        /// <param name="coarse">The possible positions on the game board path.</param>
+        /// <param name="start">The start position.</param>
+        /// <param name="goal">The goal position.</param>
+        /// <param name="artificial">Indicates whether the team is controlled by AI.</param>
+        public Team(GameBoardGrid gbg, Position[] coarse, Position start, Position goal, bool artificial = false)
         {
             NUMBER_OF_TEAMS++;
             nestIndex = start;
             boardgrid = gbg;
+            IsAI = artificial;
         }
 
+
+        /// <summary>
+        /// Gets the pawns in the team.
+        /// </summary>
+        /// <returns>An array of pawns.</returns>
         public virtual Pawn[] GetPawns()
         {
             return pawns;
         }
 
+        /// <summary>
+        /// Gets the pawns currently on the game board.
+        /// </summary>
+        /// <returns>An array of pawns on the board.</returns>
         public virtual Pawn[] GetPawnsOnTheBoard()
         {
             Pawn[] allPawns = GetPawns();
@@ -52,6 +74,10 @@ namespace FIA_Grupp2
             return pawnsOnTheField.ToArray();
         }
 
+        /// <summary>
+        /// Gets the pawns currently in the nest.
+        /// </summary>
+        /// <returns>An array of pawns in the nest.</returns>
         public virtual Pawn[] GetPawnsInTheNest()
         {
             Pawn[] allPawns = GetPawns();
@@ -72,10 +98,19 @@ namespace FIA_Grupp2
     }
     internal class Cows : Team
     {
-        public Cows(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
-        : base(gbg, coarse, start, goal)
+        /// <summary>
+        /// Initializes a new instance of the Cows class.
+        /// </summary>
+        /// <param name="gbg">The game board grid.</param>
+        /// <param name="coarse">The positions on the game board.</param>
+        /// <param name="start">The start position.</param>
+        /// <param name="goal">The goal position.</param>
+        /// <param name="artificial">Indicates whether the team is controlled by AI.</param>
+        public Cows(GameBoardGrid gbg, Position[] coarse, Position start, Position goal, bool artificial = false)
+        : base(gbg, coarse, start, goal, artificial)
         {
             Name = "Cows";
+            IsAI = artificial;
             Position[] firstpart = new Position[40];
             Position[] lastpart = new Position[4]
             {
@@ -106,10 +141,19 @@ namespace FIA_Grupp2
     }
     internal class Hens : Team
     {
-        public Hens(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
-        : base(gbg, coarse, start, goal)
+        /// <summary>
+        /// Initializes a new instance of the Hens class.
+        /// </summary>
+        /// <param name="gbg">The game board grid.</param>
+        /// <param name="coarse">The positions on the game board.</param>
+        /// <param name="start">The start position.</param>
+        /// <param name="goal">The goal position.</param>
+        /// <param name="artificial">Indicates whether the team is controlled by AI.</param>
+        public Hens(GameBoardGrid gbg, Position[] coarse, Position start, Position goal , bool artificial = false)
+        : base(gbg, coarse, start, goal, artificial)
         {
             Name = "Hens";
+            IsAI = artificial;
             Position[] firstpart = new Position[10];
             Position[] secondpart = new Position[30];
             Position[] lastpart = new Position[4]
@@ -144,12 +188,22 @@ namespace FIA_Grupp2
         }
 
     }
+
     internal class Sheeps : Team
     {
-        public Sheeps(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
-        : base(gbg, coarse, start, goal)
+        /// <summary>
+        /// Initializes a new instance of the Sheeps class.
+        /// </summary>
+        /// <param name="gbg">The game board grid.</param>
+        /// <param name="coarse">The positions on the game board.</param>
+        /// <param name="start">The start position.</param>
+        /// <param name="goal">The goal position.</param>
+        /// <param name="artificial">Indicates whether the team is controlled by AI.</param>
+        public Sheeps(GameBoardGrid gbg, Position[] coarse, Position start, Position goal, bool artificial = false)
+        : base(gbg, coarse, start, goal, artificial)
         {
             Name = "Sheeps";
+            IsAI = artificial;
             Position[] firstpart = new Position[20];
             Position[] secondpart = new Position[20];
             Position[] lpart = new Position[4];
@@ -188,10 +242,19 @@ namespace FIA_Grupp2
     }
     internal class Pigs : Team
     {
-        public Pigs(GameBoardGrid gbg, Position[] coarse, Position start, Position goal)
-        : base(gbg, coarse, start, goal)
+        /// <summary>
+        /// Initializes a new instance of the Pigs class.
+        /// </summary>
+        /// <param name="gbg">The game board grid.</param>
+        /// <param name="coarse">The positions on the game board.</param>
+        /// <param name="start">The start position.</param>
+        /// <param name="goal">The goal position.</param>
+        /// <param name="artificial">Indicates whether the team is controlled by AI.</param>
+        public Pigs(GameBoardGrid gbg, Position[] coarse, Position start, Position goal, bool artificial = false)
+        : base(gbg, coarse, start, goal, artificial)
         {
             Name = "Pigs";
+            IsAI = artificial;
             Position[] firstpart = new Position[30];
             Position[] secondpart = new Position[10];
             Position[] lpart = new Position[4];

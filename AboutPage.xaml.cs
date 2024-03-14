@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -19,33 +18,24 @@ using Windows.UI.Xaml.Navigation;
 namespace FIA_Grupp2
 {
     /// <summary>
-    /// Splashscreen starting page for app.
+    /// Page used to display information about the game and credits.
     /// </summary>
-    /// 
-
-
-    public sealed partial class StartPage : Page
+    public sealed partial class AboutPage : Page
     {
-        public Playlist introAudio;
-
-        public StartPage()
+        public AboutPage()
         {
             this.InitializeComponent();
-            ApplicationView.ClearAllPersistedState();
-            ApplicationView.PreferredLaunchViewSize = new Size(1500, 1000);
-            startStoryBoard.Begin();
-            introAudio = new Playlist();
-            StartMusic();
+        }
+        private Playlist introAudio;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            introAudio = e.Parameter as Playlist;
         }
 
-        private async void StartMusic()
+        private void Back_button_click_event(object sender, RoutedEventArgs e)
         {
-            await introAudio.InitializePlaylist("Assets\\Sound\\Menu");
-            introAudio.StartPlayback();
-        }
-
-        private void SplashButton_Click(object sender, RoutedEventArgs e)
-        {
+            SoundEffect.PlayTrack(SoundEffect.ClickPath);
             this.Frame.Navigate(typeof(MainPage), introAudio);
         }
     }

@@ -8,7 +8,9 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace FIA_Grupp2
 {
-
+    /// <summary>
+    /// Abstract class representing a pawn in the game.
+    /// </summary>
     internal abstract class Pawn
     {
         protected bool canWalk = false;
@@ -42,7 +44,13 @@ namespace FIA_Grupp2
         public int Steps { get => steps; set => steps = value; }
         internal bool IsInGoal { get => isInGoal; set => isInGoal = value; }
 
-
+        /// <summary>
+        /// Initializes a new instance of the Pawn class.
+        /// </summary>
+        /// <param name="gbg">The game board grid.</param>
+        /// <param name="startpos">The start position of the pawn.</param>
+        /// <param name="teamcoarse">The possible positions associated with the team.</param>
+        /// <param name="myTeam">The team the pawn belongs to.</param>
         public Pawn(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
         {
             team = myTeam;
@@ -62,6 +70,7 @@ namespace FIA_Grupp2
             {
                 Debug.Write($"{globalIndex} {localIndex} {Name} is clicked And canWalk = {canWalk}\n");
                 Step();
+
                 foreach (Pawn pawn in team.Pawns)
                 {
                     pawn.pawnCanvas.IsHitTestVisible = false;
@@ -71,6 +80,24 @@ namespace FIA_Grupp2
                 // Calling for the next teams turn
                 GamePage.Instance.NextTeamsTurn();
             }
+        }
+
+        /// <summary>
+        /// Performs actions when AI makes its choice.
+        /// </summary>
+        public void AI_MadeItsChoise()
+        {
+            Debug.Write($"{globalIndex} {localIndex} {Name} is clicked And canWalk = {canWalk}\n");
+            Step();
+
+            foreach (Pawn pawn in team.Pawns)
+            {
+                pawn.pawnCanvas.IsHitTestVisible = false;
+            }
+            CheckWinner();
+
+            // Calling for the next teams turn
+            GamePage.Instance.NextTeamsTurn();
         }
 
         /// <summary>
@@ -102,6 +129,9 @@ namespace FIA_Grupp2
             }
         }
 
+        /// <summary>
+        /// Sets the position of the pawn at the nest.
+        /// </summary>
         public virtual void PositionAtNest()
         {
             Point pos = boardgrid.GetActualPositionOf(indexPosition.X, indexPosition.Y);
@@ -139,6 +169,11 @@ namespace FIA_Grupp2
             Canvas.SetLeft(PawnImage, newPosX + modiX);
             Canvas.SetTop(PawnImage, newPosY + modiY);
         }
+
+        /// <summary>
+        /// Sets the position of the pawn.
+        /// </summary>
+        /// <param name="ind">The position to set the pawn to.</param>
         public virtual void PositionAt(Position ind)
         {
             Point pos = boardgrid.GetActualPositionOf(ind.X, ind.Y);
@@ -150,6 +185,10 @@ namespace FIA_Grupp2
             Canvas.SetLeft(PawnImage, newX + 8);
             Canvas.SetTop(PawnImage, newY - 10);
         }
+
+        /// <summary>
+        /// Moves the pawn.
+        /// </summary>
         internal virtual void Step()
         {
             while (turnStepsLeft-- > 0)
@@ -186,6 +225,11 @@ namespace FIA_Grupp2
                 }
             }
         }
+
+        /// <summary>
+        /// Checks if the pawn is moving in the same direction.
+        /// </summary>
+        /// <returns>True if moving in the same direction, otherwise false.</returns>
         internal virtual bool IsSameDirection()
         {
             if (direction == 3 || direction == 1)
@@ -202,6 +246,10 @@ namespace FIA_Grupp2
             }
             return false;
         }
+
+        /// <summary>
+        /// Turns the image of the pawn to the right.
+        /// </summary>
         internal virtual void TurnImageRight()
         {
             direction--;
@@ -209,6 +257,11 @@ namespace FIA_Grupp2
             ReplaceImage();
             // Debug.Write($" Turned Right");
         }
+
+
+        /// <summary>
+        /// Turns the image of the pawn to the left.
+        /// </summary>
         internal virtual void TurnImageLeft()
         {
             direction++;
@@ -216,6 +269,10 @@ namespace FIA_Grupp2
             ReplaceImage();
             // Debug.Write($" Turned Left");
         }
+
+        /// <summary>
+        /// Replaces the image of the pawn.
+        /// </summary>
         internal virtual void ReplaceImage()
         {
             pawnCanvas.Children.Remove(pawnImage);
@@ -226,6 +283,13 @@ namespace FIA_Grupp2
     }
     internal class Cow : Pawn
     {
+        /// <summary>
+        /// Initializes a new instance of the Cow class.
+        /// </summary>
+        /// <param name="gbg">The game board grid.</param>
+        /// <param name="startpos">The start position of the pawn.</param>
+        /// <param name="teamcoarse">The positions associated with the team.</param>
+        /// <param name="myTeam">The team the pawn belongs to.</param>
         public Cow(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
             : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
@@ -252,6 +316,13 @@ namespace FIA_Grupp2
     }
     internal class Hen : Pawn
     {
+        /// <summary>
+        /// Initializes a new instance of the Hen class.
+        /// </summary>
+        /// <param name="gbg">The game board grid.</param>
+        /// <param name="startpos">The start position of the pawn.</param>
+        /// <param name="teamcoarse">The positions associated with the team.</param>
+        /// <param name="myTeam">The team the pawn belongs to.</param>
         public Hen(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
             : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
@@ -276,6 +347,13 @@ namespace FIA_Grupp2
     }
     internal class Sheep : Pawn
     {
+        /// <summary>
+        /// Initializes a new instance of the Sheep class.
+        /// </summary>
+        /// <param name="gbg">The game board grid.</param>
+        /// <param name="startpos">The start position of the pawn.</param>
+        /// <param name="teamcoarse">The positions associated with the team.</param>
+        /// <param name="myTeam">The team the pawn belongs to.</param>
         public Sheep(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
             : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
@@ -301,6 +379,13 @@ namespace FIA_Grupp2
     }
     internal class Pig : Pawn
     {
+        /// <summary>
+        /// Initializes a new instance of the Pig class.
+        /// </summary>
+        /// <param name="gbg">The game board grid.</param>
+        /// <param name="startpos">The start position of the pawn.</param>
+        /// <param name="teamcoarse">The positions associated with the team.</param>
+        /// <param name="myTeam">The team the pawn belongs to.</param>
         public Pig(GameBoardGrid gbg, Position startpos, ref Position[] teamcoarse, in Team myTeam)
             : base(gbg, startpos, ref teamcoarse, in myTeam)
         {
