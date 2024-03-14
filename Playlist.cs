@@ -73,6 +73,7 @@ namespace FIA_Grupp2
             {
                 // Save the current index before pausing
                 _currentIndex = (_currentIndex + 1) % _playList.Count;
+                PlayTrack(_currentIndex);
             }
 
             _previousState = sender.PlaybackState;
