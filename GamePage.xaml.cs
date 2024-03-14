@@ -142,7 +142,7 @@ namespace FIA_Grupp2
         /// <summary>
         /// Event handler for when the main page is loaded.
         /// </summary>
-        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             Debug.Write("BAM MainPage Loaded");
             gameGrid = new GameBoardGrid(gameCanvas);
