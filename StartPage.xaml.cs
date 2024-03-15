@@ -27,7 +27,7 @@ namespace FIA_Grupp2
     public sealed partial class StartPage : Page
     {
         public Playlist introAudio;
-
+        private double _musicVolume = 100;
         public StartPage()
         {
             this.InitializeComponent();
@@ -41,6 +41,7 @@ namespace FIA_Grupp2
         private async void StartMusic()
         {
             await introAudio.InitializePlaylist("Assets\\Sound\\Menu");
+            introAudio.SetVolume(_musicVolume / 100.0);
             introAudio.StartPlayback();
         }
 

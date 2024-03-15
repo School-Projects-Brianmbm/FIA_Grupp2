@@ -2,22 +2,15 @@
 using System;
 using System.Diagnostics;
 using Windows.Storage;
-using Windows.UI.Composition;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Documents;
-using Windows.Devices.Pwm;
 using Windows.UI.Xaml.Media;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.ComponentModel;
 using Windows.UI.Xaml.Media.Animation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace FIA_Grupp2
 {
@@ -32,7 +25,7 @@ namespace FIA_Grupp2
         // Coordinates of the mouse pointer
         int MouseX, MouseY;
         // Delay for AI actions
-        int aiDelay = 100;
+        int aiDelay = 400;
         static int nrOfPlayers = 4;
         static int currentTeam = 0;
         static GameBoardGrid gameGrid;
@@ -155,7 +148,7 @@ namespace FIA_Grupp2
             await StartGameDelay(0);
             gameGrid.SetEllipsesPositions();
 
-            // Get the reference to your Storyboard (assuming you've named it "StartGameStoryboard")
+            // Get the reference to the Storyboard
             Storyboard myStoryboard = this.Resources["StartGameStoryboard"] as Storyboard;
 
             // Start the Storyboard
@@ -882,18 +875,14 @@ namespace FIA_Grupp2
         private void IngameRulesButtonClicked(object sender, RoutedEventArgs e)
         {
             SoundEffect.PlayTrack(SoundEffect.ClickPath);
-
             SetIngameMenuVisible(true);
-
             rulesPage.Visibility = Visibility.Visible;
         }
 
         private void RulesPageBackButtonClicked(object sender, RoutedEventArgs e)
         {
             SoundEffect.PlayTrack(SoundEffect.ClickPath);
-
             SetIngameMenuVisible(true);
-
             rulesPage.Visibility = Visibility.Collapsed;
         }
 
@@ -903,8 +892,6 @@ namespace FIA_Grupp2
         private void VolumeSliderValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
             _musicVolume = volumeSlider.Value;
-            
-
             string path = $"ms-appx:///Assets/InGameIcons/";
             if (_musicVolume > 0)
             {

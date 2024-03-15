@@ -113,18 +113,18 @@ namespace FIA_Grupp2
         /// </summary>
         internal void CreateArrayOfPoints()
         {
-            double rowmodi = 0;
+            double rowmodifier = 0;
             for (int row = 0; row < _numberOfRows; row++)
             {
                 _pointsArray[row] = new Point[_numberOfColumns];
                 _dotsArray[row] = new Ellipse[_numberOfColumns];
                 textArray[row] = new TextBlock[_numberOfColumns];
 
-                if (row > 0) { rowmodi += Squish; }
+                if (row > 0) { rowmodifier += Squish; }
 
-                for (int col = 0; col < _numberOfColumns; col++)
+                for (int column = 0; column < _numberOfColumns; column++)
                 {
-                    _pointsArray[row][col] = new Point(col * (_colDist + Squish), row * (_rowDist - Squish));
+                    _pointsArray[row][column] = new Point(column * (_colDist + Squish), row * (_rowDist - Squish));
                 }
             }
         }
@@ -139,39 +139,39 @@ namespace FIA_Grupp2
                 _dotsArray[row] = new Ellipse[_numberOfColumns];
                 textArray[row] = new TextBlock[_numberOfColumns];
 
-                for (int col = 0; col < _numberOfColumns; col++)
+                for (int column = 0; column < _numberOfColumns; column++)
                 {
                     // Create the underlying grid dots
-                    if (_pathArray[row, col] == 0)
+                    if (_pathArray[row, column] == 0)
                     {
-                        _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Colors.Black), Width = _dotSize, Height = _dotSize };
+                        _dotsArray[row][column] = new Ellipse { Fill = new SolidColorBrush(Colors.Black), Width = _dotSize, Height = _dotSize };
                     }
                     // Create walkable "bricks"
-                    else if (_pathArray[row, col] == 1)
+                    else if (_pathArray[row, column] == 1)
                     {
                         SolidColorBrush strokeBrush = new SolidColorBrush(Colors.WhiteSmoke);
                         int strokeWeight = 2;
-                        if (row == 10 && col == 6)
+                        if (row == 10 && column == 6)
                         {
                             strokeBrush = new SolidColorBrush(Colors.LightGreen);
                             strokeWeight = 4;
                         }
-                        else if (row == 4 && col == 10)
+                        else if (row == 4 && column == 10)
                         {
                             strokeBrush = new SolidColorBrush(Colors.Yellow);
                             strokeWeight = 4;
                         }
-                        else if (row == 0 && col == 4)
+                        else if (row == 0 && column == 4)
                         {
                             strokeBrush = new SolidColorBrush(Colors.LightBlue);
                             strokeWeight = 4;
                         }
-                        else if (row == 6 && col == 0)
+                        else if (row == 6 && column == 0)
                         {
                             strokeBrush = new SolidColorBrush(Colors.LightPink);
                             strokeWeight = 4;
                         }
-                        _dotsArray[row][col] = new Ellipse
+                        _dotsArray[row][column] = new Ellipse
                         {
                             Fill = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128)),
                             Stroke = strokeBrush, // Border color (you can adjust this)
@@ -181,55 +181,55 @@ namespace FIA_Grupp2
                         };
                     }
                     // Create reserved bricks
-                    else if (_pathArray[row, col] > 1 && _pathArray[row, col] < 6)
+                    else if (_pathArray[row, column] > 1 && _pathArray[row, column] < 6)
                     {
-                        switch (_pathArray[row, col])
+                        switch (_pathArray[row, column])
                         {
                             case 2:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 219, 112, 147)), Width = _brickSize, Height = _brickSize };
+                                _dotsArray[row][column] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 219, 112, 147)), Width = _brickSize, Height = _brickSize };
                                 break;
                             case 3:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 144, 238, 144)), Width = _brickSize, Height = _brickSize };
+                                _dotsArray[row][column] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 144, 238, 144)), Width = _brickSize, Height = _brickSize };
                                 break;
                             case 4:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 255, 255, 0)), Width = _brickSize, Height = _brickSize };
+                                _dotsArray[row][column] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 255, 255, 0)), Width = _brickSize, Height = _brickSize };
                                 break;
                             case 5:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 173, 216, 230)), Width = _brickSize, Height = _brickSize };
+                                _dotsArray[row][column] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 173, 216, 230)), Width = _brickSize, Height = _brickSize };
                                 break;
                             default:
                                 break;
                         }
                         // brings the nest above the dots
-                        Canvas.SetZIndex(_dotsArray[row][col], 1);
+                        Canvas.SetZIndex(_dotsArray[row][column], 1);
                     }
                     // Create indivual nests
-                    else if (_pathArray[row, col] > 5)
+                    else if (_pathArray[row, column] > 5)
                     {
-                        switch (_pathArray[row, col])
+                        switch (_pathArray[row, column])
                         {
                             case 6:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 219, 112, 147)), Width = _nestSize, Height = _nestSize };
+                                _dotsArray[row][column] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 219, 112, 147)), Width = _nestSize, Height = _nestSize };
                                 break;
                             case 7:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 144, 238, 144)), Width = _nestSize, Height = _nestSize };
+                                _dotsArray[row][column] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 144, 238, 144)), Width = _nestSize, Height = _nestSize };
                                 break;
                             case 8:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 255, 255, 0)), Width = _nestSize, Height = _nestSize };
+                                _dotsArray[row][column] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 255, 255, 0)), Width = _nestSize, Height = _nestSize };
                                 break;
                             case 9:
-                                _dotsArray[row][col] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 173, 216, 230)), Width = _nestSize, Height = _nestSize };
+                                _dotsArray[row][column] = new Ellipse { Fill = new SolidColorBrush(Color.FromArgb(128, 173, 216, 230)), Width = _nestSize, Height = _nestSize };
                                 break;
                             default:
                                 break;
                         }
                         // brings the nest above the dots
-                        Canvas.SetZIndex(_dotsArray[row][col], -1);
+                        Canvas.SetZIndex(_dotsArray[row][column], -1);
                     }
                     // Create goal
-                    else if (_pathArray[row, col] < 0)
+                    else if (_pathArray[row, column] < 0)
                     {
-                        _dotsArray[row][col] = new Ellipse
+                        _dotsArray[row][column] = new Ellipse
                         {
                             Fill = new SolidColorBrush(Colors.White),
                             Width = _goalSize,
@@ -238,7 +238,7 @@ namespace FIA_Grupp2
                             StrokeThickness = 1
                         };
                     }
-                    textArray[row][col] = new TextBlock
+                    textArray[row][column] = new TextBlock
                     {
                         FontSize = 10,
                     };
@@ -252,21 +252,21 @@ namespace FIA_Grupp2
         /// </summary>
         internal void CalculateActualPositions()
         {
-            for (int col = 0; col < _numberOfColumns; col++)
+            for (int column = 0; column < _numberOfColumns; column++)
             {
                 for (int row = 0; row < _numberOfRows; row++)
                 {
-                    Point currentPoint = _pointsArray[row][col];
+                    Point currentPoint = _pointsArray[row][column];
 
                     // Calculate the actual position for the current point
                     double left = _origoX + currentPoint.X;
                     double top = _origoY - currentPoint.Y;
 
                     double actualX = left - (row * _rowDist);
-                    double actualY = top - (col * _colDist) + 300;
-                    // double actualY = top - (col * _colDist);
+                    double actualY = top - (column * _colDist) + 300;
+                    // double actualY = top - (column * _colDist);
 
-                    _actualPositions[col, row] = new Point(actualX, actualY);
+                    _actualPositions[column, row] = new Point(actualX, actualY);
                 }
             }
         }
@@ -277,13 +277,13 @@ namespace FIA_Grupp2
         /// <param name="showgrid">When true the debug points for the underlying grid will also be added for debuging purposes.</param>
         internal void SetEllipsesPositions(bool showgrid = false, bool showPos = false, bool showInd = false)
         {
-            for (int col = 0; col < _numberOfColumns; col++)
+            for (int column = 0; column < _numberOfColumns; column++)
             {
                 for (int row = 0; row < _numberOfRows; row++)
                 {
-                    Point currentPoint = _pointsArray[row][col];
-                    Ellipse currentEllipse = _dotsArray[row][col];
-                    TextBlock currentText = textArray[row][col];
+                    Point currentPoint = _pointsArray[row][column];
+                    Ellipse currentEllipse = _dotsArray[row][column];
+                    TextBlock currentText = textArray[row][column];
 
                     // Calculate the position for the current ellipse
                     // TBD Borde inte behöva räkna ut detta igen utan kan hämta positionerna från actualPositions ist.
@@ -291,7 +291,7 @@ namespace FIA_Grupp2
                     double top = _origoY - currentPoint.Y;
 
                     double actualX = left - (row * _rowDist);
-                    double actualY = top - (col * _colDist);
+                    double actualY = top - (column * _colDist);
 
 
                     Canvas.SetLeft(currentEllipse, actualX - (currentEllipse.Width / 2));
@@ -308,11 +308,11 @@ namespace FIA_Grupp2
                     // Debug text index
                     if (showPos && showInd)
                     {
-                        currentText.Text += $"\nX={col}, Y={row}";
+                        currentText.Text += $"\nX={column}, Y={row}";
                     }
                     else if (showInd)
                     {
-                        currentText.Text = $"X={col}, Y={row}";
+                        currentText.Text = $"X={column}, Y={row}";
                     }
 
 
@@ -327,7 +327,7 @@ namespace FIA_Grupp2
                         _canvas.Children.Add(currentEllipse);
                         _canvas.Children.Add(currentText);
                     }
-                    else if (_pathArray[row, col] > 0 || _pathArray[row, col] == -1)
+                    else if (_pathArray[row, column] > 0 || _pathArray[row, column] == -1)
                     {
                         _canvas.Children.Add(currentEllipse);
                     }
